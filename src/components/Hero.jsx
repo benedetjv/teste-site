@@ -2,7 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { siteContent } from "../content";
 
-export default function Hero() {
+export default function Hero({ customTitle }) {
   const { title, crmRqe, text1, text2, ctaLabel, ctaLink } = siteContent.hero;
 
   // Imagem local: no Next.js basta o caminho a partir de public (sem /public)
@@ -13,7 +13,7 @@ export default function Hero() {
       <div className="container">
         <div className="row align-items-center g-4">
           <div className="col-lg-7">
-            <h1 className="hero-title">{title}</h1>
+            <h1 className="hero-title">{customTitle || title}</h1>
             {/* Conteúdo de texto aqui... */}
             <p className="hero-text">
               <strong>{crmRqe}</strong>
