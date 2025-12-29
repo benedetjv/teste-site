@@ -1,32 +1,21 @@
-"use client";
-
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
+import Script from "next/script";
 import { siteContent } from "../content";
 
 // Componente para carregar o script do Instagram
 function InstagramEmbed({ instagramUrl }) {
   const scriptLoaded = useRef(false);
 
-  useEffect(() => {
-    // Garante que o script seja carregado apenas uma vez
-    if (document.getElementById("instagram-embed-script") || scriptLoaded.current) {
-      return;
-    }
-
-    const loadInstagramScript = () => {
-      const s = document.createElement("script");
-      s.async = true;
-      s.src = "//www.instagram.com/embed.js";
-      s.id = "instagram-embed-script";
-      document.body.appendChild(s);
-      scriptLoaded.current = true;
-    };
-
-    loadInstagramScript();
-  }, []);
-
   return (
     <div className="d-flex justify-content-center mt-5">
+      <Script
+        src="//www.instagram.com/embed.js"
+        strategy="lazyOnload"
+        onLoad={() => {
+          // O script do instagram processa automaticamente quando carrega
+          if (window.instgrm) window.instgrm.Embeds.process();
+        }}
+      />
       <div className="instagram-wrapper">
         <blockquote
           className="instagram-media"

@@ -1,6 +1,5 @@
-"use client";
-
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
+import Script from "next/script";
 import { siteContent } from "../content";
 
 const DOCTORALIA_SCRIPT_URL = "//platform.docplanner.com/js/widget.js";
@@ -8,31 +7,17 @@ const DOCTORALIA_WIDGET_ID = "zl-widget-s";
 
 export default function Doctoralia() {
   const { label, url, doctor } = siteContent.doctoralia;
-  const scriptLoaded = useRef(false);
+  // scriptLoaded useRef is no longer needed
 
-  useEffect(() => {
-    // Garante que o script seja carregado apenas uma vez
-    if (document.getElementById(DOCTORALIA_WIDGET_ID) || scriptLoaded.current) {
-      return;
-    }
-
-    const loadDoctoraliaScript = () => {
-      const d = document;
-      const s = "script";
-      let js, fjs = d.getElementsByTagName(s)[0];
-
-      js = d.createElement(s);
-      js.id = DOCTORALIA_WIDGET_ID;
-      js.src = DOCTORALIA_SCRIPT_URL;
-      fjs.parentNode.insertBefore(js, fjs);
-      scriptLoaded.current = true;
-    };
-
-    loadDoctoraliaScript();
-  }, []);
+  // useEffect for manual script injection is no longer needed
 
   return (
     <section id="agende" className="section-light">
+      <Script
+        id="doctoralia-widget"
+        src={DOCTORALIA_SCRIPT_URL}
+        strategy="lazyOnload"
+      />
       <div className="container">
         <div className="agende-wrapper">
           <p className="agende-label">{label}</p>
