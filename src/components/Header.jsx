@@ -26,6 +26,7 @@ export default function Header() {
             type="button"
             data-bs-toggle="collapse"
             data-bs-target="#navbarNav"
+            aria-label="Alternar navegação"
           >
             <span className="navbar-toggler-icon"></span>
           </button>

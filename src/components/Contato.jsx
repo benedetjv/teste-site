@@ -16,7 +16,7 @@ export default function Contato() {
                 }`}
               key={clinic.nome}
             >
-              <h4 className="contato-clinic">{clinic.nome}</h4>
+              <h3 className="contato-clinic">{clinic.nome}</h3>
               <p className="contato-endereco">{clinic.endereco}</p>
               <p className="contato-phone">
                 <i className={clinic.nome === "Clínica Somamed" ? "bi bi-whatsapp" : "bi bi-telephone-fill"}></i>{" "}
