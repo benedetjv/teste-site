@@ -4,7 +4,11 @@ import "bootstrap-icons/font/bootstrap-icons.css";
 import "./globals.css";
 import BootstrapClient from "@/components/BootstrapClient";
 
-const nunito = Nunito_Sans({ subsets: ["latin"], weight: ["400", "600", "700"] });
+const nunito = Nunito_Sans({
+  subsets: ["latin"],
+  weight: ["400", "600", "700"],
+  display: 'swap',
+});
 
 export const metadata = {
   title: "Dr. Otto Beckedorff – Ortopedia & Tratamento da Dor",
