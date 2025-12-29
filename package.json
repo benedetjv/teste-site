@@ -1,6 +1,6 @@
 {
   "name": "next_app",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -18,10 +18,9 @@
   "devDependencies": {
     "eslint": "^9",
     "eslint-config-next": "16.1.1"
-  }
-},
-"browserslist": [
-  "defaults",
-  "not IE 11"
-]
+  },
+  "browserslist": [
+    "defaults",
+    "not IE 11"
+  ]
 }
