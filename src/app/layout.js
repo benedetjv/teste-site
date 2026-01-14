@@ -20,6 +20,23 @@ export const metadata = {
     type: "website",
     url: "https://drotto.com.br",
     locale: "pt_BR",
+    images: [
+      {
+        url: '/img/favicon.png',
+        width: 1200,
+        height: 630,
+        alt: 'Dr. Otto Beckedorff',
+      }
+    ],
+  },
+  icons: {
+    icon: '/img/favicon.png',
+    shortcut: '/img/favicon.png',
+    apple: '/img/favicon.png',
+    other: {
+      rel: 'apple-touch-icon-precomposed',
+      url: '/img/favicon.png',
+    },
   },
   alternates: {
     canonical: "https://drotto.com.br",
