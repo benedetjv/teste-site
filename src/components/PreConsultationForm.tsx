@@ -158,8 +158,20 @@ export default function PreConsultationForm() {
                             <motion.div key="step1" initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, y: -10 }}>
                                 <div className="card border-0 shadow-lg rounded-4 overflow-hidden">
                                     <div className="bg-light p-4 text-center border-bottom">
-                                        <h4 className="fw-bold mb-0">Localização da Dor</h4>
-                                        <p className="text-muted small mb-0">Selecione onde você sente dor no mapa abaixo.</p>
+                                        <h4 className="fw-bold mb-3">Vamos começar</h4>
+                                        <div className="mb-4 text-start bg-white p-3 rounded-3 shadow-sm border">
+                                            <label className="form-label small fw-bold text-muted">Qual é o seu nome completo?</label>
+                                            <input
+                                                type="text"
+                                                autoFocus
+                                                placeholder="Digite seu nome aqui..."
+                                                className="form-control form-control-lg border-0 bg-transparent fw-bold text-primary p-0"
+                                                style={{ boxShadow: 'none' }}
+                                                value={patientName}
+                                                onChange={e => setPatientName(e.target.value)}
+                                            />
+                                        </div>
+                                        <p className="text-muted small mb-0">Agora, selecione onde você sente dor no mapa abaixo.</p>
                                     </div>
                                     <div className="p-0">
                                         <BodySelectorAssessment
@@ -168,7 +180,7 @@ export default function PreConsultationForm() {
                                         />
                                         <div className="p-4 bg-light border-top text-end">
                                             <button
-                                                disabled={selectedRegions.length === 0}
+                                                disabled={selectedRegions.length === 0 || !patientName.trim()}
                                                 className="btn btn-primary btn-lg rounded-pill px-5 fw-bold"
                                                 onClick={() => setStep(2)}
                                                 style={{ backgroundColor: 'var(--azul-escuro)' }}
@@ -366,13 +378,10 @@ export default function PreConsultationForm() {
                                                             alert('Erro de conexão.');
                                                         }
                                                     }}>
-                                                        <div className="mb-3">
-                                                            <label className="form-label small fw-bold">Seu Nome Completo:</label>
-                                                            <input type="text" required placeholder="Digite seu nome" className="form-control rounded-pill p-3" value={patientName} onChange={e => setPatientName(e.target.value)} />
-                                                        </div>
-                                                        <div className="mb-3">
-                                                            <label className="form-label small fw-bold">Seu melhor E-mail:</label>
-                                                            <input type="email" required placeholder="exemplo@email.com" className="form-control rounded-pill p-3" value={patientEmail} onChange={e => setPatientEmail(e.target.value)} />
+
+                                                        <div className="alert alert-info small mb-3">
+                                                            <i className="bi bi-info-circle-fill me-2"></i>
+                                                            Confirmo o envio do relatório de <strong>{patientName}</strong> para análise.
                                                         </div>
 
                                                         <div className="form-check mb-4">
@@ -390,7 +399,7 @@ export default function PreConsultationForm() {
                                                     <div className="text-center py-4">
                                                         <div className="text-success h1 mb-3"><i className="bi bi-check-lg"></i></div>
                                                         <h5 className="fw-bold text-success">Relatório Enviado com Sucesso!</h5>
-                                                        <p className="text-muted small">Nossa equipe entrará em contato em breve através do e-mail informado ({patientEmail}).</p>
+                                                        <p className="text-muted small">Nossa equipe entrará em contato em breve.</p>
                                                         <button className="btn btn-outline-secondary btn-sm mt-3" onClick={() => window.location.reload()}>Nova Avaliação</button>
                                                     </div>
                                                 )}
