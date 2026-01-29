@@ -29,7 +29,16 @@ export default function PreConsultationForm() {
     const [consentGiven, setConsentGiven] = useState(false);
     const [isEmailSent, setIsEmailSent] = useState(false);
 
-    const painTypes = ['Formigamento', 'Pontada', 'Queimação', 'Peso', 'Choque', 'Focada', 'Irradiada'];
+    const painTypes = [
+        'Latejante / Pulsátil',
+        'Queimação / Ardência',
+        'Pontada / Agulhada',
+        'Choque Elétrico',
+        'Peso / Cansaço',
+        'Formigamento / Dormência',
+        'Surda / Constante',
+        'Aperto / Compressão'
+    ];
     const durations = ['Menos de 1 mês', '1 a 6 meses', 'Mais de 6 meses (Crônica)'];
 
     const handleRegionChange = (regions: any[]) => {
