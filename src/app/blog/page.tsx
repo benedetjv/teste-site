@@ -92,7 +92,7 @@ const posts = [
         excerpt: "Como a tecnologia e as técnicas modernas reduziram drasticamente os riscos cirúrgicos.",
         date: "25 Jan 2026",
         category: "Cirurgia de Coluna",
-        image: "/img/blog/surgery-tech.jpg",
+        image: "/img/blog/spine-surgery-safety.png",
         relatedRegions: ['lumbar-back', 'cervical-back']
     },
     {
@@ -110,7 +110,7 @@ const posts = [
         excerpt: "Respostas diretas sobre academia, colchão, quiropraxia e tratamentos para a coluna.",
         date: "29 Jan 2026",
         category: "Guia do Paciente",
-        image: "/img/blog/chronic-pain-faq.jpg",
+        image: "/img/blog/back-pain-faq.png",
         relatedRegions: ['lumbar-back', 'thoracic-back', 'cervical-back', 'abdomen']
     },
     {
@@ -227,7 +227,7 @@ const posts = [
         excerpt: "Entenda a inflamação da sola do pé e conheça os tratamentos para recuperar sua caminhada.",
         date: "12 Fev 2026",
         category: "Pé e Tornozelo",
-        image: "/img/blog/mortons-neuroma.png",
+        image: "/img/blog/foot-pain.png",
         relatedRegions: ['foot-left', 'foot-right']
     },
     {
@@ -290,7 +290,7 @@ const posts = [
         excerpt: "Choques e queimação na frente do pé? Saiba como a hidrodissecção alivia o nervo.",
         date: "20 Fev 2026",
         category: "Pé e Tornozelo",
-        image: "/img/blog/foot-pain.png",
+        image: "/img/blog/mortons-neuroma.png",
         relatedRegions: ['foot-left', 'foot-right']
     },
     {
