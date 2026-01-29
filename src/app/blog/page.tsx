@@ -11,7 +11,7 @@ const posts = [
         excerpt: "Conheça os 'Red Flags' que indicam quando você deve procurar um especialista imediatamente.",
         date: "12 Nov 2025",
         category: "Coluna Vertebral",
-        image: "/img/blog/red-flags-spine.jpg",
+        image: "/img/blog/red-flags-spine.png",
         relatedRegions: ['neck-front', 'thoracic-back', 'lumbar-back', 'cervical-back', 'chest']
     },
     {
@@ -20,7 +20,7 @@ const posts = [
         excerpt: "Entenda a diferença entre o efeito diagnóstico imediato e o alívio prolongado do tratamento.",
         date: "25 Nov 2025",
         category: "Tratamentos Intervencionistas",
-        image: "/img/blog/spinal-block-procedure.jpg",
+        image: "/img/blog/spinal-block-procedure.png",
         relatedRegions: ['lumbar-back', 'sciatica-left', 'sciatica-right', 'cervical-back']
     },
     {
@@ -29,7 +29,7 @@ const posts = [
         excerpt: "Dicas práticas e posições de alívio para lidar com uma crise aguda em casa.",
         date: "05 Dez 2025",
         category: "Nervo Ciático",
-        image: "/img/blog/sciatica-relief.jpg",
+        image: "/img/blog/sciatica-relief.png",
         relatedRegions: ['sciatica-left', 'sciatica-right', 'lumbar-back', 'glute-left', 'glute-right']
     },
     {
@@ -38,7 +38,7 @@ const posts = [
         excerpt: "Saiba por que este procedimento percutâneo permite um retorno tão rápido à rotina.",
         date: "15 Dez 2025",
         category: "Tratamentos Intervencionistas",
-        image: "/img/blog/radiofrequency-spine.jpg",
+        image: "/img/blog/radiofrequency-spine.png",
         relatedRegions: ['lumbar-back', 'thoracic-back', 'cervical-back']
     },
     {
@@ -47,7 +47,7 @@ const posts = [
         excerpt: "Um guia interativo para entender como as ondas de rádio desligam a dor sem cirurgia.",
         date: "16 Dez 2025",
         category: "Tratamentos Intervencionistas",
-        image: "/img/blog/radiofrequency-machine.jpg",
+        image: "/img/blog/radiofrequency-machine.png",
         relatedRegions: ['lumbar-back', 'cervical-back', 'thoracic-back']
     },
     {
