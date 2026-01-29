@@ -119,7 +119,7 @@ const posts = [
         excerpt: "Entenda a diferença entre a dor causada pelo músculo na nádega e o problema na coluna.",
         date: "30 Jan 2026",
         category: "Nervo Ciático",
-        image: "/img/blog/piriformis.jpg",
+        image: "/img/blog/piriformis.jpg?v=2",
         relatedRegions: ['glute-left', 'glute-right', 'lumbar-back', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -146,7 +146,7 @@ const posts = [
         excerpt: "Saiba por que o cansaço nas pernas ao caminhar pode ter origem em um estreitamento na coluna.",
         date: "02 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/spinal-stenosis.jpg",
+        image: "/img/blog/spinal-stenosis.jpg?v=2",
         relatedRegions: ['lumbar-back', 'calf-left', 'calf-right', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -164,7 +164,7 @@ const posts = [
         excerpt: "Descubra se ainda é possível evitar a cirurgia definitiva através da lubrificação articular moderna.",
         date: "04 Fev 2026",
         category: "Joelho e Quadril",
-        image: "/img/blog/knee-prosthesis.jpg",
+        image: "/img/blog/knee-prosthesis.jpg?v=2",
         relatedRegions: ['knee-left', 'knee-right']
     },
     {
@@ -209,7 +209,7 @@ const posts = [
         excerpt: "Entenda por que essas expansões ósseas aparecem na coluna e como aliviar a dor sem cirurgia.",
         date: "10 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/osteophyte.jpg",
+        image: "/img/blog/osteophyte.jpg?v=2",
         relatedRegions: ['lumbar-back', 'cervical-back', 'thoracic-back']
     },
     {
@@ -263,7 +263,7 @@ const posts = [
         excerpt: "Sente dor ao levantar da cadeira ou subir escadas? Pode ser inflamação na junta sacroilíaca.",
         date: "17 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/sacroiliac.jpg",
+        image: "/img/blog/sacroiliac.jpg?v=2",
         relatedRegions: ['glute-left', 'glute-right', 'lumbar-back']
     },
     {
@@ -380,7 +380,7 @@ const posts = [
         excerpt: "Decifre o código de diagnóstico no seu atestado médico e entenda o que ele diz sobre sua coluna.",
         date: "03 Mar 2026",
         category: "Guia do Paciente",
-        image: "/img/blog/medical-report.jpg",
+        image: "/img/blog/medical-report.jpg?v=2",
         relatedRegions: ['lumbar-back', 'cervical-back', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -398,7 +398,7 @@ const posts = [
         excerpt: "Saiba como proteger sua coluna ao malhar e entenda quando a dor indica uma lesão real.",
         date: "05 Mar 2026",
         category: "Medicina do Esporte",
-        image: "/img/blog/rowing-pain.jpg",
+        image: "/img/blog/rowing-pain.jpg?v=2",
         relatedRegions: ['lumbar-back', 'sciatica-left', 'sciatica-right']
     },
 ];
