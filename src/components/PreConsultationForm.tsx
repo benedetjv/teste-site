@@ -399,8 +399,23 @@ export default function PreConsultationForm() {
                                                     <div className="text-center py-4">
                                                         <div className="text-success h1 mb-3"><i className="bi bi-check-lg"></i></div>
                                                         <h5 className="fw-bold text-success">Relatório Enviado com Sucesso!</h5>
-                                                        <p className="text-muted small">Nossa equipe entrará em contato em breve.</p>
-                                                        <button className="btn btn-outline-secondary btn-sm mt-3" onClick={() => window.location.reload()}>Nova Avaliação</button>
+                                                        <p className="text-muted small mb-4">Nossa equipe entrará em contato em breve.</p>
+
+                                                        {/* Convite para o Blog */}
+                                                        <div className="card border-0 bg-primary bg-opacity-10 mb-4 p-3 rounded-4">
+                                                            <div className="d-flex align-items-center">
+                                                                <div className="display-6 text-primary me-3"><i className="bi bi-journal-medical"></i></div>
+                                                                <div className="text-start">
+                                                                    <h6 className="fw-bold text-primary mb-1">Enquanto aguarda...</h6>
+                                                                    <p className="small text-muted mb-0" style={{ lineHeight: '1.2' }}>Visite nosso blog e tire suas dúvidas sobre tratamentos e condições ortopédicas.</p>
+                                                                </div>
+                                                            </div>
+                                                            <a href="/blog" className="btn btn-primary w-100 rounded-pill mt-3 btn-sm fw-bold">
+                                                                Ler Artigos do Blog <i className="bi bi-arrow-right ms-1"></i>
+                                                            </a>
+                                                        </div>
+
+                                                        <button className="btn btn-outline-secondary btn-sm" onClick={() => window.location.reload()}>Nova Avaliação</button>
                                                     </div>
                                                 )}
                                             </div>
