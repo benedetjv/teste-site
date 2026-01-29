@@ -18,6 +18,7 @@ export default function PreConsultationForm() {
     const [hasExams, setHasExams] = useState<string>('');
     const [examFiles, setExamFiles] = useState<File[]>([]);
     const [patientEmail, setPatientEmail] = useState('');
+    const [patientName, setPatientName] = useState('');
     const [isEmailSent, setIsEmailSent] = useState(false);
 
     const painTypes = ['Formigamento', 'Pontada', 'Queimação', 'Peso', 'Choque', 'Focada', 'Irradiada'];
@@ -214,13 +215,32 @@ export default function PreConsultationForm() {
                                                     <form onSubmit={async (e) => {
                                                         e.preventDefault();
                                                         try {
+                                                            // Convert files to base64
+                                                            const convertFileToBase64 = (file: File): Promise<string> => {
+                                                                return new Promise((resolve, reject) => {
+                                                                    const reader = new FileReader();
+                                                                    reader.readAsDataURL(file);
+                                                                    reader.onload = () => resolve(reader.result as string);
+                                                                    reader.onerror = error => reject(error);
+                                                                });
+                                                            };
+
+                                                            const attachments = await Promise.all(
+                                                                examFiles.map(async (file) => ({
+                                                                    filename: file.name,
+                                                                    content: await convertFileToBase64(file)
+                                                                }))
+                                                            );
+
                                                             const res = await fetch('/api/send', {
                                                                 method: 'POST',
                                                                 headers: { 'Content-Type': 'application/json' },
                                                                 body: JSON.stringify({
+                                                                    patientName,
                                                                     patientEmail,
-                                                                    subject: `Pré-Consulta: ${selectedRegions.map(r => r.label).join(', ')}`,
-                                                                    reportContent: generateReport()
+                                                                    subject: `Pré-Consulta: ${patientName} - ${selectedRegions.map(r => r.label).join(', ')}`,
+                                                                    reportContent: generateReport(),
+                                                                    attachments
                                                                 })
                                                             });
                                                             if (res.ok) {
@@ -233,6 +253,10 @@ export default function PreConsultationForm() {
                                                             alert('Erro de conexão.');
                                                         }
                                                     }}>
+                                                        <div className="mb-3">
+                                                            <label className="form-label small fw-bold">Seu Nome Completo:</label>
+                                                            <input type="text" required placeholder="Digite seu nome" className="form-control rounded-pill p-3" value={patientName} onChange={e => setPatientName(e.target.value)} />
+                                                        </div>
                                                         <div className="mb-3">
                                                             <label className="form-label small fw-bold">Seu melhor E-mail:</label>
                                                             <input type="email" required placeholder="exemplo@email.com" className="form-control rounded-pill p-3" value={patientEmail} onChange={e => setPatientEmail(e.target.value)} />

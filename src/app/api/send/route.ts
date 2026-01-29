@@ -5,7 +5,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 
 export async function POST(request: Request) {
     try {
-        const { patientEmail, reportContent, subject } = await request.json();
+        const { patientEmail, patientName, reportContent, subject, attachments } = await request.json();
 
         // Validação básica
         if (!patientEmail || !reportContent) {
@@ -20,12 +20,14 @@ export async function POST(request: Request) {
             text: `
         Novo pré-agendamento recebido:
         
-        Paciente (Email): ${patientEmail}
+        Paciente: ${patientName}
+        Email: ${patientEmail}
         
         --- RELATÓRIO DO PACIENTE ---
         
         ${reportContent}
       `,
+            attachments: attachments // Anexos (agora tratados como { filename, content })
         });
 
         console.log("Email enviado com sucesso:", data);
