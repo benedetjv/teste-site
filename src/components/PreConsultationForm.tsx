@@ -17,8 +17,14 @@ export default function PreConsultationForm() {
     const [painDetails, setPainDetails] = useState<Record<string, PainDetail>>({});
     const [hasExams, setHasExams] = useState<string>('');
     const [examFiles, setExamFiles] = useState<File[]>([]);
+    const [isVeraCruz, setIsVeraCruz] = useState(false);
+    const [shareAccess, setShareAccess] = useState(false);
+    const [portalLogin, setPortalLogin] = useState('');
+    const [portalPassword, setPortalPassword] = useState('');
+
     const [patientEmail, setPatientEmail] = useState('');
     const [patientName, setPatientName] = useState('');
+    const [consentGiven, setConsentGiven] = useState(false);
     const [isEmailSent, setIsEmailSent] = useState(false);
 
     const painTypes = ['Formigamento', 'Pontada', 'Queimação', 'Peso', 'Choque', 'Focada', 'Irradiada'];
@@ -55,6 +61,18 @@ export default function PreConsultationForm() {
         updateDetail(id, 'type', newTypes);
     };
 
+    const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        const files = Array.from(e.target.files || []);
+        const validFiles = files.filter(file => {
+            if (file.size > 5 * 1024 * 1024) { // 5MB limit
+                alert(`O arquivo ${file.name} é muito grande (Máx 5MB).`);
+                return false;
+            }
+            return true;
+        });
+        setExamFiles(validFiles);
+    };
+
     const generateReport = () => {
         let report = `REALTÓRIO PRÉ-CONSULTA - DR. OTTO BECKEDORFF\n\n`;
         selectedRegions.forEach(r => {
@@ -63,20 +81,27 @@ export default function PreConsultationForm() {
             report += `- Tempo: ${detail.duration || 'Não informado'}\n`;
             report += `- Características: ${detail.type.join(', ') || 'Não informado'}\n\n`;
         });
-        report += `📂 EXAMES DE IMAGEM: ${hasExams === 'yes' ? 'Sim, possui exames.' : 'Não possui exames no momento.'}\n`;
+
+        report += `📂 EXAMES DE IMAGEM:\n`;
+        if (hasExams === 'no') {
+            report += `- Não possui exames no momento.\n`;
+        } else {
+            if (isVeraCruz) report += `- [X] Realizados no Hospital Vera Cruz (Acesso Interno)\n`;
+            if (examFiles.length > 0) report += `- ${examFiles.length} arquivo(s) anexado(s).\n`;
+
+            if (shareAccess) {
+                report += `\n🔐 DADOS DE ACESSO AO PORTAL DO PACIENTE:\n`;
+                report += `- Login/Usuário: ${portalLogin}\n`;
+                report += `- Senha: ${portalPassword}\n`;
+            }
+        }
+
         return report;
     };
 
     const handleWhatsAppSend = () => {
         const report = generateReport();
         window.open(`https://wa.me/5519999439824?text=${encodeURIComponent(report)}`, '_blank');
-    };
-
-    const handleEmailSimulation = (e: React.FormEvent) => {
-        e.preventDefault();
-        setIsEmailSent(true);
-        // Simulation: in a real app, send back to dr.otto@email.com via API
-        console.log("Sending report to dr.otto@email.com from patient:", patientEmail);
     };
 
     return (
@@ -180,19 +205,63 @@ export default function PreConsultationForm() {
                                 <div className="bg-white rounded-4 shadow-lg p-5 text-center">
                                     <div className="display-4 text-primary mb-4"><i className="bi bi-file-earmark-medical"></i></div>
                                     <h3 className="fw-bold mb-4">Você possui exames de imagem?</h3>
-                                    <div className="d-flex justify-content-center gap-3 mb-5">
+                                    <div className="d-flex justify-content-center gap-3 mb-4">
                                         <button className={`btn btn-lg px-5 py-3 rounded-4 ${hasExams === 'yes' ? 'btn-primary' : 'btn-outline-light text-dark border'}`} onClick={() => setHasExams('yes')}>SIM</button>
                                         <button className={`btn btn-lg px-5 py-3 rounded-4 ${hasExams === 'no' ? 'btn-primary' : 'btn-outline-light text-dark border'}`} onClick={() => setHasExams('no')}>NÃO</button>
                                     </div>
+
                                     {hasExams === 'yes' && (
-                                        <div className="p-4 bg-light rounded-4 mb-4 border-2 border-dashed">
-                                            <p className="small text-muted mb-3">Favor anexar arquivos (PDF/Imagem)</p>
-                                            <input type="file" multiple className="form-control" onChange={(e) => setExamFiles(Array.from(e.target.files || []))} />
+                                        <div className="text-start p-4 bg-light rounded-4 mb-4 border border-2">
+
+                                            {/* Opção Vera Cruz */}
+                                            <div className="form-check form-switch mb-4 p-3 bg-white rounded-3 border shadow-sm">
+                                                <input className="form-check-input" type="checkbox" id="veraCruzCheck" checked={isVeraCruz} onChange={e => setIsVeraCruz(e.target.checked)} style={{ transform: 'scale(1.3)', marginLeft: '-10px', marginRight: '10px' }} />
+                                                <label className="form-check-label fw-bold text-dark w-100 stretched-link" htmlFor="veraCruzCheck">
+                                                    Meus exames foram feitos no Hospital Vera Cruz
+                                                    <span className="d-block text-success small fw-normal mt-1"><i className="bi bi-check-circle-fill me-1"></i> Nós temos acesso direto ao sistema, não é preciso anexar arquivos.</span>
+                                                </label>
+                                            </div>
+
+                                            {/* Upload de Arquivos (Só se não for Vera Cruz) */}
+                                            {!isVeraCruz && (
+                                                <div className="mb-4">
+                                                    <label className="form-label fw-bold small text-secondary">ANEXAR LAUDOS OU IMAGENS (Opcional)</label>
+                                                    <p className="small text-muted mb-2">Máximo 5MB por arquivo. Prefira PDF ou fotos legíveis.</p>
+                                                    <input type="file" multiple accept=".pdf,image/*" className="form-control" onChange={handleFileChange} />
+                                                </div>
+                                            )}
+
+                                            <hr className="my-4 text-muted" />
+
+                                            {/* Compartilhar Acesso */}
+                                            <div className="form-check form-switch mb-3">
+                                                <input className="form-check-input" type="checkbox" id="shareAccessCheck" checked={shareAccess} onChange={e => setShareAccess(e.target.checked)} />
+                                                <label className="form-check-label fw-bold text-dark" htmlFor="shareAccessCheck">
+                                                    Tenho login/senha do portal de exames e quero compartilhar
+                                                </label>
+                                            </div>
+
+                                            {shareAccess && (
+                                                <div className="row g-2 p-3 bg-white rounded-3 border">
+                                                    <div className="col-md-6">
+                                                        <input type="text" className="form-control form-control-sm" placeholder="Login / Usuário" value={portalLogin} onChange={e => setPortalLogin(e.target.value)} />
+                                                    </div>
+                                                    <div className="col-md-6">
+                                                        <input type="text" className="form-control form-control-sm" placeholder="Senha" value={portalPassword} onChange={e => setPortalPassword(e.target.value)} />
+                                                    </div>
+                                                    <div className="col-12">
+                                                        <small className="text-muted" style={{ fontSize: '11px' }}>*Seus dados serão enviados de forma segura apenas para verificação médica.</small>
+                                                    </div>
+                                                </div>
+                                            )}
                                         </div>
                                     )}
+
                                     <div className="d-flex justify-content-between mt-5">
                                         <button className="btn btn-light rounded-pill px-4" onClick={() => setStep(2)}>Voltar</button>
-                                        <button disabled={!hasExams} className="btn btn-primary rounded-pill px-5 fw-bold" onClick={() => setStep(4)} style={{ backgroundColor: 'var(--azul-escuro)' }}>Finalizar</button>
+                                        <button disabled={!hasExams} className="btn btn-primary rounded-pill px-5 fw-bold" onClick={() => setStep(4)} style={{ backgroundColor: 'var(--azul-escuro)' }}>
+                                            {hasExams === 'yes' ? 'Pronto, Finalizar' : 'Finalizar sem Exames'}
+                                        </button>
                                     </div>
                                 </div>
                             </motion.div>
@@ -210,7 +279,7 @@ export default function PreConsultationForm() {
                                         <div className="col-md-8">
                                             <div className="p-4 rounded-4 border h-100 d-flex flex-column shadow-sm bg-light">
                                                 <h5 className="fw-bold mb-3"><i className="bi bi-envelope-at me-2 text-primary"></i> Enviar Analise por E-mail</h5>
-                                                <p className="small text-muted flex-grow-1">O relatório será enviado instantaneamente para a equipe médica e você receberá uma cópia de confirmação.</p>
+                                                <p className="small text-muted flex-grow-1">O relatório será enviado instantaneamente para a equipe médica.</p>
                                                 {!isEmailSent ? (
                                                     <form onSubmit={async (e) => {
                                                         e.preventDefault();
@@ -261,7 +330,15 @@ export default function PreConsultationForm() {
                                                             <label className="form-label small fw-bold">Seu melhor E-mail:</label>
                                                             <input type="email" required placeholder="exemplo@email.com" className="form-control rounded-pill p-3" value={patientEmail} onChange={e => setPatientEmail(e.target.value)} />
                                                         </div>
-                                                        <button type="submit" className="btn btn-primary w-100 rounded-pill fw-bold py-3 text-uppercase" style={{ letterSpacing: '1px' }}>
+
+                                                        <div className="form-check mb-4">
+                                                            <input className="form-check-input" type="checkbox" id="consentCheck" required checked={consentGiven} onChange={e => setConsentGiven(e.target.checked)} />
+                                                            <label className="form-check-label small text-muted" htmlFor="consentCheck" style={{ fontSize: '11px', lineHeight: '1.2' }}>
+                                                                Declaro que autorizo o compartilhamento desses dados médicos para fins de pré-análise clínica, estando ciente que serão enviados para a equipe do Dr. Otto Beckedorff.
+                                                            </label>
+                                                        </div>
+
+                                                        <button type="submit" disabled={!consentGiven} className="btn btn-primary w-100 rounded-pill fw-bold py-3 text-uppercase" style={{ letterSpacing: '1px' }}>
                                                             Enviar Relatório <i className="bi bi-send-fill ms-2"></i>
                                                         </button>
                                                     </form>
