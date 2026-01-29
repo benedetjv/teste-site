@@ -33,6 +33,21 @@ export async function POST(request: Request) {
             emailOptions.replyTo = patientEmail;
         }
 
+        // Processar anexos para garantir formato correto (Buffer)
+        if (attachments && Array.isArray(attachments)) {
+            emailOptions.attachments = attachments.map((att: any) => {
+                // Se o conteúdo for uma string base64 com prefixo de Data URI (ex: data:image/png;base64,...)
+                if (typeof att.content === 'string' && att.content.includes('base64,')) {
+                    const base64Content = att.content.split('base64,')[1];
+                    return {
+                        filename: att.filename,
+                        content: Buffer.from(base64Content, 'base64'),
+                    };
+                }
+                return att;
+            });
+        }
+
         const data = await resend.emails.send(emailOptions);
 
         console.log("Email enviado com sucesso:", data);
