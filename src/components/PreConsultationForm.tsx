@@ -203,34 +203,65 @@ export default function PreConsultationForm() {
                                     <div className="text-center mb-5">
                                         <div className="display-4 text-success mb-3"><i className="bi bi-check-circle-fill"></i></div>
                                         <h3 className="fw-bold">Avaliação Concluída</h3>
-                                        <p className="text-secondary">Escolha como deseja enviar o seu relatório ao Dr. Otto.</p>
+                                        <p className="text-secondary">Seu relatório está pronto. Envie agora para análise do Dr. Otto.</p>
                                     </div>
-                                    <div className="row g-4">
-                                        <div className="col-md-6">
-                                            <div className="p-4 rounded-4 border h-100 d-flex flex-column shadow-sm">
-                                                <h5 className="fw-bold mb-3"><i className="bi bi-envelope-at me-2 text-primary"></i> Enviar por E-mail</h5>
-                                                <p className="small text-muted flex-grow-1">O relatório será enviado diretamente para a nossa equipe médica analisar.</p>
+                                    <div className="row justify-content-center">
+                                        <div className="col-md-8">
+                                            <div className="p-4 rounded-4 border h-100 d-flex flex-column shadow-sm bg-light">
+                                                <h5 className="fw-bold mb-3"><i className="bi bi-envelope-at me-2 text-primary"></i> Enviar Analise por E-mail</h5>
+                                                <p className="small text-muted flex-grow-1">O relatório será enviado instantaneamente para a equipe médica e você receberá uma cópia de confirmação.</p>
                                                 {!isEmailSent ? (
-                                                    <form onSubmit={handleEmailSimulation}>
-                                                        <input type="email" required placeholder="Seu e-mail" className="form-control mb-2 rounded-pill" value={patientEmail} onChange={e => setPatientEmail(e.target.value)} />
-                                                        <button type="submit" className="btn btn-primary w-100 rounded-pill fw-bold">ENVIAR AGORA</button>
+                                                    <form onSubmit={async (e) => {
+                                                        e.preventDefault();
+                                                        try {
+                                                            const res = await fetch('/api/send', {
+                                                                method: 'POST',
+                                                                headers: { 'Content-Type': 'application/json' },
+                                                                body: JSON.stringify({
+                                                                    patientEmail,
+                                                                    subject: `Pré-Consulta: ${selectedRegions.map(r => r.label).join(', ')}`,
+                                                                    reportContent: generateReport()
+                                                                })
+                                                            });
+                                                            if (res.ok) {
+                                                                setIsEmailSent(true);
+                                                            } else {
+                                                                alert('Erro ao enviar. Tente novamente.');
+                                                            }
+                                                        } catch (err) {
+                                                            console.error(err);
+                                                            alert('Erro de conexão.');
+                                                        }
+                                                    }}>
+                                                        <div className="mb-3">
+                                                            <label className="form-label small fw-bold">Seu melhor E-mail:</label>
+                                                            <input type="email" required placeholder="exemplo@email.com" className="form-control rounded-pill p-3" value={patientEmail} onChange={e => setPatientEmail(e.target.value)} />
+                                                        </div>
+                                                        <button type="submit" className="btn btn-primary w-100 rounded-pill fw-bold py-3 text-uppercase" style={{ letterSpacing: '1px' }}>
+                                                            Enviar Relatório <i className="bi bi-send-fill ms-2"></i>
+                                                        </button>
                                                     </form>
                                                 ) : (
-                                                    <div className="alert alert-success py-2 small rounded-pill text-center mt-2">Relatório enviado com sucesso!</div>
+                                                    <div className="text-center py-4">
+                                                        <div className="text-success h1 mb-3"><i className="bi bi-check-lg"></i></div>
+                                                        <h5 className="fw-bold text-success">Relatório Enviado com Sucesso!</h5>
+                                                        <p className="text-muted small">Nossa equipe entrará em contato em breve através do e-mail informado ({patientEmail}).</p>
+                                                        <button className="btn btn-outline-secondary btn-sm mt-3" onClick={() => window.location.reload()}>Nova Avaliação</button>
+                                                    </div>
                                                 )}
                                             </div>
                                         </div>
-                                        <div className="col-md-6">
-                                            <div className="p-4 rounded-4 border h-100 d-flex flex-column shadow-sm" style={{ borderColor: '#25D366' }}>
-                                                <h5 className="fw-bold mb-3"><i className="bi bi-whatsapp me-2 text-success"></i> Via WhatsApp</h5>
-                                                <p className="small text-muted flex-grow-1">Envie o relatório e fale com nossa secretária agora mesmo.</p>
-                                                <button onClick={handleWhatsAppSend} className="btn btn-success w-100 rounded-pill fw-bold" style={{ backgroundColor: '#25D366', border: 'none' }}>ABRIR WHATSAPP</button>
-                                            </div>
-                                        </div>
                                     </div>
-                                    <div className="mt-5 bg-light p-4 rounded-4 small">
-                                        <h6 className="fw-bold">VISUALIZAÇÃO DO RELATÓRIO:</h6>
-                                        <pre className="mb-0 mt-2" style={{ whiteSpace: 'pre-wrap', fontFamily: 'monospace', opacity: 0.7 }}>{generateReport()}</pre>
+
+                                    <div className="mt-5 text-center">
+                                        <button onClick={handleWhatsAppSend} className="btn btn-link text-muted small text-decoration-none">
+                                            Prefiro enviar via WhatsApp
+                                        </button>
+                                    </div>
+
+                                    <div className="mt-4 bg-light p-4 rounded-4 small text-start">
+                                        <h6 className="fw-bold text-muted">PRÉVIA DO RELATÓRIO:</h6>
+                                        <pre className="mb-0 mt-2 text-muted" style={{ whiteSpace: 'pre-wrap', fontFamily: 'monospace', fontSize: '12px' }}>{generateReport()}</pre>
                                     </div>
                                 </div>
                             </motion.div>
