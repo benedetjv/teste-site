@@ -16,9 +16,11 @@ export default function PreConsultationForm() {
     const [selectedRegions, setSelectedRegions] = useState<any[]>([]);
     const [painDetails, setPainDetails] = useState<Record<string, PainDetail>>({});
     const [hasExams, setHasExams] = useState<string>('');
+    const [isVeraCruz, setIsVeraCruz] = useState<string>('');
+    const [hasDigitalFiles, setHasDigitalFiles] = useState<string>('');
+    const [hasPortalAccess, setHasPortalAccess] = useState<string>('');
+
     const [examFiles, setExamFiles] = useState<File[]>([]);
-    const [isVeraCruz, setIsVeraCruz] = useState(false);
-    const [shareAccess, setShareAccess] = useState(false);
     const [portalLogin, setPortalLogin] = useState('');
     const [portalPassword, setPortalPassword] = useState('');
 
@@ -86,13 +88,18 @@ export default function PreConsultationForm() {
         if (hasExams === 'no') {
             report += `- Não possui exames no momento.\n`;
         } else {
-            if (isVeraCruz) report += `- [X] Realizados no Hospital Vera Cruz (Acesso Interno)\n`;
-            if (examFiles.length > 0) report += `- ${examFiles.length} arquivo(s) anexado(s).\n`;
-
-            if (shareAccess) {
-                report += `\n🔐 DADOS DE ACESSO AO PORTAL DO PACIENTE:\n`;
-                report += `- Login/Usuário: ${portalLogin}\n`;
-                report += `- Senha: ${portalPassword}\n`;
+            if (isVeraCruz === 'yes') {
+                report += `- [X] Realizados no Hospital Vera Cruz (Acesso Interno)\n`;
+            } else {
+                if (hasDigitalFiles === 'yes') {
+                    report += `- ${examFiles.length} arquivo(s) anexado(s).\n`;
+                } else if (hasPortalAccess === 'yes') {
+                    report += `\n🔐 DADOS DE ACESSO AO PORTAL DO PACIENTE:\n`;
+                    report += `- Login/Usuário: ${portalLogin}\n`;
+                    report += `- Senha: ${portalPassword}\n`;
+                } else {
+                    report += `- Paciente levará exames físicos ou providenciará acesso até a consulta.\n`;
+                }
             }
         }
 
@@ -102,6 +109,15 @@ export default function PreConsultationForm() {
     const handleWhatsAppSend = () => {
         const report = generateReport();
         window.open(`https://wa.me/5519999439824?text=${encodeURIComponent(report)}`, '_blank');
+    };
+
+    const resetStep3 = () => {
+        setIsVeraCruz('');
+        setHasDigitalFiles('');
+        setHasPortalAccess('');
+        setExamFiles([]);
+        setPortalLogin('');
+        setPortalPassword('');
     };
 
     return (
@@ -204,63 +220,91 @@ export default function PreConsultationForm() {
                             <motion.div key="step3" initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} exit={{ opacity: 0, x: -20 }}>
                                 <div className="bg-white rounded-4 shadow-lg p-5 text-center">
                                     <div className="display-4 text-primary mb-4"><i className="bi bi-file-earmark-medical"></i></div>
-                                    <h3 className="fw-bold mb-4">Você possui exames de imagem?</h3>
-                                    <div className="d-flex justify-content-center gap-3 mb-4">
-                                        <button className={`btn btn-lg px-5 py-3 rounded-4 ${hasExams === 'yes' ? 'btn-primary' : 'btn-outline-light text-dark border'}`} onClick={() => setHasExams('yes')}>SIM</button>
-                                        <button className={`btn btn-lg px-5 py-3 rounded-4 ${hasExams === 'no' ? 'btn-primary' : 'btn-outline-light text-dark border'}`} onClick={() => setHasExams('no')}>NÃO</button>
+                                    <h3 className="fw-bold mb-4">Sobre seus Exames</h3>
+
+                                    {/* Pergunta 1: Tem Exames? */}
+                                    <div className="mb-5">
+                                        <p className="fw-bold mb-3">Você possui exames de imagem recentes?</p>
+                                        <div className="d-flex justify-content-center gap-3">
+                                            <button className={`btn btn-lg px-4 py-2 rounded-pill ${hasExams === 'yes' ? 'btn-primary' : 'btn-outline-secondary'}`} onClick={() => { setHasExams('yes'); resetStep3(); }}>SIM</button>
+                                            <button className={`btn btn-lg px-4 py-2 rounded-pill ${hasExams === 'no' ? 'btn-primary' : 'btn-outline-secondary'}`} onClick={() => { setHasExams('no'); resetStep3(); }}>NÃO</button>
+                                        </div>
                                     </div>
 
+                                    {/* Pergunta 2: Vera Cruz? (Só se tem exames) */}
                                     {hasExams === 'yes' && (
-                                        <div className="text-start p-4 bg-light rounded-4 mb-4 border border-2">
+                                        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-5 p-4 bg-light rounded-4 border">
+                                            <p className="fw-bold mb-3">O exame foi feito no Hospital Vera Cruz?</p>
+                                            <div className="d-flex justify-content-center gap-3 mb-3">
+                                                <button className={`btn px-4 py-2 rounded-pill ${isVeraCruz === 'yes' ? 'btn-success text-white' : 'btn-outline-secondary'}`} onClick={() => setIsVeraCruz('yes')}>SIM</button>
+                                                <button className={`btn px-4 py-2 rounded-pill ${isVeraCruz === 'no' ? 'btn-danger text-white' : 'btn-outline-secondary'}`} onClick={() => { setIsVeraCruz('no'); setHasDigitalFiles(''); }}>NÃO</button>
+                                            </div>
+                                            {isVeraCruz === 'yes' && <p className="text-success small fw-bold"><i className="bi bi-check-circle-fill me-1"></i> Ótimo! Temos acesso direto ao sistema.</p>}
+                                        </motion.div>
+                                    )}
 
-                                            {/* Opção Vera Cruz */}
-                                            <div className="form-check form-switch mb-4 p-3 bg-white rounded-3 border shadow-sm">
-                                                <input className="form-check-input" type="checkbox" id="veraCruzCheck" checked={isVeraCruz} onChange={e => setIsVeraCruz(e.target.checked)} style={{ transform: 'scale(1.3)', marginLeft: '-10px', marginRight: '10px' }} />
-                                                <label className="form-check-label fw-bold text-dark w-100 stretched-link" htmlFor="veraCruzCheck">
-                                                    Meus exames foram feitos no Hospital Vera Cruz
-                                                    <span className="d-block text-success small fw-normal mt-1"><i className="bi bi-check-circle-fill me-1"></i> Nós temos acesso direto ao sistema, não é preciso anexar arquivos.</span>
-                                                </label>
+                                    {/* Pergunta 3: Arquivos Digitais? (Só se não for Vera Cruz) */}
+                                    {isVeraCruz === 'no' && (
+                                        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-5 p-4 bg-light rounded-4 border">
+                                            <p className="fw-bold mb-3">Você tem o arquivo digital (PDF/Imagem) do laudo?</p>
+                                            <div className="d-flex justify-content-center gap-3 mb-3">
+                                                <button className={`btn px-4 py-2 rounded-pill ${hasDigitalFiles === 'yes' ? 'btn-success text-white' : 'btn-outline-secondary'}`} onClick={() => setHasDigitalFiles('yes')}>SIM, TENHO</button>
+                                                <button className={`btn px-4 py-2 rounded-pill ${hasDigitalFiles === 'no' ? 'btn-danger text-white' : 'btn-outline-secondary'}`} onClick={() => { setHasDigitalFiles('no'); setHasPortalAccess(''); }}>NÃO TENHO</button>
                                             </div>
 
-                                            {/* Upload de Arquivos (Só se não for Vera Cruz) */}
-                                            {!isVeraCruz && (
-                                                <div className="mb-4">
-                                                    <label className="form-label fw-bold small text-secondary">ANEXAR LAUDOS OU IMAGENS (Opcional)</label>
-                                                    <p className="small text-muted mb-2">Máximo 5MB por arquivo. Prefira PDF ou fotos legíveis.</p>
+                                            {hasDigitalFiles === 'yes' && (
+                                                <div className="mt-3">
+                                                    <label className="form-label small text-muted">Anexe seus arquivos aqui (Max 5MB un):</label>
                                                     <input type="file" multiple accept=".pdf,image/*" className="form-control" onChange={handleFileChange} />
                                                 </div>
                                             )}
+                                        </motion.div>
+                                    )}
 
-                                            <hr className="my-4 text-muted" />
-
-                                            {/* Compartilhar Acesso */}
-                                            <div className="form-check form-switch mb-3">
-                                                <input className="form-check-input" type="checkbox" id="shareAccessCheck" checked={shareAccess} onChange={e => setShareAccess(e.target.checked)} />
-                                                <label className="form-check-label fw-bold text-dark" htmlFor="shareAccessCheck">
-                                                    Tenho login/senha do portal de exames e quero compartilhar
-                                                </label>
+                                    {/* Pergunta 4: Portal? (Só se não tem arquivo digital) */}
+                                    {hasDigitalFiles === 'no' && (
+                                        <motion.div initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mb-5 p-4 bg-light rounded-4 border">
+                                            <p className="fw-bold mb-3">Você tem LOGIN e SENHA do portal da clínica onde fez o exame?</p>
+                                            <div className="d-flex justify-content-center gap-3 mb-3">
+                                                <button className={`btn px-4 py-2 rounded-pill ${hasPortalAccess === 'yes' ? 'btn-success text-white' : 'btn-outline-secondary'}`} onClick={() => setHasPortalAccess('yes')}>SIM, TENHO</button>
+                                                <button className={`btn px-4 py-2 rounded-pill ${hasPortalAccess === 'no' ? 'btn-danger text-white' : 'btn-outline-secondary'}`} onClick={() => setHasPortalAccess('no')}>NÃO TENHO</button>
                                             </div>
 
-                                            {shareAccess && (
-                                                <div className="row g-2 p-3 bg-white rounded-3 border">
+                                            {hasPortalAccess === 'yes' && (
+                                                <div className="row g-2 mt-3 p-3 bg-white rounded-3 border">
                                                     <div className="col-md-6">
                                                         <input type="text" className="form-control form-control-sm" placeholder="Login / Usuário" value={portalLogin} onChange={e => setPortalLogin(e.target.value)} />
                                                     </div>
                                                     <div className="col-md-6">
                                                         <input type="text" className="form-control form-control-sm" placeholder="Senha" value={portalPassword} onChange={e => setPortalPassword(e.target.value)} />
                                                     </div>
-                                                    <div className="col-12">
-                                                        <small className="text-muted" style={{ fontSize: '11px' }}>*Seus dados serão enviados de forma segura apenas para verificação médica.</small>
-                                                    </div>
+                                                    <div className="col-12 text-muted small">*Dados enviados com segurança.</div>
                                                 </div>
                                             )}
-                                        </div>
+
+                                            {hasPortalAccess === 'no' && (
+                                                <div className="alert alert-warning small mt-3">
+                                                    <i className="bi bi-exclamation-triangle-fill me-2"></i>
+                                                    Por favor, traga os exames físicos no dia da consulta ou tente recuperar o acesso digital antes do atendimento.
+                                                </div>
+                                            )}
+                                        </motion.div>
                                     )}
 
                                     <div className="d-flex justify-content-between mt-5">
                                         <button className="btn btn-light rounded-pill px-4" onClick={() => setStep(2)}>Voltar</button>
-                                        <button disabled={!hasExams} className="btn btn-primary rounded-pill px-5 fw-bold" onClick={() => setStep(4)} style={{ backgroundColor: 'var(--azul-escuro)' }}>
-                                            {hasExams === 'yes' ? 'Pronto, Finalizar' : 'Finalizar sem Exames'}
+                                        <button
+                                            disabled={
+                                                hasExams === '' ||
+                                                (hasExams === 'yes' && isVeraCruz === '') ||
+                                                (isVeraCruz === 'no' && hasDigitalFiles === '') ||
+                                                (hasDigitalFiles === 'no' && hasPortalAccess === '')
+                                            }
+                                            className="btn btn-primary rounded-pill px-5 fw-bold"
+                                            onClick={() => setStep(4)}
+                                            style={{ backgroundColor: 'var(--azul-escuro)' }}
+                                        >
+                                            Finalizar
                                         </button>
                                     </div>
                                 </div>
