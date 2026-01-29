@@ -83,7 +83,7 @@ const posts = [
         excerpt: "Por que investir em tratamentos modernos pode ser mais econômico do que a dor crônica.",
         date: "22 Jan 2026",
         category: "Saúde e Bem-estar",
-        image: "/img/blog/spinal-block.png",
+        image: "/img/blog/spinal-block-procedure.png",
         relatedRegions: ['lumbar-back', 'cervical-back', 'knee-left', 'knee-right']
     },
     {
@@ -92,7 +92,7 @@ const posts = [
         excerpt: "Como a tecnologia e as técnicas modernas reduziram drasticamente os riscos cirúrgicos.",
         date: "25 Jan 2026",
         category: "Cirurgia de Coluna",
-        image: "/img/blog/surgery-tech.png",
+        image: "/img/blog/surgery-tech.jpg",
         relatedRegions: ['lumbar-back', 'cervical-back']
     },
     {
@@ -101,7 +101,7 @@ const posts = [
         excerpt: "Saiba quando é hora de ir além do tratamento ortopédico convencional.",
         date: "28 Jan 2026",
         category: "Especialidades",
-        image: "/img/blog/sciatica.png",
+        image: "/img/blog/sciatica.jpg",
         relatedRegions: ['head-front', 'neck-front', 'lumbar-back', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -155,7 +155,7 @@ const posts = [
         excerpt: "Entenda como a sedação moderna garante conforto e segurança total em bloqueios e radiofrequência.",
         date: "03 Fev 2026",
         category: "Segurança do Paciente",
-        image: "/img/blog/spinal-block.png",
+        image: "/img/blog/spinal-block-procedure.png",
         relatedRegions: ['lumbar-back', 'cervical-back', 'knee-left', 'hip-left']
     },
     {
@@ -191,7 +191,7 @@ const posts = [
         excerpt: "A tecnologia de última geração que permite realizar cirurgias de vídeo com mínima agressão muscular.",
         date: "07 Fev 2026",
         category: "Tecnologia",
-        image: "/img/blog/surgery-tech.png",
+        image: "/img/blog/surgery-tech.jpg",
         relatedRegions: ['lumbar-back', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -389,7 +389,7 @@ const posts = [
         excerpt: "Nem toda dor que desce para a perna é hérnia de disco. Conheça as 3 causas principais.",
         date: "04 Mar 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/sciatica.png",
+        image: "/img/blog/sciatica.jpg",
         relatedRegions: ['lumbar-back', 'sciatica-left', 'sciatica-right', 'glute-left']
     },
     {
