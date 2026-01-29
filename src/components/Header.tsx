@@ -1,4 +1,4 @@
-import React from "react";
+import Link from "next/link";
 import Image from "next/image";
 import { siteContent } from "../content";
 
@@ -9,7 +9,7 @@ export default function Header() {
     <header className="site-header">
       <nav className="navbar navbar-expand-lg navbar-dark">
         <div className="container">
-          <a className="navbar-brand" href="#topo">
+          <Link className="navbar-brand" href="/">
             <Image
               src={`/${logoPath}`}
               alt={`Logo ${logoText}`}
@@ -19,7 +19,7 @@ export default function Header() {
               priority
               style={{ width: "auto", height: "60px" }}
             />
-          </a>
+          </Link>
 
           <button
             className="navbar-toggler"
@@ -35,9 +35,9 @@ export default function Header() {
             <ul className="navbar-nav">
               {menu.map((item) => (
                 <li className="nav-item" key={item.href}>
-                  <a className="nav-link" href={item.href}>
+                  <Link className="nav-link" href={item.href}>
                     {item.label}
-                  </a>
+                  </Link>
                 </li>
               ))}
             </ul>

@@ -11,7 +11,7 @@ const posts = [
         excerpt: "Conheça os 'Red Flags' que indicam quando você deve procurar um especialista imediatamente.",
         date: "12 Nov 2025",
         category: "Coluna Vertebral",
-        image: "/img/blog/back-pain.png",
+        image: "/img/blog/red-flags-spine.jpg",
         relatedRegions: ['neck-front', 'thoracic-back', 'lumbar-back', 'cervical-back', 'chest']
     },
     {
@@ -20,7 +20,7 @@ const posts = [
         excerpt: "Entenda a diferença entre o efeito diagnóstico imediato e o alívio prolongado do tratamento.",
         date: "25 Nov 2025",
         category: "Tratamentos Intervencionistas",
-        image: "/img/blog/spinal-block.png",
+        image: "/img/blog/spinal-block-procedure.jpg",
         relatedRegions: ['lumbar-back', 'sciatica-left', 'sciatica-right', 'cervical-back']
     },
     {
@@ -29,7 +29,7 @@ const posts = [
         excerpt: "Dicas práticas e posições de alívio para lidar com uma crise aguda em casa.",
         date: "05 Dez 2025",
         category: "Nervo Ciático",
-        image: "/img/blog/sciatica.png",
+        image: "/img/blog/sciatica-relief.jpg",
         relatedRegions: ['sciatica-left', 'sciatica-right', 'lumbar-back', 'glute-left', 'glute-right']
     },
     {
@@ -38,7 +38,7 @@ const posts = [
         excerpt: "Saiba por que este procedimento percutâneo permite um retorno tão rápido à rotina.",
         date: "15 Dez 2025",
         category: "Tratamentos Intervencionistas",
-        image: "/img/blog/back-pain.png",
+        image: "/img/blog/radiofrequency-spine.jpg",
         relatedRegions: ['lumbar-back', 'thoracic-back', 'cervical-back']
     },
     {
@@ -47,7 +47,7 @@ const posts = [
         excerpt: "Um guia interativo para entender como as ondas de rádio desligam a dor sem cirurgia.",
         date: "16 Dez 2025",
         category: "Tratamentos Intervencionistas",
-        image: "/img/blog/back-pain.png",
+        image: "/img/blog/radiofrequency-machine.jpg",
         relatedRegions: ['lumbar-back', 'cervical-back', 'thoracic-back']
     },
     {
@@ -56,7 +56,7 @@ const posts = [
         excerpt: "A verdade sobre o desconforto e como a tecnologia torna o procedimento quase indolor.",
         date: "04 Jan 2026",
         category: "Joelho e Quadril",
-        image: "/img/blog/knee-pain.png",
+        image: "/img/blog/knee-injection.jpg",
         relatedRegions: ['knee-left', 'knee-right']
     },
     {
@@ -65,7 +65,7 @@ const posts = [
         excerpt: "Análise técnica sobre o uso de ácido hialurônico para lubrificação e proteção articular.",
         date: "12 Jan 2026",
         category: "Joelho e Quadril",
-        image: "/img/blog/knee-pain.png",
+        image: "/img/blog/viscosupplementation.jpg",
         relatedRegions: ['knee-left', 'knee-right', 'hip-left', 'hip-right']
     },
     {
@@ -74,7 +74,7 @@ const posts = [
         excerpt: "Entenda os termos do seu laudo de ressonância e o que eles significam para sua saúde.",
         date: "18 Jan 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/back-pain.png",
+        image: "/img/blog/herniated-disc-mri.jpg",
         relatedRegions: ['lumbar-back', 'cervical-back', 'thoracic-back']
     },
     {
@@ -110,7 +110,7 @@ const posts = [
         excerpt: "Respostas diretas sobre academia, colchão, quiropraxia e tratamentos para a coluna.",
         date: "29 Jan 2026",
         category: "Guia do Paciente",
-        image: "/img/blog/back-pain.png",
+        image: "/img/blog/chronic-pain-faq.jpg",
         relatedRegions: ['lumbar-back', 'thoracic-back', 'cervical-back', 'abdomen']
     },
     {
@@ -119,7 +119,7 @@ const posts = [
         excerpt: "Entenda a diferença entre a dor causada pelo músculo na nádega e o problema na coluna.",
         date: "30 Jan 2026",
         category: "Nervo Ciático",
-        image: "/img/blog/sciatica.png",
+        image: "/img/blog/piriformis.jpg",
         relatedRegions: ['glute-left', 'glute-right', 'lumbar-back', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -128,7 +128,7 @@ const posts = [
         excerpt: "Por que estes níveis são os 'vilões' da maioria das dores lombares? Saiba o que significa.",
         date: "31 Jan 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/back-pain.png",
+        image: "/img/blog/spinal-stenosis.jpg",
         relatedRegions: ['lumbar-back', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -146,7 +146,7 @@ const posts = [
         excerpt: "Saiba por que o cansaço nas pernas ao caminhar pode ter origem em um estreitamento na coluna.",
         date: "02 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/back-pain.png",
+        image: "/img/blog/spinal-canal.jpg",
         relatedRegions: ['lumbar-back', 'calf-left', 'calf-right', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -164,7 +164,7 @@ const posts = [
         excerpt: "Descubra se ainda é possível evitar a cirurgia definitiva através da lubrificação articular moderna.",
         date: "04 Fev 2026",
         category: "Joelho e Quadril",
-        image: "/img/blog/knee-pain.png",
+        image: "/img/blog/knee-prosthesis.jpg",
         relatedRegions: ['knee-left', 'knee-right']
     },
     {
@@ -173,7 +173,7 @@ const posts = [
         excerpt: "Muitos pacientes confundem os dois quadros. Saiba como identificar os pontos gatilho.",
         date: "05 Fev 2026",
         category: "Dúvidas Frequentes",
-        image: "/img/blog/back-pain.png",
+        image: "/img/blog/fibromyalgia-back.jpg",
         relatedRegions: ['neck-front', 'thoracic-back', 'lumbar-back', 'glute-left', 'shoulder-left']
     },
     {
@@ -209,7 +209,7 @@ const posts = [
         excerpt: "Entenda por que essas expansões ósseas aparecem na coluna e como aliviar a dor sem cirurgia.",
         date: "10 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/back-pain.png",
+        image: "/img/blog/osteophyte.jpg",
         relatedRegions: ['lumbar-back', 'cervical-back', 'thoracic-back']
     },
     {
@@ -263,7 +263,7 @@ const posts = [
         excerpt: "Sente dor ao levantar da cadeira ou subir escadas? Pode ser inflamação na junta sacroilíaca.",
         date: "17 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/back-pain.png",
+        image: "/img/blog/sacroiliac.jpg",
         relatedRegions: ['glute-left', 'glute-right', 'lumbar-back']
     },
     {
@@ -299,7 +299,7 @@ const posts = [
         excerpt: "Entenda a Síndrome da Falha Cirúrgica e as opções de medicina intervencionista pós-artrodese.",
         date: "21 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/back-pain.png",
+        image: "/img/blog/post-surgery-spine.jpg",
         relatedRegions: ['lumbar-back', 'cervical-back']
     },
     {
@@ -326,7 +326,7 @@ const posts = [
         excerpt: "Aprenda a diferenciar a dor muscular tardia de um dano estrutural em tendões ou articulações.",
         date: "25 Fev 2026",
         category: "Medicina do Esporte",
-        image: "/img/blog/back-pain.png",
+        image: "/img/blog/gym-pain.jpg",
         relatedRegions: ['lumbar-back', 'knee-left', 'shoulder-right', 'hip-left']
     },
     {
@@ -353,7 +353,7 @@ const posts = [
         excerpt: "O nome assusta, mas é um processo comum de desgaste. Saiba como tratar a dor associada a esse laudo.",
         date: "28 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/back-pain.png",
+        image: "/img/blog/spine-arthrosis.jpg",
         relatedRegions: ['lumbar-back', 'thoracic-back', 'cervical-back']
     },
     {
@@ -380,7 +380,7 @@ const posts = [
         excerpt: "Decifre o código de diagnóstico no seu atestado médico e entenda o que ele diz sobre sua coluna.",
         date: "03 Mar 2026",
         category: "Guia do Paciente",
-        image: "/img/blog/back-pain.png",
+        image: "/img/blog/medical-report.jpg",
         relatedRegions: ['lumbar-back', 'cervical-back', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -398,7 +398,7 @@ const posts = [
         excerpt: "Saiba como proteger sua coluna ao malhar e entenda quando a dor indica uma lesão real.",
         date: "05 Mar 2026",
         category: "Medicina do Esporte",
-        image: "/img/blog/back-pain.png",
+        image: "/img/blog/rowing-pain.jpg",
         relatedRegions: ['lumbar-back', 'sciatica-left', 'sciatica-right']
     },
 ];

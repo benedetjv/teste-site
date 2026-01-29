@@ -5,12 +5,12 @@ export const siteContent: SiteContent = {
     logoText: "Dr. Otto Beckedorff",
     logoPath: "img/logo-otto-beckedorff.png",
     menu: [
-      { label: "Home", href: "#topo" },
-      { label: "Sobre", href: "#sobre" },
-      { label: "Procedimentos", href: "#servicos" },
-      { label: "Localização", href: "#localizacao" },
-      { label: "Contato", href: "#contato" },
-      { label: "Blog", href: "#blog" },
+      { label: "Home", href: "/" },
+      { label: "Sobre", href: "/sobre" },
+      { label: "Procedimentos", href: "/procedimentos" },
+      { label: "Localização", href: "/contato" },
+      { label: "Contato", href: "/contato" },
+      { label: "Blog", href: "/blog" },
     ],
   },
 
@@ -20,7 +20,7 @@ export const siteContent: SiteContent = {
     text1: "Foco em dor clínica e intervencionista. Atendimento especializado em dores na coluna, articulações e lesões musculoesqueléticas.",
     text2: "Evite cirurgias com tratamento preciso. Utiliza procedimentos minimamente invasivos como bloqueios, infiltrações, ácido hialurônico, neuromodulação e radiofrequência.",
     ctaLabel: "Saiba mais",
-    ctaLink: "#agende",
+    ctaLink: "/contato",
     image: "img/foto-otto.jpg"
   },
 
