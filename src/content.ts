@@ -147,7 +147,7 @@ export const siteContent: SiteContent = {
 
   blog: {
     titulo: "Blog",
-    texto: "Em breve, artigos sobre dor na coluna e tratamentos modernos.",
+    texto: "Confira nossos artigos e novidades sobre saúde, bem-estar e tratamentos modernos.",
   },
 
   footer: {
