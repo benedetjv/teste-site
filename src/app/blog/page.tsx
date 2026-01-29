@@ -2,9 +2,7 @@
 
 import React, { useState } from 'react';
 import Link from "next/link";
-import dynamic from 'next/dynamic';
-
-const BodySelectorBlog = dynamic(() => import('@/components/BodySelectorBlog'), { ssr: false });
+import BodySelectorBlog from "@/components/BodySelectorBlog";
 
 const posts = [
     {
@@ -432,9 +430,9 @@ export default function BlogIndex() {
             </section>
 
             {/* Interactive Navigation / FILTER */}
-            {/* <section className="container mt-n4 mb-5 position-relative" style={{ zIndex: 10 }}>
+            <section className="container mt-n4 mb-5 position-relative" style={{ zIndex: 10 }}>
                 <BodySelectorBlog onFilterChange={setFilterRegions} />
-            </section> */}
+            </section>
 
             <div className="container">
                 <div className="d-flex justify-content-between align-items-center mb-4">
