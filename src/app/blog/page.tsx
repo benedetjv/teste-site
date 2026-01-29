@@ -531,17 +531,20 @@ export default function BlogIndex() {
     const [visiblePosts, setVisiblePosts] = useState(posts);
 
     useEffect(() => {
-        // Filtra posts agendados que ainda não devem aparecer
-        const now = new Date();
-        // Zera as horas para comparar apenas datas
-        now.setHours(23, 59, 59, 999);
+        // MODO REVISÃO ATIVADO: Mostra todos os posts, inclusive futuros
+        // Para voltar ao modo agendado, descomente o código abaixo e remova o setVisiblePosts(posts)
 
+        /*
+        const now = new Date();
+        now.setHours(23, 59, 59, 999);
         const releasedPosts = posts.filter(post => {
             const postDate = parseDate(post.date);
             return postDate <= now;
         });
-
         setVisiblePosts(releasedPosts);
+        */
+
+        setVisiblePosts(posts);
     }, []);
 
     const filteredPosts = filterRegions.length > 0
