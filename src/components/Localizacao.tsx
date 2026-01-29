@@ -5,7 +5,7 @@ import Script from "next/script";
 import { siteContent } from "../content";
 
 // Componente para carregar o script do Instagram
-function InstagramEmbed({ instagramUrl }) {
+function InstagramEmbed({ instagramUrl }: { instagramUrl: string }) {
   const scriptLoaded = useRef(false);
 
   return (
@@ -15,7 +15,7 @@ function InstagramEmbed({ instagramUrl }) {
         strategy="lazyOnload"
         onLoad={() => {
           // O script do instagram processa automaticamente quando carrega
-          if (window.instgrm) window.instgrm.Embeds.process();
+          if ((window as any).instgrm) (window as any).instgrm.Embeds.process();
         }}
       />
       <div className="instagram-wrapper">
@@ -54,7 +54,7 @@ export default function Localizacao() {
                     width="100%"
                     height="300"
                     style={{ border: 0 }}
-                    allowFullScreen=""
+                    allowFullScreen
                     loading="lazy"
                     referrerPolicy="no-referrer-when-downgrade"
                     title={`Mapa para ${clinic.nome}`}
