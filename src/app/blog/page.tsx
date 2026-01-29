@@ -414,7 +414,7 @@ const posts = [
         excerpt: "Entenda o 'amolecimento' da cartilagem da patela, exercícios proibidos e tratamentos que funcionam.",
         date: "02 Fev 2026",
         category: "Joelho e Quadril",
-        image: "/img/blog/knee-pain.png",
+        image: "/img/blog/condromalacia1.png?v=2",
         relatedRegions: ['knee-left', 'knee-right']
     },
     {
@@ -423,7 +423,7 @@ const posts = [
         excerpt: "Se você sente um inchaço atrás do joelho, saiba que ele geralmente é apenas o mensageiro de outro problema.",
         date: "05 Fev 2026",
         category: "Joelho e Quadril",
-        image: "/img/blog/knee-pain.png",
+        image: "/img/blog/cistobaker.png?v=2",
         relatedRegions: ['knee-left', 'knee-right']
     },
     {
@@ -432,7 +432,7 @@ const posts = [
         excerpt: "Análise baseada em evidências: O que a ciência realmente diz sobre suplementar para cartilagem.",
         date: "08 Fev 2026",
         category: "Saúde e Bem-estar",
-        image: "/img/blog/medication.png",
+        image: "/img/blog/cola2.png?v=2",
         relatedRegions: ['knee-left', 'knee-right', 'hip-left', 'hip-right']
     },
     {
@@ -441,7 +441,7 @@ const posts = [
         excerpt: "Entenda as fases da Capsulite Adesiva e como a hidrodistensão pode 'descolar' seu ombro rapidamente.",
         date: "11 Fev 2026",
         category: "Ombro e Cotovelo",
-        image: "/img/blog/shoulder-pain.png",
+        image: "/img/blog/capsulitead.png?v=2",
         relatedRegions: ['shoulder-left', 'shoulder-right']
     },
     {
@@ -450,7 +450,7 @@ const posts = [
         excerpt: "Saiba como a Terapia por Ondas de Choque pode dissolver as calcificações sem necessidade de cirurgia.",
         date: "14 Fev 2026",
         category: "Ombro e Cotovelo",
-        image: "/img/blog/shoulder-pain.png",
+        image: "/img/blog/tendicalc.png?v=2",
         relatedRegions: ['shoulder-left', 'shoulder-right']
     },
     {
@@ -459,7 +459,7 @@ const posts = [
         excerpt: "A 'tendinite do celular' ou das mães de recém-nascidos. Saiba como testar e tratar a dor no punho.",
         date: "17 Fev 2026",
         category: "Mão e Punho",
-        image: "/img/blog/hand-elbow-pain.png",
+        image: "/img/blog/dequer.png?v=2",
         relatedRegions: ['wrist-left', 'wrist-right', 'hand-left', 'hand-right']
     },
     {
@@ -468,7 +468,7 @@ const posts = [
         excerpt: "Olhar para baixo multiplica o peso da cabeça. Descubra exercícios para reverter o dano postural.",
         date: "20 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/neck-pain.png",
+        image: "/img/blog/textneck.png?v=2",
         relatedRegions: ['neck-front', 'cervical-back', 'occipital-back']
     },
     {
@@ -477,7 +477,7 @@ const posts = [
         excerpt: "De lado, de barriga para cima ou bruços? Ajustes simples de travesseiro que mudam sua noite.",
         date: "23 Fev 2026",
         category: "Guia do Paciente",
-        image: "/img/blog/ergonomic-chair-lumbar.png",
+        image: "/img/blog/dormindopo.png?v=2",
         relatedRegions: ['lumbar-back', 'cervical-back']
     },
     {
@@ -486,7 +486,7 @@ const posts = [
         excerpt: "Mitos e verdades sobre a curvatura da coluna na vida adulta e quando ela realmente causa dor.",
         date: "26 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/red-flags-spine.png",
+        image: "/img/blog/escolioseadulto.png?v=2",
         relatedRegions: ['thoracic-back', 'lumbar-back']
     },
     {
@@ -495,7 +495,7 @@ const posts = [
         excerpt: "Quedas antigas ou má postura? Entenda por que o 'osso final da coluna' inflama e como tratar.",
         date: "01 Mar 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/sacroiliac.jpg?v=2",
+        image: "/img/blog/dornococ.png?v=2",
         relatedRegions: ['glute-left', 'glute-right', 'lumbar-back']
     }
 ];
