@@ -12,7 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/blog',
         '/ortopedista-campinas',
         '/ortopedista-jacutinga',
-        '/avaliacao-pre-consulta',
+        '/preconsulta',
     ].map((route) => ({
         url: `${baseUrl}${route}`,
         lastModified: new Date(),
