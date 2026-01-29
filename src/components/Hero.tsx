@@ -2,7 +2,11 @@ import React from "react";
 import Image from "next/image";
 import { siteContent } from "../content";
 
-export default function Hero({ customTitle }) {
+interface HeroProps {
+  customTitle?: string;
+}
+
+export default function Hero({ customTitle }: HeroProps) {
   const { title, crmRqe, text1, text2, ctaLabel, ctaLink } = siteContent.hero;
 
   // Imagem local: no Next.js basta o caminho a partir de public (sem /public)

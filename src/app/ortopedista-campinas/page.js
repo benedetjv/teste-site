@@ -10,7 +10,7 @@ import Blog from "@/components/Blog";
 import Footer from "@/components/Footer";
 
 export const metadata = {
-    title: "Ortopedista em Campinas | Dr. Otto Beckedorff - Especialista em Dor",
+    title: "Ortopedista em Campinas | Dr. Otto Beckedorff - Tratamento da Dor",
     description: "Clínica de Ortopedia e Tratamento da Dor em Campinas (Centro e Região). Especialista em coluna, joelho e procedimentos minimamente invasivos.",
     openGraph: {
         title: "Ortopedista em Campinas | Dr. Otto Beckedorff",

@@ -1,4 +1,6 @@
-export const siteContent = {
+import { SiteContent } from "./types";
+
+export const siteContent: SiteContent = {
   header: {
     logoText: "Dr. Otto Beckedorff",
     logoPath: "img/logo-otto-beckedorff.png",
@@ -14,9 +16,9 @@ export const siteContent = {
 
   hero: {
     title: "Alívio da Dor com Precisão, Tecnologia e Cuidado Humano",
-    crmRqe: "Dr. Otto Beckedorff – Ortopedista | CRM 2263255SP | RQE 139078",
-    text1: "Atendimento especializado em dores na coluna, articulações e lesões musculoesqueléticas, com foco em tratamentos modernos e minimamente invasivos.",
-    text2: "Utiliza procedimentos minimamente invasivos como bloqueios, infiltrações, ácido hialurônico, neuromodulação e radiofrequência, oferecendo alívio efetivo da dor com recuperação rápida e, muitas vezes, evitando cirurgias desnecessárias.",
+    crmRqe: "Dr. Otto Beckedorff – Ortopedista & Tratamento da Dor | CRM 226325SP | RQE 139078",
+    text1: "Foco em dor clínica e intervencionista. Atendimento especializado em dores na coluna, articulações e lesões musculoesqueléticas.",
+    text2: "Evite cirurgias com tratamento preciso. Utiliza procedimentos minimamente invasivos como bloqueios, infiltrações, ácido hialurônico, neuromodulação e radiofrequência.",
     ctaLabel: "Saiba mais",
     ctaLink: "#agende",
     image: "img/foto-otto.jpg"
@@ -66,9 +68,9 @@ export const siteContent = {
 
   sobre: {
     titulo: "Sobre mim:",
-    crmRqe: "Dr. Otto Beckedorff – CRM 2263255SP | RQE 139078",
+    crmRqe: "Dr. Otto Beckedorff – CRM 226325SP | RQE 139078",
     text1: "Ortopedista com atuação focada no diagnóstico e tratamento da dor musculoesquelética — especialmente dores na coluna, joelho, quadril e ombro.",
-    text2: "Minha missão é devolver movimento, conforto e autonomia ao paciente, com escuta ativa, abordagem moderna e tratamento individualizado.",
+    text2: "Foco em dor clínica e intervencionista. Minha missão é devolver movimento, conforto e autonomia ao paciente, com tratamento preciso para evitar cirurgias desnecessárias.",
     image: "img/otto-em-procedimento.jpg"
   },
 

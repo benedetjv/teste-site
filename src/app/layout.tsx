@@ -1,3 +1,4 @@
+import type { Metadata, Viewport } from "next";
 import { Nunito_Sans } from "next/font/google";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
@@ -10,13 +11,13 @@ const nunito = Nunito_Sans({
   display: 'swap',
 });
 
-export const metadata = {
+export const metadata: Metadata = {
   title: "Dr. Otto Beckedorff – Ortopedia & Tratamento da Dor",
-  description: "Ortopedista especialista em diagnóstico e tratamento da dor na coluna, joelho, quadril e ombro, com foco em procedimentos minimamente invasivos.",
+  description: "Ortopedista com foco em diagnóstico e tratamento da dor na coluna, joelho, quadril e ombro, e procedimentos minimamente invasivos.",
   keywords: "ortopedista dor, tratamento da dor, dor na coluna, radiofrequência, campinas, jacutinga",
   openGraph: {
     title: "Dr. Otto Beckedorff – Ortopedia & Tratamento da Dor",
-    description: "Ortopedista especialista em diagnóstico e tratamento da dor musculoesquelética.",
+    description: "Ortopedista com foco em diagnóstico e tratamento da dor musculoesquelética.",
     type: "website",
     url: "https://drotto.com.br",
     locale: "pt_BR",
@@ -43,13 +44,13 @@ export const metadata = {
   },
 };
 
-export const viewport = {
+export const viewport: Viewport = {
   themeColor: "#2a4156",
   width: "device-width",
   initialScale: 1,
 };
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
       <head>
@@ -65,7 +66,7 @@ export default function RootLayout({ children }) {
               "@id": "https://drotto.com.br/",
               "url": "https://drotto.com.br",
               "telephone": "+5519999439824",
-              "description": "Ortopedista especialista em diagnóstico e tratamento da dor na coluna, joelho, quadril e ombro.",
+              "description": "Ortopedista com foco em diagnóstico e tratamento da dor na coluna, joelho, quadril e ombro.",
               "address": [
                 {
                   "@type": "PostalAddress",
