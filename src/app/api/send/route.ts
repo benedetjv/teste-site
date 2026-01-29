@@ -13,8 +13,8 @@ export async function POST(request: Request) {
         }
 
         const data = await resend.emails.send({
-            from: 'Pré-Consulta Dr. Otto <agendamento@drotto.com.br>', // Domínio verificado
-            to: [process.env.DOCTOR_EMAIL || 'drottobeckedorff@gmail.com'], // E-mail para onde o relatório será enviado
+            from: 'Pré-Consulta <onboarding@resend.dev>', // Sempre funciona em modo de teste
+            to: ['drottobeckedorff@gmail.com'], // Forçando o email do médico para teste
             replyTo: patientEmail,
             subject: subject || 'Novo Relatório de Pré-Consulta',
             text: `
@@ -28,6 +28,7 @@ export async function POST(request: Request) {
       `,
         });
 
+        console.log("Email enviado com sucesso:", data);
         return NextResponse.json(data);
     } catch (error: any) {
         console.error("Resend Error:", error);
