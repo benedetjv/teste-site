@@ -2,7 +2,9 @@
 
 import React, { useState } from 'react';
 import Link from "next/link";
-import BodySelectorBlog from "@/components/BodySelectorBlog";
+import dynamic from 'next/dynamic';
+
+const BodySelectorBlog = dynamic(() => import('@/components/BodySelectorBlog'), { ssr: false });
 
 const posts = [
     {
