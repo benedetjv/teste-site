@@ -173,7 +173,7 @@ const posts = [
         excerpt: "Muitos pacientes confundem os dois quadros. Saiba como identificar os pontos gatilho.",
         date: "05 Fev 2026",
         category: "Dúvidas Frequentes",
-        image: "/img/blog/fibromyalgia-back.jpg",
+        image: "/img/blog/fibromyalgia-back.jpg?v=2",
         relatedRegions: ['neck-front', 'thoracic-back', 'lumbar-back', 'glute-left', 'shoulder-left']
     },
     {
@@ -299,7 +299,7 @@ const posts = [
         excerpt: "Entenda a Síndrome da Falha Cirúrgica e as opções de medicina intervencionista pós-artrodese.",
         date: "21 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/post-surgery-spine.jpg",
+        image: "/img/blog/post-surgery-spine.jpg?v=2",
         relatedRegions: ['lumbar-back', 'cervical-back']
     },
     {
@@ -353,7 +353,7 @@ const posts = [
         excerpt: "O nome assusta, mas é um processo comum de desgaste. Saiba como tratar a dor associada a esse laudo.",
         date: "28 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/spine-arthrosis.jpg",
+        image: "/img/blog/spine-arthrosis.jpg?v=2",
         relatedRegions: ['lumbar-back', 'thoracic-back', 'cervical-back']
     },
     {
