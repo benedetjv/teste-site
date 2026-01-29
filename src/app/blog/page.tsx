@@ -74,7 +74,7 @@ const posts = [
         excerpt: "Entenda os termos do seu laudo de ressonância e o que eles significam para sua saúde.",
         date: "18 Jan 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/radiofrequency-spine.png",
+        image: "/img/blog/hernia-vs-protrusion.png",
         relatedRegions: ['lumbar-back', 'cervical-back', 'thoracic-back']
     },
     {
@@ -83,7 +83,7 @@ const posts = [
         excerpt: "Por que investir em tratamentos modernos pode ser mais econômico do que a dor crônica.",
         date: "22 Jan 2026",
         category: "Saúde e Bem-estar",
-        image: "/img/blog/spinal-block-procedure.png",
+        image: "/img/blog/treatment-cost.png",
         relatedRegions: ['lumbar-back', 'cervical-back', 'knee-left', 'knee-right']
     },
     {
@@ -101,7 +101,7 @@ const posts = [
         excerpt: "Saiba quando é hora de ir além do tratamento ortopédico convencional.",
         date: "28 Jan 2026",
         category: "Especialidades",
-        image: "/img/blog/sciatica.jpg",
+        image: "/img/blog/lumbar-radiculopathy.png",
         relatedRegions: ['head-front', 'neck-front', 'lumbar-back', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -110,7 +110,7 @@ const posts = [
         excerpt: "Respostas diretas sobre academia, colchão, quiropraxia e tratamentos para a coluna.",
         date: "29 Jan 2026",
         category: "Guia do Paciente",
-        image: "/img/blog/red-flags-spine.png",
+        image: "/img/blog/chronic-pain-faq.jpg",
         relatedRegions: ['lumbar-back', 'thoracic-back', 'cervical-back', 'abdomen']
     },
     {
@@ -119,7 +119,7 @@ const posts = [
         excerpt: "Entenda a diferença entre a dor causada pelo músculo na nádega e o problema na coluna.",
         date: "30 Jan 2026",
         category: "Nervo Ciático",
-        image: "/img/blog/sciatica-relief.png",
+        image: "/img/blog/piriformis.jpg",
         relatedRegions: ['glute-left', 'glute-right', 'lumbar-back', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -128,7 +128,7 @@ const posts = [
         excerpt: "Por que estes níveis são os 'vilões' da maioria das dores lombares? Saiba o que significa.",
         date: "31 Jan 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/sciatica-relief.png",
+        image: "/img/blog/l4-l5-s1-hernia.png",
         relatedRegions: ['lumbar-back', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -146,7 +146,7 @@ const posts = [
         excerpt: "Saiba por que o cansaço nas pernas ao caminhar pode ter origem em um estreitamento na coluna.",
         date: "02 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/sciatica-relief.png",
+        image: "/img/blog/spinal-stenosis.jpg",
         relatedRegions: ['lumbar-back', 'calf-left', 'calf-right', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -155,7 +155,7 @@ const posts = [
         excerpt: "Entenda como a sedação moderna garante conforto e segurança total em bloqueios e radiofrequência.",
         date: "03 Fev 2026",
         category: "Segurança do Paciente",
-        image: "/img/blog/spinal-block-procedure.png",
+        image: "/img/blog/sedation-procedure.png",
         relatedRegions: ['lumbar-back', 'cervical-back', 'knee-left', 'hip-left']
     },
     {
@@ -173,7 +173,7 @@ const posts = [
         excerpt: "Muitos pacientes confundem os dois quadros. Saiba como identificar os pontos gatilho.",
         date: "05 Fev 2026",
         category: "Dúvidas Frequentes",
-        image: "/img/blog/red-flags-spine.png",
+        image: "/img/blog/fibromyalgia-back.jpg",
         relatedRegions: ['neck-front', 'thoracic-back', 'lumbar-back', 'glute-left', 'shoulder-left']
     },
     {
@@ -191,7 +191,7 @@ const posts = [
         excerpt: "A tecnologia de última geração que permite realizar cirurgias de vídeo com mínima agressão muscular.",
         date: "07 Fev 2026",
         category: "Tecnologia",
-        image: "/img/blog/surgery-tech.jpg",
+        image: "/img/blog/biportal-endoscopy.png",
         relatedRegions: ['lumbar-back', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -200,7 +200,7 @@ const posts = [
         excerpt: "Dicas práticas para configurar seu ambiente e evitar que o trabalho destrua sua saúde.",
         date: "08 Fev 2026",
         category: "Prevenção",
-        image: "/img/blog/home-office.png",
+        image: "/img/blog/ergonomic-chair-lumbar.png",
         relatedRegions: ['wrist-left', 'wrist-right', 'neck-front', 'lumbar-back', 'hand-left', 'hand-right']
     },
     {
@@ -209,7 +209,7 @@ const posts = [
         excerpt: "Entenda por que essas expansões ósseas aparecem na coluna e como aliviar a dor sem cirurgia.",
         date: "10 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/radiofrequency-spine.png",
+        image: "/img/blog/osteophyte.jpg",
         relatedRegions: ['lumbar-back', 'cervical-back', 'thoracic-back']
     },
     {
@@ -227,7 +227,7 @@ const posts = [
         excerpt: "Entenda a inflamação da sola do pé e conheça os tratamentos para recuperar sua caminhada.",
         date: "12 Fev 2026",
         category: "Pé e Tornozelo",
-        image: "/img/blog/foot-pain.png",
+        image: "/img/blog/mortons-neuroma.png",
         relatedRegions: ['foot-left', 'foot-right']
     },
     {
@@ -245,7 +245,7 @@ const posts = [
         excerpt: "Dor ao pegar peso ou digitar? Conheça as ondas de choque e infiltrações regenerativas.",
         date: "14 Fev 2026",
         category: "Ombro e Cotovelo",
-        image: "/img/blog/hand-elbow-pain.png",
+        image: "/img/blog/tennis-elbow.png",
         relatedRegions: ['elbow-left', 'elbow-right']
     },
     {
@@ -263,7 +263,7 @@ const posts = [
         excerpt: "Sente dor ao levantar da cadeira ou subir escadas? Pode ser inflamação na junta sacroilíaca.",
         date: "17 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/sciatica-relief.png",
+        image: "/img/blog/sacroiliac.jpg",
         relatedRegions: ['glute-left', 'glute-right', 'lumbar-back']
     },
     {
@@ -272,7 +272,7 @@ const posts = [
         excerpt: "Entenda por que a dor no pescoço irradia para a mão e como tratar sem cirurgia aberta.",
         date: "18 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/neck-pain.png",
+        image: "/img/blog/cervical-hernia.png",
         relatedRegions: ['cervical-back', 'neck-front', 'shoulder-left', 'shoulder-right', 'hand-left']
     },
     {
@@ -281,7 +281,7 @@ const posts = [
         excerpt: "O atrito no quadril pode destruir sua cartilagem. Saiba como preservar a articulação.",
         date: "19 Fev 2026",
         category: "Joelho e Quadril",
-        image: "/img/blog/hip-pain.png",
+        image: "/img/blog/femoroacetabular-impingement.png",
         relatedRegions: ['hip-left', 'hip-right', 'groin']
     },
     {
@@ -299,7 +299,7 @@ const posts = [
         excerpt: "Entenda a Síndrome da Falha Cirúrgica e as opções de medicina intervencionista pós-artrodese.",
         date: "21 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/spinal-block-procedure.png",
+        image: "/img/blog/post-surgery-spine.jpg",
         relatedRegions: ['lumbar-back', 'cervical-back']
     },
     {
@@ -317,7 +317,7 @@ const posts = [
         excerpt: "A diversão na areia não pode virar lesão. Saiba como tratar o 'Beach Tennis Elbow' e dores no ombro.",
         date: "24 Fev 2026",
         category: "Medicina do Esporte",
-        image: "/img/blog/shoulder-pain.png",
+        image: "/img/blog/beach-tennis-injury.png",
         relatedRegions: ['elbow-left', 'elbow-right', 'shoulder-left', 'shoulder-right', 'wrist-left']
     },
     {
@@ -335,7 +335,7 @@ const posts = [
         excerpt: "Sentindo o tendão de Aquiles grosso ou dolorido? Saiba como a medicina de precisão acelera a cura.",
         date: "26 Fev 2026",
         category: "Medicina do Esporte",
-        image: "/img/blog/running-pain.png",
+        image: "/img/blog/achilles-tendonitis.png",
         relatedRegions: ['ankle-left', 'ankle-right', 'foot-left', 'foot-right']
     },
     {
@@ -344,7 +344,7 @@ const posts = [
         excerpt: "Entenda o desequilíbrio muscular que causa dor profunda na região pubiana e como tratar.",
         date: "27 Fev 2026",
         category: "Medicina do Esporte",
-        image: "/img/blog/hip-pain.png",
+        image: "/img/blog/pubalgia-groin-pain.png",
         relatedRegions: ['groin', 'hip-left', 'hip-right', 'abdomen']
     },
     {
@@ -353,7 +353,7 @@ const posts = [
         excerpt: "O nome assusta, mas é um processo comum de desgaste. Saiba como tratar a dor associada a esse laudo.",
         date: "28 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/radiofrequency-spine.png",
+        image: "/img/blog/spine-arthrosis.jpg",
         relatedRegions: ['lumbar-back', 'thoracic-back', 'cervical-back']
     },
     {
@@ -362,7 +362,7 @@ const posts = [
         excerpt: "Entenda por que o alívio dos remédios muitas vezes mascara o problema real da sua coluna.",
         date: "01 Mar 2026",
         category: "Saúde e Bem-estar",
-        image: "/img/blog/medication.png",
+        image: "/img/blog/muscle-relaxant-pills.png",
         relatedRegions: ['lumbar-back', 'cervical-back', 'abdomen']
     },
     {
@@ -371,7 +371,7 @@ const posts = [
         excerpt: "Dicas práticas para proteger sua coluna no home office e evitar o desgaste ao sentar.",
         date: "02 Mar 2026",
         category: "Prevenção",
-        image: "/img/blog/home-office.png",
+        image: "/img/blog/ergonomic-chair-lumbar.png",
         relatedRegions: ['lumbar-back', 'neck-front', 'wrist-left', 'wrist-right']
     },
     {
@@ -380,7 +380,7 @@ const posts = [
         excerpt: "Decifre o código de diagnóstico no seu atestado médico e entenda o que ele diz sobre sua coluna.",
         date: "03 Mar 2026",
         category: "Guia do Paciente",
-        image: "/img/blog/red-flags-spine.png",
+        image: "/img/blog/medical-report.jpg",
         relatedRegions: ['lumbar-back', 'cervical-back', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -389,7 +389,7 @@ const posts = [
         excerpt: "Nem toda dor que desce para a perna é hérnia de disco. Conheça as 3 causas principais.",
         date: "04 Mar 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/sciatica-relief.png",
+        image: "/img/blog/lumbar-radiculopathy.png",
         relatedRegions: ['lumbar-back', 'sciatica-left', 'sciatica-right', 'glute-left']
     },
     {
@@ -398,7 +398,7 @@ const posts = [
         excerpt: "Saiba como proteger sua coluna ao malhar e entenda quando a dor indica uma lesão real.",
         date: "05 Mar 2026",
         category: "Medicina do Esporte",
-        image: "/img/blog/red-flags-spine.png",
+        image: "/img/blog/rowing-pain.jpg",
         relatedRegions: ['lumbar-back', 'sciatica-left', 'sciatica-right']
     },
 ];
