@@ -253,11 +253,7 @@ export default function PreConsultationForm() {
                                         </div>
                                     </div>
 
-                                    <div className="mt-5 text-center">
-                                        <button onClick={handleWhatsAppSend} className="btn btn-link text-muted small text-decoration-none">
-                                            Prefiro enviar via WhatsApp
-                                        </button>
-                                    </div>
+
 
                                     <div className="mt-4 bg-light p-4 rounded-4 small text-start">
                                         <h6 className="fw-bold text-muted">PRÉVIA DO RELATÓRIO:</h6>
