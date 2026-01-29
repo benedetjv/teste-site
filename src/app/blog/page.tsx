@@ -56,7 +56,7 @@ const posts = [
         excerpt: "A verdade sobre o desconforto e como a tecnologia torna o procedimento quase indolor.",
         date: "04 Jan 2026",
         category: "Joelho e Quadril",
-        image: "/img/blog/knee-injection.jpg",
+        image: "/img/blog/knee-injection.png",
         relatedRegions: ['knee-left', 'knee-right']
     },
     {
@@ -65,7 +65,7 @@ const posts = [
         excerpt: "Análise técnica sobre o uso de ácido hialurônico para lubrificação e proteção articular.",
         date: "12 Jan 2026",
         category: "Joelho e Quadril",
-        image: "/img/blog/viscosupplementation.jpg",
+        image: "/img/blog/viscosupplementation.png",
         relatedRegions: ['knee-left', 'knee-right', 'hip-left', 'hip-right']
     },
     {
