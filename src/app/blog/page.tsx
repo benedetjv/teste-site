@@ -42,6 +42,15 @@ const posts = [
         relatedRegions: ['lumbar-back', 'thoracic-back', 'cervical-back']
     },
     {
+        slug: "como-funciona-radiofrequencia-termica",
+        title: "Como Funciona a Radiofrequência Térmica para Dor na Coluna?",
+        excerpt: "Um guia interativo para entender como as ondas de rádio desligam a dor sem cirurgia.",
+        date: "16 Dez 2025",
+        category: "Tratamentos Intervencionistas",
+        image: "/img/blog/back-pain.png",
+        relatedRegions: ['lumbar-back', 'cervical-back', 'thoracic-back']
+    },
+    {
         slug: "infiltracao-joelho-doi",
         title: 'Paciente pergunta: "Infiltração no joelho dói?"',
         excerpt: "A verdade sobre o desconforto e como a tecnologia torna o procedimento quase indolor.",
