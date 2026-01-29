@@ -74,7 +74,7 @@ const posts = [
         excerpt: "Entenda os termos do seu laudo de ressonância e o que eles significam para sua saúde.",
         date: "18 Jan 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/herniated-disc-mri.jpg",
+        image: "/img/blog/radiofrequency-spine.png",
         relatedRegions: ['lumbar-back', 'cervical-back', 'thoracic-back']
     },
     {
@@ -110,7 +110,7 @@ const posts = [
         excerpt: "Respostas diretas sobre academia, colchão, quiropraxia e tratamentos para a coluna.",
         date: "29 Jan 2026",
         category: "Guia do Paciente",
-        image: "/img/blog/chronic-pain-faq.jpg",
+        image: "/img/blog/red-flags-spine.png",
         relatedRegions: ['lumbar-back', 'thoracic-back', 'cervical-back', 'abdomen']
     },
     {
@@ -119,7 +119,7 @@ const posts = [
         excerpt: "Entenda a diferença entre a dor causada pelo músculo na nádega e o problema na coluna.",
         date: "30 Jan 2026",
         category: "Nervo Ciático",
-        image: "/img/blog/piriformis.jpg",
+        image: "/img/blog/sciatica-relief.png",
         relatedRegions: ['glute-left', 'glute-right', 'lumbar-back', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -128,7 +128,7 @@ const posts = [
         excerpt: "Por que estes níveis são os 'vilões' da maioria das dores lombares? Saiba o que significa.",
         date: "31 Jan 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/spinal-stenosis.jpg",
+        image: "/img/blog/sciatica-relief.png",
         relatedRegions: ['lumbar-back', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -146,7 +146,7 @@ const posts = [
         excerpt: "Saiba por que o cansaço nas pernas ao caminhar pode ter origem em um estreitamento na coluna.",
         date: "02 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/spinal-canal.jpg",
+        image: "/img/blog/sciatica-relief.png",
         relatedRegions: ['lumbar-back', 'calf-left', 'calf-right', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -173,7 +173,7 @@ const posts = [
         excerpt: "Muitos pacientes confundem os dois quadros. Saiba como identificar os pontos gatilho.",
         date: "05 Fev 2026",
         category: "Dúvidas Frequentes",
-        image: "/img/blog/fibromyalgia-back.jpg",
+        image: "/img/blog/red-flags-spine.png",
         relatedRegions: ['neck-front', 'thoracic-back', 'lumbar-back', 'glute-left', 'shoulder-left']
     },
     {
@@ -209,7 +209,7 @@ const posts = [
         excerpt: "Entenda por que essas expansões ósseas aparecem na coluna e como aliviar a dor sem cirurgia.",
         date: "10 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/osteophyte.jpg",
+        image: "/img/blog/radiofrequency-spine.png",
         relatedRegions: ['lumbar-back', 'cervical-back', 'thoracic-back']
     },
     {
@@ -263,7 +263,7 @@ const posts = [
         excerpt: "Sente dor ao levantar da cadeira ou subir escadas? Pode ser inflamação na junta sacroilíaca.",
         date: "17 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/sacroiliac.jpg",
+        image: "/img/blog/sciatica-relief.png",
         relatedRegions: ['glute-left', 'glute-right', 'lumbar-back']
     },
     {
@@ -299,7 +299,7 @@ const posts = [
         excerpt: "Entenda a Síndrome da Falha Cirúrgica e as opções de medicina intervencionista pós-artrodese.",
         date: "21 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/post-surgery-spine.jpg",
+        image: "/img/blog/spinal-block-procedure.png",
         relatedRegions: ['lumbar-back', 'cervical-back']
     },
     {
@@ -353,7 +353,7 @@ const posts = [
         excerpt: "O nome assusta, mas é um processo comum de desgaste. Saiba como tratar a dor associada a esse laudo.",
         date: "28 Fev 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/spine-arthrosis.jpg",
+        image: "/img/blog/radiofrequency-spine.png",
         relatedRegions: ['lumbar-back', 'thoracic-back', 'cervical-back']
     },
     {
@@ -380,7 +380,7 @@ const posts = [
         excerpt: "Decifre o código de diagnóstico no seu atestado médico e entenda o que ele diz sobre sua coluna.",
         date: "03 Mar 2026",
         category: "Guia do Paciente",
-        image: "/img/blog/medical-report.jpg",
+        image: "/img/blog/red-flags-spine.png",
         relatedRegions: ['lumbar-back', 'cervical-back', 'sciatica-left', 'sciatica-right']
     },
     {
@@ -389,7 +389,7 @@ const posts = [
         excerpt: "Nem toda dor que desce para a perna é hérnia de disco. Conheça as 3 causas principais.",
         date: "04 Mar 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/sciatica.jpg",
+        image: "/img/blog/sciatica-relief.png",
         relatedRegions: ['lumbar-back', 'sciatica-left', 'sciatica-right', 'glute-left']
     },
     {
@@ -398,7 +398,7 @@ const posts = [
         excerpt: "Saiba como proteger sua coluna ao malhar e entenda quando a dor indica uma lesão real.",
         date: "05 Mar 2026",
         category: "Medicina do Esporte",
-        image: "/img/blog/rowing-pain.jpg",
+        image: "/img/blog/red-flags-spine.png",
         relatedRegions: ['lumbar-back', 'sciatica-left', 'sciatica-right']
     },
 ];
