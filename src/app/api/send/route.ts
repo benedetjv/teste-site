@@ -14,7 +14,7 @@ export async function POST(request: Request) {
 
         const data = await resend.emails.send({
             from: 'Pré-Consulta Dr. Otto <agendamento@drotto.com.br>', // Domínio verificado
-            to: [process.env.DOCTOR_EMAIL || 'benedetjv@gmail.com'], // E-mail para onde o relatório será enviado
+            to: [process.env.DOCTOR_EMAIL || 'drottobeckedorff@gmail.com'], // E-mail para onde o relatório será enviado
             replyTo: patientEmail,
             subject: subject || 'Novo Relatório de Pré-Consulta',
             text: `
