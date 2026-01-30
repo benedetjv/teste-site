@@ -73,7 +73,20 @@ export default function BodySelectorAssessment({
             <div className="container-fluid">
                 <div className="row g-4 justify-content-center">
                     {/* Main Image View */}
-                    <div className="col-lg-8 col-md-10 d-flex flex-column align-items-center">
+                    <div className="col-lg-8 col-md-10 d-flex flex-column align-items-center position-relative">
+
+                        {/* Rótulos de Orientação */}
+                        <div className="position-absolute top-50 start-0 translate-middle-y d-none d-sm-block ms-4 opacity-25" style={{ zIndex: 5 }}>
+                            <span className="text-uppercase fw-bold vertical-text small" style={{ letterSpacing: '3px', writingMode: 'vertical-rl', textOrientation: 'mixed' }}>
+                                {view === 'front' ? 'Lado Direito' : 'Lado Esquerdo'}
+                            </span>
+                        </div>
+                        <div className="position-absolute top-50 end-0 translate-middle-y d-none d-sm-block me-4 opacity-25" style={{ zIndex: 5 }}>
+                            <span className="text-uppercase fw-bold vertical-text small" style={{ letterSpacing: '3px', writingMode: 'vertical-rl', textOrientation: 'mixed' }}>
+                                {view === 'front' ? 'Lado Esquerdo' : 'Lado Direito'}
+                            </span>
+                        </div>
+
                         <div className="d-flex gap-2 mb-4 bg-light p-1 rounded-pill">
                             <button onClick={() => setView('front')} className={`btn btn-sm rounded-pill px-4 py-2 fw-bold transition-all border-0 ${view === 'front' ? 'bg-primary text-white shadow' : 'text-muted'}`}>Frente</button>
                             <button onClick={() => setView('back')} className={`btn btn-sm rounded-pill px-4 py-2 fw-bold transition-all border-0 ${view === 'back' ? 'bg-primary text-white shadow' : 'text-muted'}`}>Costas</button>

@@ -92,7 +92,18 @@ export default function BodySelectorBlog({ onFilterChange }: BodySelectorBlogPro
                     </div>
 
                     {/* Middle Column: Interactive Image */}
-                    <div className="col-lg-5 col-md-7 d-flex justify-content-center border-start border-end border-light">
+                    <div className="col-lg-5 col-md-7 d-flex justify-content-center border-start border-end border-light position-relative">
+                        {/* Rótulos de Orientação */}
+                        <div className="position-absolute top-50 start-0 translate-middle-y d-none d-sm-block ms-2 opacity-25" style={{ zIndex: 5 }}>
+                            <span className="text-uppercase fw-bold vertical-text small" style={{ letterSpacing: '3px', writingMode: 'vertical-rl', textOrientation: 'mixed' }}>
+                                {view === 'front' ? 'Lado Direito' : 'Lado Esquerdo'}
+                            </span>
+                        </div>
+                        <div className="position-absolute top-50 end-0 translate-middle-y d-none d-sm-block me-2 opacity-25" style={{ zIndex: 5 }}>
+                            <span className="text-uppercase fw-bold vertical-text small" style={{ letterSpacing: '3px', writingMode: 'vertical-rl', textOrientation: 'mixed' }}>
+                                {view === 'front' ? 'Lado Esquerdo' : 'Lado Direito'}
+                            </span>
+                        </div>
                         <div ref={containerRef} className="position-relative cursor-crosshair" style={{ width: '100%', maxWidth: '450px', height: '600px' }} onClick={handleImageClick}>
                             <img src={view === 'front' ? '/img/human-body-front-v2.png' : '/img/human-body-back-v2.png'} alt="Mapa da Dor" className="w-100 h-100 object-fit-contain" style={{ mixBlendMode: 'multiply', pointerEvents: 'none' }} />
                             {currentRegions.map(region => (
@@ -105,7 +116,7 @@ export default function BodySelectorBlog({ onFilterChange }: BodySelectorBlogPro
                                     onDragEnd={(e, info) => handleDragEnd(region.id, info)}
                                     onClick={(e) => { e.stopPropagation(); toggleRegion(region.id); }}
                                     className={`position-absolute rounded-circle border-2 cursor-pointer transition-all ${isEditMode ? (activeAdjustId === region.id ? 'bg-danger border-white shadow-lg pulse-edit' : 'bg-danger border-white shadow opacity-50') :
-                                            selectedIds.includes(region.id) ? 'border-white shadow-lg pulse-dot' : 'bg-white border-opacity-70 shadow-sm'
+                                        selectedIds.includes(region.id) ? 'border-white shadow-lg pulse-dot' : 'bg-white border-opacity-70 shadow-sm'
                                         }`}
                                     style={{
                                         top: region.top,
