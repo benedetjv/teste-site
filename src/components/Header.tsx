@@ -22,10 +22,10 @@ export default function Header() {
       <header
         className={`fixed-top transition-all duration-300 ${isScrolled ? "shadow-sm" : ""}`}
         style={{
-          backgroundColor: isScrolled ? "rgba(255, 255, 255, 0.95)" : "rgba(255, 255, 255, 0.8)",
-          backdropFilter: "blur(16px)",
-          WebkitBackdropFilter: "blur(16px)",
-          borderBottom: isScrolled ? "1px solid rgba(0,0,0,0.05)" : "none",
+          backgroundColor: isScrolled ? "rgba(10, 25, 47, 0.95)" : "rgba(10, 25, 47, 0.85)", // Azul escuro da marca
+          backdropFilter: "blur(12px)",
+          WebkitBackdropFilter: "blur(12px)",
+          borderBottom: isScrolled ? "1px solid rgba(255,255,255,0.1)" : "none",
           transition: "all 0.3s ease",
           zIndex: 1030
         }}
@@ -61,7 +61,7 @@ export default function Header() {
                     <Link
                       className="nav-link fw-bold text-uppercase small ls-1 nav-link-custom"
                       href={item.href}
-                      style={{ color: 'var(--azul-escuro)', letterSpacing: '1px', fontSize: '0.85rem' }}
+                      style={{ color: '#ffffff', letterSpacing: '1px', fontSize: '0.85rem' }}
                     >
                       {item.label}
                     </Link>
@@ -100,14 +100,15 @@ export default function Header() {
             height: 2px;
             bottom: 0px;
             left: 0;
-            background-color: var(--azul-principal);
+            background-color: #ffffff;
             transition: width 0.3s ease;
         }
         .nav-link-custom:hover::after {
             width: 100%;
         }
         .nav-link-custom:hover {
-            color: var(--azul-principal) !important;
+            color: #ffffff !important;
+            opacity: 1;
         }
       `}</style>
     </>

@@ -41,6 +41,13 @@ export default function Doctoralia() {
             </a>
             {/* O widget será injetado na tag <a> */}
           </div>
+
+          <div className="text-center mt-4">
+            <span className="text-muted small d-block mb-2 text-uppercase ls-1" style={{ fontSize: '0.75rem' }}>Ou se preferir</span>
+            <a href="https://wa.me/5519999439824" target="_blank" className="btn btn-outline-success rounded-pill px-4 btn-sm fw-bold">
+              <i className="bi bi-whatsapp me-2"></i>Entrar em contato via WhatsApp
+            </a>
+          </div>
         </div>
       </div>
     </section>

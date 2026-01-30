@@ -48,10 +48,7 @@ export default function Home() {
           <PatientJourney />
         </Reveal>
 
-        <Reveal>
-          {/* SOBRE MIM (TEASER) */}
-          <AboutTeaser />
-        </Reveal>
+
 
         <Reveal>
           {/* DEPOIMENTOS */}
