@@ -1,10 +1,8 @@
 import Header from "@/components/Header";
 import Hero from "@/components/Hero";
 import Doctoralia from "@/components/Doctoralia";
-import Servicos from "@/components/Servicos";
-import Sobre from "@/components/Sobre";
-import Listas from "@/components/Listas";
-import Contato from "@/components/Contato";
+import ServicesTeaser from "@/components/ServicesTeaser";
+import AboutTeaser from "@/components/AboutTeaser";
 import Localizacao from "@/components/Localizacao";
 import Blog from "@/components/Blog";
 import Footer from "@/components/Footer";
@@ -32,32 +30,26 @@ export default function Home() {
         {/* AGENDAMENTO / DOCTORALIA */}
         <Doctoralia />
 
-        {/* ESTATÍSTICAS DE AUTORIDADE (NOVO POSICIONAMENTO) */}
+        {/* ESTATÍSTICAS DE AUTORIDADE */}
         <StatsBar />
 
-        {/* DEPOIMENTOS (NOVO POSICIONAMENTO) */}
-        <Testimonials />
+        {/* PROCEDIMENTOS (TEASER) */}
+        <ServicesTeaser />
 
-        {/* COMO POSSO TE AJUDAR (GRID) */}
-        <Servicos />
-
-        {/* JORNADA DO PACIENTE (NOVO) */}
+        {/* JORNADA DO PACIENTE */}
         <PatientJourney />
 
-        {/* SOBRE MIM */}
-        <Sobre />
+        {/* SOBRE MIM (TEASER) */}
+        <AboutTeaser />
 
-        {/* DOENÇAS / PUBLICAÇÕES / PRÊMIOS (Ícones + listas) */}
-        <Listas />
-
-        {/* CONTATO (LIMPO E ORGANIZADO) */}
-        <Contato />
-
-        {/* LOCALIZAÇÃO (duas clínicas) */}
-        <Localizacao />
+        {/* DEPOIMENTOS */}
+        <Testimonials />
 
         {/* BLOG */}
         <Blog />
+
+        {/* LOCALIZAÇÃO (IMPORTANTE NA HOME) */}
+        <Localizacao />
       </main>
 
 
