@@ -10,6 +10,8 @@ import Blog from "@/components/Blog";
 import Footer from "@/components/Footer";
 import WaveDivider from "@/components/WaveDivider";
 import PatientJourney from "@/components/PatientJourney";
+import StatsBar from "@/components/StatsBar";
+import Testimonials from "@/components/Testimonials";
 
 export default function Home() {
   return (
@@ -39,8 +41,14 @@ export default function Home() {
         {/* SOBRE MIM */}
         <Sobre />
 
+        {/* ESTATÍSTICAS DE AUTORIDADE (NOVO) */}
+        <StatsBar />
+
         {/* DOENÇAS / PUBLICAÇÕES / PRÊMIOS (Ícones + listas) */}
         <Listas />
+
+        {/* DEPOIMENTOS (NOVO) */}
+        <Testimonials />
 
         {/* CONTATO (LIMPO E ORGANIZADO) */}
         <Contato />
