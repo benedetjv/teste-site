@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
 import Image from "next/image";
 import { siteContent } from "../content";
 
@@ -11,57 +11,30 @@ interface HeroProps {
 export default function Hero({ customTitle }: HeroProps) {
   const { title, crmRqe, text1, text2, ctaLabel, ctaLink } = siteContent.hero;
 
-  // Imagem local: no Next.js basta o caminho a partir de public (sem /public)
   const imagePath = "/img/foto-otto.jpg";
 
-  // ESTADO TEMPORÁRIO PARA AJUSTE FINO DA IMAGEM
-  const [imgSize, setImgSize] = useState(400); // Tamanho Base
-  const [imgScale, setImgScale] = useState(1.15); // Zoom
-  const [imgPosY, setImgPosY] = useState(0); // Posição Y (% do topo)
+  // VALORES DEFINITIVOS PASSADOS PELO USUÁRIO
+  const imgSize = 300;
+  const imgScale = 1;
+  const imgPosY = 24;
 
   return (
     <section id="topo" className="hero-section position-relative overflow-hidden" style={{ backgroundColor: 'var(--bg-light)', paddingBottom: '60px' }}>
 
-      {/* PAINEL DE CONTROLE FLUTUANTE (DEBUG) */}
-      <div className="position-fixed bottom-0 end-0 m-3 p-3 bg-white shadow-lg rounded border z-3" style={{ width: '280px', zIndex: 9999, fontSize: '0.85rem' }}>
-        <h6 className="fw-bold mb-3 border-bottom pb-2">🛠️ Ajuste da Foto</h6>
-
-        <div className="mb-2">
-          <label className="fw-bold d-block">Tamanho: {imgSize}px</label>
-          <input type="range" className="form-range" min="300" max="500" value={imgSize} onChange={(e) => setImgSize(Number(e.target.value))} />
-        </div>
-
-        <div className="mb-2">
-          <label className="fw-bold d-block">Zoom: {imgScale}</label>
-          <input type="range" className="form-range" min="1" max="2" step="0.05" value={imgScale} onChange={(e) => setImgScale(Number(e.target.value))} />
-        </div>
-
-        <div className="mb-2">
-          <label className="fw-bold d-block">Posição Topo: {imgPosY}%</label>
-          <input type="range" className="form-range" min="0" max="100" value={imgPosY} onChange={(e) => setImgPosY(Number(e.target.value))} />
-        </div>
-
-        <div className="mt-2 bg-light p-2 rounded text-muted small">
-          width: '{imgSize}px',<br />
-          transform: 'scale({imgScale})',<br />
-          objectPosition: 'center {imgPosY}%'
-        </div>
-      </div>
-
-      {/* Círculo decorativo de fundo (Acompanha tamanho da imagem +45%) */}
+      {/* Círculo decorativo de fundo (300px * 1.45 = ~435px) */}
       <div className="position-absolute top-0 end-0 rounded-circle opacity-10"
         style={{
-          width: `${imgSize * 1.45}px`,
-          height: `${imgSize * 1.45}px`,
+          width: '450px',
+          height: '450px',
           background: 'var(--azul-principal)',
           filter: 'blur(80px)',
-          transform: 'translate(30%, -30%)',
-          transition: 'all 0.3s ease'
+          transform: 'translate(30%, -30%)'
         }}>
       </div>
 
       <div className="container position-relative" style={{ zIndex: 1 }}>
-        <div className="row align-items-center g-5">
+        {/* align-items-start: Alinha texto e foto pelo topo */}
+        <div className="row align-items-start g-5">
           <div className="col-lg-7 py-5">
             {/* Tagline com CRM */}
             <div className="d-inline-block px-3 py-1 mb-3 rounded-pill" style={{ backgroundColor: 'rgba(var(--azul-principal-rgb), 0.1)', color: 'var(--azul-escuro)' }}>
@@ -87,26 +60,30 @@ export default function Hero({ customTitle }: HeroProps) {
             </div>
           </div>
 
-          <div className="col-lg-5 text-center position-relative">
-            <div className="position-relative d-inline-block">
+          <div className="col-lg-5 text-center position-relative py-5">
+            {/* py-5 acima adicionado para garantir que a foto não cole no teto absoluto se a coluna da esquerda tiver padding */}
+            {/* Ou melhor: vamos confiar no align-items-start e só dar margem se necessário */}
+
+            <div className="position-relative d-inline-block mt-lg-4">
+              {/* mt-lg-4: Empurra um pouquinho pra baixo pra "casar" visualmente com a altura da linha do Título H1 */}
+
               {/* Moldura ou efeito na foto */}
               <div className="position-absolute top-0 start-0 w-100 h-100 bg-primary rounded-circle opacity-25" style={{ transform: 'translate(15px, 15px)', filter: 'blur(0px)' }}></div>
 
               <Image
                 src={imagePath}
                 alt={title}
-                width={600}
-                height={600}
+                width={imgSize * 2} // Carrega 2x maior para retina
+                height={imgSize * 2}
                 priority
                 className="img-fluid position-relative rounded-circle shadow-lg animate__animated animate__zoomIn"
                 style={{
                   objectFit: "cover",
-                  objectPosition: `center ${imgPosY}%`, // Dinâmico
-                  width: `${imgSize}px`, // Dinâmico
-                  height: `${imgSize}px`, // Dinâmico
+                  objectPosition: `center ${imgPosY}%`,
+                  width: `${imgSize}px`,
+                  height: `${imgSize}px`,
                   border: '8px solid white',
-                  transform: `scale(${imgScale})`, // Dinâmico
-                  transition: 'all 0.1s ease' // Suave ao arrastar
+                  transform: `scale(${imgScale})`
                 }}
               />
             </div>
