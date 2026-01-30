@@ -1,37 +1,9 @@
 "use client";
 
-import React, { useRef } from "react";
-import Script from "next/script";
+import React from "react";
 import { siteContent } from "../content";
 
-// Componente para carregar o script do Instagram
-function InstagramEmbed({ instagramUrl }: { instagramUrl: string }) {
-  const scriptLoaded = useRef(false);
 
-  return (
-    <div className="d-flex justify-content-center mt-5">
-      <Script
-        src="//www.instagram.com/embed.js"
-        strategy="lazyOnload"
-        onLoad={() => {
-          // O script do instagram processa automaticamente quando carrega
-          if ((window as any).instgrm) (window as any).instgrm.Embeds.process();
-        }}
-      />
-      <div className="instagram-wrapper">
-        <blockquote
-          className="instagram-media"
-          data-instgrm-permalink={instagramUrl}
-          data-instgrm-version="14"
-          style={{ maxWidth: "350px", width: "100%", border: 0, boxShadow: "none" }}
-        >
-          {/* Conteúdo de fallback enquanto o script carrega */}
-          <p>[Feed do Instagram]</p>
-        </blockquote>
-      </div>
-    </div>
-  );
-}
 
 export default function Localizacao() {
   const { titulo, clinicas, instagramUrl } = siteContent.localizacao;
@@ -71,8 +43,7 @@ export default function Localizacao() {
           ))}
         </div>
 
-        {/* Embed do Instagram */}
-        <InstagramEmbed instagramUrl={instagramUrl} />
+
       </div>
     </section>
   );

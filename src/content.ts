@@ -8,7 +8,6 @@ export const siteContent: SiteContent = {
       { label: "Home", href: "/" },
       { label: "Sobre", href: "/sobre" },
       { label: "Procedimentos", href: "/procedimentos" },
-      { label: "Localização", href: "/contato" },
       { label: "Contato", href: "/contato" },
       { label: "Blog", href: "/blog" },
     ],
