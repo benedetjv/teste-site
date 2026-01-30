@@ -23,8 +23,8 @@ export default function Header() {
         className={`fixed-top transition-all duration-300 ${isScrolled ? "shadow-sm" : ""}`}
         style={{
           backgroundColor: isScrolled ? "rgba(255, 255, 255, 0.95)" : "rgba(255, 255, 255, 0.8)",
-          backdropFilter: "blur(12px)",
-          WebkitBackdropFilter: "blur(12px)",
+          backdropFilter: "blur(16px)",
+          WebkitBackdropFilter: "blur(16px)",
           borderBottom: isScrolled ? "1px solid rgba(0,0,0,0.05)" : "none",
           transition: "all 0.3s ease",
           zIndex: 1030
