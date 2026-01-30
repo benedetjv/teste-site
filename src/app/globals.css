@@ -10,6 +10,11 @@
 /* ========= Paleta de cores ========= */
 :root {
   --azul-claro: #7d99b2;
+  /* Sobrescrevendo Bootstrap Primary */
+  --bs-primary: #7d99b2;
+  --bs-primary-rgb: 125, 153, 178;
+  --azul-principal: #7d99b2;
+  --azul-principal-rgb: 125, 153, 178;
   --azul-medio: #39586d;
   --azul-escuro: #2a4156;
   --cinza-fundo: #f5f4f2;
