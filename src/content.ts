@@ -69,7 +69,7 @@ export const siteContent: SiteContent = {
   sobre: {
     titulo: "Sobre mim:",
     crmRqe: "Dr. Otto Beckedorff – CRM 226325SP | RQE 139078",
-    text1: "Ortopedista com atuação focada no diagnóstico e tratamento da dor musculoesquelética — especialmente dores na coluna, joelho, quadril e ombro.",
+    text1: "Dr. Otto, com foco em ortopedia e medicina da dor, trazendo explicações claras e baseadas em evidência sobre dor musculoesquelética, dor aguda, dor crônica, dor na coluna, dores articulares, cefaleia, tratamentos intervencionistas e soluções modernas.",
     text2: "Foco em dor clínica e intervencionista. Minha missão é devolver movimento, conforto e autonomia ao paciente, com tratamento preciso para evitar cirurgias desnecessárias.",
     image: "img/otto-em-procedimento.jpg"
   },
