@@ -4,15 +4,28 @@ import React, { useState } from 'react';
 
 export default function PainCalculator() {
     const [level, setLevel] = useState(5);
-    const [result, setResult] = useState<string | null>(null);
+    const [result, setResult] = useState<React.ReactNode | null>(null);
 
     const calculate = () => {
         if (level < 4) {
-            setResult("Sua dor é considerada leve. Exercícios físicos e fisioterapia podem ser muito eficazes.");
+            setResult("Sua dor é considerada leve. Manter-se ativo e com acompanhamento adequado ajuda a evitar que ela se torne crônica.");
         } else if (level < 8) {
-            setResult("Sua dor é moderada. É recomendado uma avaliação para verificar a necessidade de intervenção medicamentosa ou infiltrações.");
+            setResult("Sua dor é moderada e já impacta sua rotina. É recomendado uma avaliação especializada para identificar a causa exata e iniciar o tratamento antes que o quadro se agrave.");
         } else {
-            setResult("Sua dor é intensa. Consultar um especialista é urgente para investigar as causas e planejar o bloqueio da dor.");
+            setResult(
+                <div>
+                    <strong className="text-danger d-block mb-3"><i className="bi bi-exclamation-triangle-fill me-2"></i>ATENÇÃO – Sinais de Alerta</strong>
+                    Se sua dor intensa vier acompanhada de:
+                    <ul className="my-2">
+                        <li>Perda de força em pernas ou braços</li>
+                        <li>Dificuldade para controlar urina ou fezes</li>
+                        <li>Febre</li>
+                    </ul>
+                    <span className="d-block fw-bold text-danger mb-3">Procure um Pronto-Socorro imediatamente.</span>
+                    <hr />
+                    Caso não tenha esses sintomas graves, mas a dor seja incapacitante, agende uma avaliação urgente para definirmos a melhor estratégia de controle da dor.
+                </div>
+            );
         }
     };
 
