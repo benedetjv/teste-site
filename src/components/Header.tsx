@@ -71,12 +71,11 @@ export default function Header() {
                 {/* Botão de Agendamento no Header (Opcional - mas fica moderno) */}
                 <li className="nav-item ms-lg-3">
                   <a
-                    href="https://wa.me/5519999439824"
-                    target="_blank"
+                    href="#agende"
                     className="btn btn-primary rounded-pill px-4 btn-sm fw-bold shadow-sm"
                     style={{ backgroundColor: 'var(--azul-principal)', borderColor: 'var(--azul-principal)' }}
                   >
-                    Agendar <i className="bi bi-whatsapp ms-1"></i>
+                    Agendar <i className="bi bi-calendar-check ms-1"></i>
                   </a>
                 </li>
               </ul>

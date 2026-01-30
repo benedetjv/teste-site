@@ -43,10 +43,6 @@ export default function Hero({ customTitle }: HeroProps) {
             </p>
 
             <div className="d-flex flex-wrap gap-3 animate__animated animate__fadeInUp animate__delay-3s">
-              <a href="https://wa.me/5519999439824" target="_blank" className="btn btn-lg rounded-pill px-5 fw-bold shadow-lg hover-lift"
-                style={{ backgroundColor: 'var(--azul-principal)', color: 'white', border: 'none' }}>
-                Agendar Consulta <i className="bi bi-whatsapp ms-2"></i>
-              </a>
               <a href="/sobre" className="btn btn-lg btn-outline-dark rounded-pill px-5 fw-bold hover-lift">
                 Saiba mais
               </a>
