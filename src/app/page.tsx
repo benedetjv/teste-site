@@ -8,6 +8,8 @@ import Contato from "@/components/Contato";
 import Localizacao from "@/components/Localizacao";
 import Blog from "@/components/Blog";
 import Footer from "@/components/Footer";
+import WaveDivider from "@/components/WaveDivider";
+import PatientJourney from "@/components/PatientJourney";
 
 export default function Home() {
   return (
@@ -20,11 +22,19 @@ export default function Home() {
         {/* HERO */}
         <Hero />
 
+        {/* ONDA DE TRANSIÇÃO SUAVE */}
+        <div style={{ marginTop: '-60px', position: 'relative', zIndex: 2 }}>
+          <WaveDivider position="bottom" fill="#ffffff" />
+        </div>
+
         {/* AGENDAMENTO / DOCTORALIA */}
         <Doctoralia />
 
         {/* COMO POSSO TE AJUDAR (GRID) */}
         <Servicos />
+
+        {/* JORNADA DO PACIENTE (NOVO) */}
+        <PatientJourney />
 
         {/* SOBRE MIM */}
         <Sobre />
@@ -41,6 +51,7 @@ export default function Home() {
         {/* BLOG */}
         <Blog />
       </main>
+
 
       {/* FOOTER */}
       <Footer />
