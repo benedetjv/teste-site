@@ -19,7 +19,7 @@ export default function Hero({ customTitle }: HeroProps) {
 
       {/* Círculo decorativo de fundo (opcional, para dar profundidade) */}
       <div className="position-absolute top-0 end-0 rounded-circle opacity-10"
-        style={{ width: '640px', height: '640px', background: 'var(--azul-principal)', filter: 'blur(80px)', transform: 'translate(30%, -30%)' }}>
+        style={{ width: '580px', height: '580px', background: 'var(--azul-principal)', filter: 'blur(80px)', transform: 'translate(30%, -30%)' }}>
       </div>
 
       <div className="container position-relative" style={{ zIndex: 1 }}>
@@ -61,7 +61,7 @@ export default function Hero({ customTitle }: HeroProps) {
                 height={550}
                 priority
                 className="img-fluid position-relative rounded-circle shadow-lg animate__animated animate__zoomIn"
-                style={{ objectFit: "cover", objectPosition: "top center", width: '440px', height: '440px', border: '8px solid white' }}
+                style={{ objectFit: "cover", objectPosition: "top center", width: '400px', height: '400px', border: '8px solid white', transform: 'scale(1.15)' }}
               />
             </div>
           </div>
