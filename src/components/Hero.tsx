@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import { siteContent } from "../content";
 
@@ -14,12 +14,50 @@ export default function Hero({ customTitle }: HeroProps) {
   // Imagem local: no Next.js basta o caminho a partir de public (sem /public)
   const imagePath = "/img/foto-otto.jpg";
 
+  // ESTADO TEMPORÁRIO PARA AJUSTE FINO DA IMAGEM
+  const [imgSize, setImgSize] = useState(400); // Tamanho Base
+  const [imgScale, setImgScale] = useState(1.15); // Zoom
+  const [imgPosY, setImgPosY] = useState(0); // Posição Y (% do topo)
+
   return (
     <section id="topo" className="hero-section position-relative overflow-hidden" style={{ backgroundColor: 'var(--bg-light)', paddingBottom: '60px' }}>
 
-      {/* Círculo decorativo de fundo (opcional, para dar profundidade) */}
+      {/* PAINEL DE CONTROLE FLUTUANTE (DEBUG) */}
+      <div className="position-fixed bottom-0 end-0 m-3 p-3 bg-white shadow-lg rounded border z-3" style={{ width: '280px', zIndex: 9999, fontSize: '0.85rem' }}>
+        <h6 className="fw-bold mb-3 border-bottom pb-2">🛠️ Ajuste da Foto</h6>
+
+        <div className="mb-2">
+          <label className="fw-bold d-block">Tamanho: {imgSize}px</label>
+          <input type="range" className="form-range" min="300" max="500" value={imgSize} onChange={(e) => setImgSize(Number(e.target.value))} />
+        </div>
+
+        <div className="mb-2">
+          <label className="fw-bold d-block">Zoom: {imgScale}</label>
+          <input type="range" className="form-range" min="1" max="2" step="0.05" value={imgScale} onChange={(e) => setImgScale(Number(e.target.value))} />
+        </div>
+
+        <div className="mb-2">
+          <label className="fw-bold d-block">Posição Topo: {imgPosY}%</label>
+          <input type="range" className="form-range" min="0" max="100" value={imgPosY} onChange={(e) => setImgPosY(Number(e.target.value))} />
+        </div>
+
+        <div className="mt-2 bg-light p-2 rounded text-muted small">
+          width: '{imgSize}px',<br />
+          transform: 'scale({imgScale})',<br />
+          objectPosition: 'center {imgPosY}%'
+        </div>
+      </div>
+
+      {/* Círculo decorativo de fundo (Acompanha tamanho da imagem +45%) */}
       <div className="position-absolute top-0 end-0 rounded-circle opacity-10"
-        style={{ width: '580px', height: '580px', background: 'var(--azul-principal)', filter: 'blur(80px)', transform: 'translate(30%, -30%)' }}>
+        style={{
+          width: `${imgSize * 1.45}px`,
+          height: `${imgSize * 1.45}px`,
+          background: 'var(--azul-principal)',
+          filter: 'blur(80px)',
+          transform: 'translate(30%, -30%)',
+          transition: 'all 0.3s ease'
+        }}>
       </div>
 
       <div className="container position-relative" style={{ zIndex: 1 }}>
@@ -57,11 +95,19 @@ export default function Hero({ customTitle }: HeroProps) {
               <Image
                 src={imagePath}
                 alt={title}
-                width={500}
-                height={550}
+                width={600}
+                height={600}
                 priority
                 className="img-fluid position-relative rounded-circle shadow-lg animate__animated animate__zoomIn"
-                style={{ objectFit: "cover", objectPosition: "top center", width: '400px', height: '400px', border: '8px solid white', transform: 'scale(1.15)' }}
+                style={{
+                  objectFit: "cover",
+                  objectPosition: `center ${imgPosY}%`, // Dinâmico
+                  width: `${imgSize}px`, // Dinâmico
+                  height: `${imgSize}px`, // Dinâmico
+                  border: '8px solid white',
+                  transform: `scale(${imgScale})`, // Dinâmico
+                  transition: 'all 0.1s ease' // Suave ao arrastar
+                }}
               />
             </div>
           </div>
