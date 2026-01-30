@@ -13,37 +13,67 @@ export default function Hero({ customTitle }: HeroProps) {
   const imagePath = "/img/foto-otto.jpg";
 
   return (
-    <section id="topo" className="hero-section section-light">
-      <div className="container">
-        <div className="row align-items-center g-4">
-          <div className="col-lg-7">
-            <h1 className="hero-title">{customTitle || title}</h1>
-            {/* Conteúdo de texto aqui... */}
-            <p className="hero-text">
-              <strong>{crmRqe}</strong>
-              <br />
+    <section id="topo" className="hero-section position-relative overflow-hidden" style={{ backgroundColor: 'var(--bg-light)', paddingBottom: '60px' }}>
+
+      {/* Círculo decorativo de fundo (opcional, para dar profundidade) */}
+      <div className="position-absolute top-0 end-0 rounded-circle opacity-10"
+        style={{ width: '600px', height: '600px', background: 'var(--azul-principal)', filter: 'blur(80px)', transform: 'translate(30%, -30%)' }}>
+      </div>
+
+      <div className="container position-relative" style={{ zIndex: 1 }}>
+        <div className="row align-items-center g-5">
+          <div className="col-lg-7 py-5">
+            {/* Tagline com CRM */}
+            <div className="d-inline-block px-3 py-1 mb-3 rounded-pill" style={{ backgroundColor: 'rgba(var(--azul-principal-rgb), 0.1)', color: 'var(--azul-escuro)' }}>
+              <small className="fw-bold text-uppercase ls-1">Dr. Otto Beckedorff | CRM 226325SP</small>
+            </div>
+
+            <h1 className="display-4 fw-bold mb-4 lh-sm animate__animated animate__fadeInUp" style={{ color: 'var(--azul-escuro)' }}>
+              {customTitle || title}
+            </h1>
+
+            <p className="lead mb-4 text-muted animate__animated animate__fadeInUp animate__delay-1s" style={{ fontSize: '1.25rem' }}>
               {text1}
             </p>
-            <p className="hero-text">{text2}</p>
-            <a href={ctaLink} className="btn-primary-custom">{ctaLabel}</a>
+
+            <p className="text-secondary mb-5 animate__animated animate__fadeInUp animate__delay-2s" style={{ maxWidth: '90%' }}>
+              {text2}
+            </p>
+
+            <div className="d-flex flex-wrap gap-3 animate__animated animate__fadeInUp animate__delay-3s">
+              <a href="https://wa.me/5519999439824" target="_blank" className="btn btn-lg rounded-pill px-5 fw-bold shadow-lg hover-lift"
+                style={{ backgroundColor: 'var(--azul-principal)', color: 'white', border: 'none' }}>
+                Agendar Consulta <i className="bi bi-whatsapp ms-2"></i>
+              </a>
+              <a href="/sobre" className="btn btn-lg btn-outline-dark rounded-pill px-5 fw-bold hover-lift">
+                Saiba mais
+              </a>
+            </div>
           </div>
 
-          <div className="col-lg-5">
-            <div className="hero-photo">
-              {/* Otimização Image do Next.js */}
+          <div className="col-lg-5 text-center position-relative">
+            <div className="position-relative d-inline-block">
+              {/* Moldura ou efeito na foto */}
+              <div className="position-absolute top-0 start-0 w-100 h-100 bg-primary rounded-circle opacity-25" style={{ transform: 'translate(15px, 15px)', filter: 'blur(0px)' }}></div>
+
               <Image
                 src={imagePath}
                 alt={title}
                 width={500}
                 height={550}
                 priority
-                className="img-fluid"
-                style={{ objectFit: "cover" }}
+                className="img-fluid position-relative rounded-circle shadow-lg animate__animated animate__zoomIn"
+                style={{ objectFit: "cover", width: '400px', height: '400px', border: '8px solid white' }}
               />
             </div>
           </div>
         </div>
       </div>
+
+      <style jsx>{`
+        .hover-lift { transition: transform 0.3s; }
+        .hover-lift:hover { transform: translateY(-3px); }
+      `}</style>
     </section>
   );
 }
