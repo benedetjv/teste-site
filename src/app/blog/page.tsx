@@ -561,10 +561,10 @@ export default function BlogIndex() {
                     <div className="row justify-content-center text-center">
                         <div className="col-lg-8">
                             <span className="badge rounded-pill bg-primary bg-opacity-10 text-primary px-3 py-2 mb-3 fw-bold text-uppercase" style={{ letterSpacing: '1px' }}>
-                                Portal de Medicina Intervencionista
+                                Informação médica clara e acessível
                             </span>
-                            <h1 className="display-4 fw-bold mb-3" style={{ color: 'var(--azul-escuro)' }}>Vida em Movimento: O Caminho para o Alívio de Precisão</h1>
-                            <p className="lead text-secondary mb-0">Informação de última geração para quem busca recuperar a liberdade de movimento e a qualidade de vida.</p>
+                            <h1 className="display-4 fw-bold mb-3" style={{ color: 'var(--azul-escuro)' }}>Ortopedia, Dor e Tratamento com Dr. Otto</h1>
+                            <p className="lead text-secondary mb-0">Blog criado pelo Dr. Otto, com foco em ortopedia e medicina da dor, trazendo explicações claras e baseadas em evidência sobre dor musculoesquelética, dor aguda, dor crônica, dor na coluna, dores articulares, cefaleia, tratamentos intervencionistas e soluções modernas. Conteúdo médico confiável, com linguagem facilitada para quem busca entender o que sente — e o que pode fazer para tratar.</p>
                         </div>
                     </div>
                 </div>
