@@ -27,7 +27,7 @@ export default function Hero({ customTitle }: HeroProps) {
           <div className="col-lg-7 py-5">
             {/* Tagline com CRM */}
             <div className="d-inline-block px-3 py-1 mb-3 rounded-pill" style={{ backgroundColor: 'rgba(var(--azul-principal-rgb), 0.1)', color: 'var(--azul-escuro)' }}>
-              <small className="fw-bold text-uppercase ls-1">Dr. Otto Beckedorff | CRM 226325SP</small>
+              <small className="fw-bold text-uppercase ls-1">Dr. Otto Beckedorff | CRM 226325SP | RQE 139078</small>
             </div>
 
             <h1 className="display-4 fw-bold mb-4 lh-sm animate__animated animate__fadeInUp" style={{ color: 'var(--azul-escuro)' }}>
