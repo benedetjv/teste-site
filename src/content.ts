@@ -133,7 +133,7 @@ export const siteContent: SiteContent = {
         nome: "Clínica Somamed",
         enderecoCompleto: "Av. Minas Gerais, 981 – Jacutinga, MG, 37590-000",
         mapIframeSrc: "https://www.google.com/maps?q=Av.+Minas+Gerais+981+Jacutinga+MG&hl=pt-BR&z=16&output=embed",
-        wazeUrl: "https://waze.com/ul/h6gyt8ysqp"
+        wazeUrl: "https://ul.waze.com/ul?ll=-22.30069090%2C-46.61998987&navigate=yes&zoom=17&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location"
       },
       {
         nome: "Clínica Adora",
