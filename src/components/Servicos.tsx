@@ -50,9 +50,7 @@ export default function Servicos() {
 
   return (
     <section id="servicos" className="section-light">
-      <div className="container">
-        <h2 className="section-title">{titulo}</h2>
-      </div>
+
 
       <div className="servicos-grid">
         <div className="servicos-grid-inner">
