@@ -32,6 +32,12 @@ export default function Home() {
         {/* AGENDAMENTO / DOCTORALIA */}
         <Doctoralia />
 
+        {/* ESTATÍSTICAS DE AUTORIDADE (NOVO POSICIONAMENTO) */}
+        <StatsBar />
+
+        {/* DEPOIMENTOS (NOVO POSICIONAMENTO) */}
+        <Testimonials />
+
         {/* COMO POSSO TE AJUDAR (GRID) */}
         <Servicos />
 
@@ -41,14 +47,8 @@ export default function Home() {
         {/* SOBRE MIM */}
         <Sobre />
 
-        {/* ESTATÍSTICAS DE AUTORIDADE (NOVO) */}
-        <StatsBar />
-
         {/* DOENÇAS / PUBLICAÇÕES / PRÊMIOS (Ícones + listas) */}
         <Listas />
-
-        {/* DEPOIMENTOS (NOVO) */}
-        <Testimonials />
 
         {/* CONTATO (LIMPO E ORGANIZADO) */}
         <Contato />
