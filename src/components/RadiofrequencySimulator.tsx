@@ -101,7 +101,8 @@ export default function RadiofrequencySimulator() {
             setStimVoltage(0);
             stimInterval = setInterval(() => {
                 setStimVoltage(prev => {
-                    if (prev >= 0.5) return 0.5;
+                    const limit = motorActive ? 1.0 : 0.5;
+                    if (prev >= limit) return limit;
                     return Number((prev + 0.1).toFixed(1));
                 });
             }, 100);
