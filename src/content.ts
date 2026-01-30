@@ -101,7 +101,7 @@ export const siteContent: SiteContent = {
       titulo: "Prêmios",
       iconClass: "bi-trophy",
       items: [
-        "Prêmios em congressos nacionais de ortopedia e dor.",
+        "Prêmios em diversos congressos nacionais.",
         "Young Investigator Awards e reconhecimentos em eventos internacionais.",
         "Coautor em estudos publicados em revistas de alto impacto e citados na imprensa.",
       ]
