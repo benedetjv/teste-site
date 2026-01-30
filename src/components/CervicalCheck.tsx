@@ -91,15 +91,15 @@ export default function CervicalCheck() {
                                         Seus sintomas indicam que a dor de cabeça pode estar vindo de <strong>inflamação no pescoço</strong> (Cefaleia Cervicogênica), e não de uma enxaqueca comum.
                                     </p>
                                     <div className="alert alert-light border border-success p-3 mb-4 rounded-3 text-start">
-                                        <i className="bi bi-check-circle-fill text-success me-2"></i>
-                                        Isso é uma <strong>boa notícia</strong>: significa que tratar as articulações do pescoço (sem remédios fortes) pode eliminar a dor.
+                                        <i className="bi bi-info-circle-fill text-success me-2"></i>
+                                        <strong>Recomendação:</strong> Uma avaliação médica é fundamental para confirmar se a origem é articular e verificar a possibilidade de realizar uma <strong>infiltração</strong> ou bloqueio diagnóstico.
                                     </div>
                                     <a
-                                        href={`https://wa.me/5519999439824?text=Olá, fiz o teste e minha dor de cabeça parece vir do pescoço. Gostaria de avaliar.`}
+                                        href={`https://wa.me/5519999439824?text=Olá, fiz o teste e minha dor de cabeça parece vir do pescoço. Gostaria de agendar avaliação.`}
                                         target="_blank"
                                         className="btn btn-success btn-lg rounded-pill px-5 py-3 fw-bold shadow hover-lift"
                                     >
-                                        Agendar Avaliação do Pescoço
+                                        Agendar Avaliação Médica
                                     </a>
                                 </>
                             ) : (
@@ -117,7 +117,7 @@ export default function CervicalCheck() {
                                         target="_blank"
                                         className="btn btn-outline-primary btn-lg rounded-pill px-5 py-3 fw-bold shadow-sm hover-lift"
                                     >
-                                        Falar com Consultor
+                                        Agendar Consulta
                                     </a>
                                 </>
                             )}
