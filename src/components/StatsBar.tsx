@@ -10,7 +10,7 @@ const stats = [
     },
     {
         number: "90%",
-        label: "Casos Tratados Sem Cirurgia",
+        label: "Maioria sem necessidade de tratamento cirúrgico",
         icon: "bi-heart-pulse-fill"
     },
     {

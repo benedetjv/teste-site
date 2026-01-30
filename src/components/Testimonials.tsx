@@ -28,9 +28,27 @@ const testimonials = [
         rating: 5
     },
     {
-        initials: "FH",
-        name: "Felipe H.S.",
-        text: "Dr. me atendeu super bem e me explicou detalhadamente todos os aspectos das dores da minhas costas. Deu tudo certo!",
+        initials: "J",
+        name: "Juliana",
+        text: "Super atualizado e atencioso. Resolveu todos meus problemas! Excelente atendimento, esclareceu minhas dúvidas e conseguiu eliminar minha dor.",
+        rating: 5
+    },
+    {
+        initials: "DG",
+        name: "Douglas Godoy",
+        text: "Extremamente pontual e atencioso no atendimento com explicações bem detalhadas. Me tranquilizou e passou uma confiança de competência.",
+        rating: 5
+    },
+    {
+        initials: "B",
+        name: "Beatriz",
+        text: "Ótimo atendimento e explicação, se preocupa com o paciente. Fico feliz em ter encontrado um médico que traz clareza para o caso.",
+        rating: 5
+    },
+    {
+        initials: "GG",
+        name: "Giovane Garcia",
+        text: "Recomendo demais o Dr. Otto! Ótimo atendimento e tratamento muito eficaz. Fiquei muito feliz com o resultado.",
         rating: 5
     },
     {
