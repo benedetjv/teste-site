@@ -69,8 +69,8 @@ export const siteContent: SiteContent = {
   sobre: {
     titulo: "Sobre mim:",
     crmRqe: "Dr. Otto Beckedorff – CRM 226325SP | RQE 139078",
-    text1: "Dr. Otto, com foco em ortopedia e medicina da dor, trazendo explicações claras e baseadas em evidência sobre dor musculoesquelética, dor aguda, dor crônica, dor na coluna, dores articulares, cefaleia, tratamentos intervencionistas e soluções modernas.",
-    text2: "Foco em dor clínica e intervencionista. Minha missão é devolver movimento, conforto e autonomia ao paciente, com tratamento preciso para evitar cirurgias desnecessárias.",
+    text1: "Sou ortopedista com formação pelo Hospital Vera Cruz (Campinas/SP) e atuação focada no diagnóstico e tratamento da dor musculoesquelética, especialmente dores na coluna, joelho, quadril e ombro. Atendo pacientes com dores agudas ou crônicas, que muitas vezes convivem com limitações físicas e impacto direto na qualidade de vida.",
+    text2: "Utilizo procedimentos minimamente invasivos, como bloqueios, infiltrações, ácido hialurônico, neuromodulação e radiofrequência, para oferecer alívio efetivo da dor — com recuperação rápida e, ajudando muitos pacientes a evitar cirurgias desnecessárias. Minha missão é ajudar meus pacientes a voltarem às suas atividades com mais conforto, movimento e autonomia, sempre com escuta ativa, abordagem moderna e tratamento individualizado.",
     image: "img/otto-em-procedimento.jpg"
   },
 
