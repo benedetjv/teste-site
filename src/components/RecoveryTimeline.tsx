@@ -14,7 +14,7 @@ const STAGES: Stage[] = [
     {
         label: 'Dia 1',
         title: 'Poucas horas após',
-        description: 'O efeito do anestésico local ainda é forte. Você se sente leve e com alívio imediato.',
+        description: 'Nas primeiras horas, o efeito do anestésico local ajuda a reduzir a dor. Em muitos casos, já há alívio inicial — mas o efeito completo costuma ser avaliado após alguns dias, conforme o tipo de medicação utilizada.',
         allowed: ['Caminhadas leves dentro de casa', 'Subir poucos degraus', 'Sentar para refeições'],
         restricted: ['Dirigir (nas primeiras 6-12h)', 'Carregar peso', 'Atividades domésticas pesadas']
     },
