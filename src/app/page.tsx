@@ -10,16 +10,17 @@ import WaveDivider from "@/components/WaveDivider";
 import PatientJourney from "@/components/PatientJourney";
 import StatsBar from "@/components/StatsBar";
 import Testimonials from "@/components/Testimonials";
+import { Reveal } from "@/components/Reveal";
 
 export default function Home() {
   return (
-    <div className="d-flex flex-column min-vh-100">
+    <div className="d-flex flex-column min-vh-100 overflow-hidden">
       {/* HEADER */}
       <Header />
 
       {/* CONTEÚDO PRINCIPAL */}
       <main id="topo">
-        {/* HERO */}
+        {/* HERO (Sem Reveal para carregar instantâneo) */}
         <Hero />
 
         {/* ONDA DE TRANSIÇÃO SUAVE */}
@@ -27,29 +28,45 @@ export default function Home() {
           <WaveDivider position="bottom" fill="#ffffff" />
         </div>
 
-        {/* AGENDAMENTO / DOCTORALIA */}
-        <Doctoralia />
+        <Reveal>
+          {/* AGENDAMENTO / DOCTORALIA */}
+          <Doctoralia />
+        </Reveal>
 
-        {/* ESTATÍSTICAS DE AUTORIDADE */}
-        <StatsBar />
+        <Reveal delay={0.1}>
+          {/* ESTATÍSTICAS DE AUTORIDADE */}
+          <StatsBar />
+        </Reveal>
 
-        {/* PROCEDIMENTOS (TEASER) */}
-        <ServicesTeaser />
+        <Reveal>
+          {/* PROCEDIMENTOS (TEASER) */}
+          <ServicesTeaser />
+        </Reveal>
 
-        {/* JORNADA DO PACIENTE */}
-        <PatientJourney />
+        <Reveal>
+          {/* JORNADA DO PACIENTE */}
+          <PatientJourney />
+        </Reveal>
 
-        {/* SOBRE MIM (TEASER) */}
-        <AboutTeaser />
+        <Reveal>
+          {/* SOBRE MIM (TEASER) */}
+          <AboutTeaser />
+        </Reveal>
 
-        {/* DEPOIMENTOS */}
-        <Testimonials />
+        <Reveal>
+          {/* DEPOIMENTOS */}
+          <Testimonials />
+        </Reveal>
 
-        {/* BLOG */}
-        <Blog />
+        <Reveal>
+          {/* BLOG */}
+          <Blog />
+        </Reveal>
 
-        {/* LOCALIZAÇÃO (IMPORTANTE NA HOME) */}
-        <Localizacao />
+        <Reveal>
+          {/* LOCALIZAÇÃO */}
+          <Localizacao />
+        </Reveal>
       </main>
 
 

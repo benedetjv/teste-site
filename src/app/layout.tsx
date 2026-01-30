@@ -98,7 +98,19 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           }}
         />
       </head>
-      <body className={nunito.className}>
+      <body className={nunito.className} style={{ backgroundColor: '#f8f9fa', position: 'relative' }}>
+        {/* Fundo Premium Sutil */}
+        <div style={{
+          position: 'fixed',
+          top: 0,
+          left: 0,
+          width: '100%',
+          height: '100%',
+          zIndex: -1,
+          background: 'radial-gradient(circle at 15% 15%, rgba(42, 65, 86, 0.04) 0%, transparent 50%), radial-gradient(circle at 85% 85%, rgba(46, 139, 87, 0.04) 0%, transparent 50%)',
+          pointerEvents: 'none'
+        }}></div>
+
         {children}
         <BootstrapClient />
       </body>
