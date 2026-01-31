@@ -6,7 +6,7 @@ import Footer from "@/components/Footer";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
-    title: "Contato e Localização | Dr. Otto Beckedorff",
+    title: "Contato | Dr. Otto Beckedorff",
     description: "Agende sua consulta com o Dr. Otto Beckedorff em Campinas ou Jacutinga. Veja endereços, telefones e links para WhatsApp.",
 };
 
