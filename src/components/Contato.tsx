@@ -27,6 +27,7 @@ export default function Contato() {
                     <i className="bi bi-whatsapp fs-4"></i>
                   </div>
                   <div>
+                    <span className="badge bg-light text-muted border rounded-pill mb-1 px-2" style={{ fontSize: '0.65rem' }}>{clinic.nome.includes('Somamed') ? 'JACUTINGA-MG' : 'CAMPINAS-SP'}</span>
                     <h4 className="fw-bold mb-0" style={{ color: '#2a4156' }}>{clinic.nome}</h4>
                     <span className="text-muted small">Atendimento via WhatsApp</span>
                   </div>

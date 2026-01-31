@@ -31,7 +31,7 @@ export default function Localizacao() {
                   <div className="p-4">
                     <div className="d-flex justify-content-between align-items-start mb-3">
                       <div>
-                        <span className="badge bg-light text-muted border rounded-pill mb-2 px-3">{city === 'Jacutinga' ? 'Minas Gerais' : 'São Paulo'}</span>
+                        <span className="badge bg-light text-muted border rounded-pill mb-2 px-3">{city === 'Jacutinga' ? 'JACUTINGA-MG' : 'CAMPINAS-SP'}</span>
                         <h3 className="fw-bold mb-1" style={{ color: '#2a4156' }}>{clinic.nome}</h3>
                       </div>
                       <div className="p-3 rounded-circle" style={{ backgroundColor: 'rgba(125, 153, 178, 0.1)', color: '#7d99b2' }}>
