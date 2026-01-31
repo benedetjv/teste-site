@@ -2,40 +2,57 @@ import { MetadataRoute } from 'next';
 import fs from 'fs';
 import path from 'path';
 
-export default function sitemap(): MetadataRoute.Sitemap {
-    const baseUrl = 'https://drotto.com.br';
+const BASE_URL = 'https://drotto.com.br';
 
-    // 1. Páginas estáticas principais
-    const staticPages = [
+export default function sitemap(): MetadataRoute.Sitemap {
+    // 1. Páginas Estáticas Conhecidas e Landing Pages
+    // Adicionamos aqui para controlar prioridade manual
+    const staticRoutes = [
         '',
         '/sobre',
-        '/localizacao',
         '/procedimentos',
         '/contato',
+        '/localizacao',
         '/blog',
-        '/ortopedista-campinas',
-        '/ortopedista-jacutinga',
         '/preconsulta',
-    ].map((route) => ({
-        url: `${baseUrl}${route}`,
+        '/ortopedista-campinas',
+        '/ortopedista-jacutinga'
+    ];
+
+    const staticSitemap = staticRoutes.map((route) => ({
+        url: `${BASE_URL}${route}`,
         lastModified: new Date(),
-        changeFrequency: 'weekly' as const,
+        changeFrequency: route === '' ? 'weekly' as const : 'monthly' as const,
         priority: route === '' ? 1 : 0.8,
     }));
 
-    // 2. Ler posts do blog dinamicamente
+    // 2. Blog Posts (Dinâmico)
+    // Varre src/app/blog para encontrar qualquer pasta que seja um post
     const blogDir = path.join(process.cwd(), 'src', 'app', 'blog');
+    let blogPosts: MetadataRoute.Sitemap = [];
 
-    // Lista apenas diretórios dentro de /blog (ignorando arquivos como page.tsx se houver na raiz)
-    const blogPosts = fs.readdirSync(blogDir).filter((file) => {
-        const filePath = path.join(blogDir, file);
-        return fs.statSync(filePath).isDirectory();
-    }).map((slug) => ({
-        url: `${baseUrl}/blog/${slug}`,
-        lastModified: new Date(),
-        changeFrequency: 'monthly' as const,
-        priority: 0.7,
-    }));
+    if (fs.existsSync(blogDir)) {
+        const items = fs.readdirSync(blogDir, { withFileTypes: true });
 
-    return [...staticPages, ...blogPosts];
+        blogPosts = items
+            .filter(item => item.isDirectory())
+            .map(dir => {
+                // Verifica se existe um arquivo de página válido dentro da pasta
+                const hasMdx = fs.existsSync(path.join(blogDir, dir.name, 'page.mdx'));
+                const hasTsx = fs.existsSync(path.join(blogDir, dir.name, 'page.tsx'));
+
+                if (hasMdx || hasTsx) {
+                    return {
+                        url: `${BASE_URL}/blog/${dir.name}`,
+                        lastModified: new Date(),
+                        changeFrequency: 'monthly' as const,
+                        priority: 0.7,
+                    };
+                }
+                return null;
+            })
+            .filter((item): item is MetadataRoute.Sitemap[number] => item !== null);
+    }
+
+    return [...staticSitemap, ...blogPosts];
 }
