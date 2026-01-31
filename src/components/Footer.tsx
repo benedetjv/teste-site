@@ -17,9 +17,8 @@ export default function Footer() {
               Medicina focada em devolver sua qualidade de vida. Diagnóstico preciso e tratamentos minimamente invasivos para dor crônica.
             </p>
             <div className="d-flex gap-3">
-              <a href="https://instagram.com" target="_blank" className="text-white opacity-75 hover-opacity-100 fs-5"><i className="bi bi-instagram"></i></a>
-              <a href="https://linkedin.com" target="_blank" className="text-white opacity-75 hover-opacity-100 fs-5"><i className="bi bi-linkedin"></i></a>
-              <a href="mailto:contato@drotto.com.br" className="text-white opacity-75 hover-opacity-100 fs-5"><i className="bi bi-envelope"></i></a>
+              <a href="https://www.instagram.com/drottobeckedorff/" target="_blank" className="text-white opacity-75 hover-opacity-100 fs-5"><i className="bi bi-instagram"></i></a>
+              <a href="https://br.linkedin.com/in/otto-beckedorff-7a5283206" target="_blank" className="text-white opacity-75 hover-opacity-100 fs-5"><i className="bi bi-linkedin"></i></a>
             </div>
           </div>
 
@@ -39,11 +38,11 @@ export default function Footer() {
           <div className="col-lg-3 col-md-6">
             <h6 className="fw-bold text-white mb-3 text-uppercase small" style={{ letterSpacing: '1px' }}>Áreas de Atuação</h6>
             <ul className="list-unstyled d-flex flex-column gap-2 small">
-              <li><Link href="/blog/hernia-de-disco-L4-L5-tratamentos" className="text-white-50 text-decoration-none hover-white">Hérnia de Disco</Link></li>
-              <li><Link href="/blog/radiofrequencia-coluna-como-funciona" className="text-white-50 text-decoration-none hover-white">Radiofrequência Lombar</Link></li>
+              <li><Link href="/blog/hernia-l4-l5-s1" className="text-white-50 text-decoration-none hover-white">Hérnia de Disco</Link></li>
+              <li><Link href="/blog/radiofrequencia-lombar-recuperacao" className="text-white-50 text-decoration-none hover-white">Radiofrequência Lombar</Link></li>
               <li><Link href="/blog/protese-vs-viscossuplementacao" className="text-white-50 text-decoration-none hover-white">Infiltração de Joelho</Link></li>
               <li><Link href="/blog/bursite-quadril-tratamento" className="text-white-50 text-decoration-none hover-white">Bursite de Quadril</Link></li>
-              <li><a href="#" className="text-white-50 text-decoration-none hover-white">Tratamento da Dor</a></li>
+              <li><Link href="/procedimentos" className="text-white-50 text-decoration-none hover-white">Tratamento da Dor</Link></li>
             </ul>
           </div>
 
@@ -55,14 +54,10 @@ export default function Footer() {
                 <i className="bi bi-geo-alt-fill text-primary"></i>
                 <span>Campinas - SP<br />Jacutinga - MG</span>
               </li>
-              <li className="d-flex gap-2">
-                <i className="bi bi-whatsapp text-success"></i>
-                <span>(19) 99943-9824</span>
-              </li>
             </ul>
-            <Link href="/agendamento" className="btn btn-sm btn-outline-light rounded-pill mt-2 w-100">
+            <a href="https://www.doctoralia.com.br/otto-beckedorff/ortopedista-traumatologista/campinas" target="_blank" className="btn btn-sm btn-outline-light rounded-pill mt-2 w-100">
               Agendar Consulta
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -72,12 +67,12 @@ export default function Footer() {
         <div className="row align-items-center py-2">
           <div className="col-md-6 text-center text-md-start">
             <p className="small mb-0 text-white-50" style={{ fontSize: '0.8rem' }}>
-              © {currentYear} Dr. Otto Beckedorff. Todos os direitos reservados. CRM-SP 123456.
+              © {currentYear} Dr. Otto Beckedorff. Todos os direitos reservados. CRM 226325SP | RQE 139078.
             </p>
           </div>
           <div className="col-md-6 text-center text-md-end">
             <p className="small mb-0 text-white-50" style={{ fontSize: '0.75rem', opacity: 0.6 }}>
-              Atuação em Ortopedia e Dor. Foco em Coluna, Joelho, Quadril e Dor Crônica. Campinas/SP e Jacutinga/MG.
+              Excelência Médica em Ortopedia e Tratamento da Dor. Foco em Patologias da Coluna, Joelho e Quadril.
             </p>
           </div>
         </div>
