@@ -5,7 +5,7 @@ import Footer from "@/components/Footer";
 
 export const metadata = {
     title: 'Sobre o Dr. Otto Beckedorff | Ortopedia e Dor',
-    description: 'Conheça a trajetória, formação e prêmios do Dr. Otto Beckedorff, especialista em tratamento da dor e ortopedia minimamente invasiva.',
+    description: 'Conheça a trajetória, formação e prêmios do Dr. Otto Beckedorff, com foco em tratamento da dor e ortopedia minimamente invasiva.',
 };
 
 export default function SobrePage() {

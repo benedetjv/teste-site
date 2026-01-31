@@ -37,7 +37,7 @@ export default function Footer() {
 
           {/* Coluna 3: Tratamentos SEO */}
           <div className="col-lg-3 col-md-6">
-            <h6 className="fw-bold text-white mb-3 text-uppercase small" style={{ letterSpacing: '1px' }}>Especialidades</h6>
+            <h6 className="fw-bold text-white mb-3 text-uppercase small" style={{ letterSpacing: '1px' }}>Áreas de Atuação</h6>
             <ul className="list-unstyled d-flex flex-column gap-2 small">
               <li><Link href="/blog/hernia-de-disco-L4-L5-tratamentos" className="text-white-50 text-decoration-none hover-white">Hérnia de Disco</Link></li>
               <li><Link href="/blog/radiofrequencia-coluna-como-funciona" className="text-white-50 text-decoration-none hover-white">Radiofrequência Lombar</Link></li>
@@ -77,7 +77,7 @@ export default function Footer() {
           </div>
           <div className="col-md-6 text-center text-md-end">
             <p className="small mb-0 text-white-50" style={{ fontSize: '0.75rem', opacity: 0.6 }}>
-              Referência em <strong>Dor Campinas</strong>. Tratamento de Coluna, Hérnia e Dor Crônica.
+              Atuação em Ortopedia e Dor. Foco em Coluna, Joelho, Quadril e Dor Crônica. Campinas/SP e Jacutinga/MG.
             </p>
           </div>
         </div>

@@ -11,7 +11,7 @@ import Footer from "@/components/Footer";
 
 export const metadata = {
     title: "Ortopedista em Campinas | Dr. Otto Beckedorff - Tratamento da Dor",
-    description: "Clínica de Ortopedia e Tratamento da Dor em Campinas (Centro e Região). Especialista em coluna, joelho e procedimentos minimamente invasivos.",
+    description: "Clínica de Ortopedia e Tratamento da Dor em Campinas (Centro e Região). Foco em coluna, joelho e procedimentos minimamente invasivos.",
     openGraph: {
         title: "Ortopedista em Campinas | Dr. Otto Beckedorff",
         description: "Referência em Ortopedia e Tratamento da Dor em Campinas.",
@@ -28,7 +28,7 @@ export default function PageCampinas() {
             <Header />
             <main id="topo">
                 {/* Título Personalizado para Campinas */}
-                <Hero customTitle="Ortopedia Especializada e Tratamento da Dor em Campinas" />
+                <Hero customTitle="Ortopedia e Tratamento da Dor em Campinas" />
                 <Doctoralia />
                 <Servicos />
                 <Sobre />

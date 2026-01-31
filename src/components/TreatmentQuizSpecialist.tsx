@@ -29,7 +29,7 @@ export default function TreatmentQuizSpecialist() {
     return (
         <div className="card shadow border-0 my-4 bg-white" style={{ borderRadius: '15px', overflow: 'hidden' }}>
             <div className="card-header bg-primary text-white p-4 text-center border-0">
-                <h4 className="mb-0 fw-bold"><i className="bi bi-clipboard-pulse me-2"></i> Está na hora de procurar um especialista?</h4>
+                <h4 className="mb-0 fw-bold"><i className="bi bi-clipboard-pulse me-2"></i> Está na hora de procurar ajuda médica?</h4>
                 <p className="small mb-0 mt-2 opacity-75">Marque todas as frases que combinam com você</p>
             </div>
 
@@ -65,7 +65,7 @@ export default function TreatmentQuizSpecialist() {
                         <div className="mb-4">
                             <i className="bi bi-shield-check text-success display-1"></i>
                         </div>
-                        <h4 className="fw-bold text-dark mb-3">Sua saúde precisa de atenção especializada.</h4>
+                        <h4 className="fw-bold text-dark mb-3">Sua saúde precisa de atenção profissional.</h4>
 
                         <p className="text-secondary mb-4 px-md-5">
                             Você assinalou <b>{selected.length}</b> sinais que indicam que a sua dor não está sendo tratada na raiz.

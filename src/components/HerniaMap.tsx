@@ -120,7 +120,7 @@ export default function HerniaMap() {
 
                             <p className="lead text-muted mb-4 px-md-5">
                                 Esses sintomas típicos de irradiação indicam que a hérnia pode estar inflamando o nervo.<br /><br />
-                                <strong>O Dr. Otto é especialista em tratar exatamente esse tipo de dor</strong> sem precisar de grandes cirurgias.
+                                <strong>O Dr. Otto tem foco no tratamento deste tipo de dor</strong> sem precisar de grandes cirurgias.
                             </p>
 
                             <a

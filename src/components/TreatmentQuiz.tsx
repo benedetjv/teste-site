@@ -118,7 +118,7 @@ export default function TreatmentQuiz() {
 
                         <div className="d-grid gap-2 d-md-block">
                             <button onClick={reset} className="btn btn-light me-md-2 px-4 rounded-pill">Refazer Teste</button>
-                            <a href="https://wa.me/5519999439824" className="btn btn-primary px-4 rounded-pill shadow">Conversar com Especialista</a>
+                            <a href="https://wa.me/5519999439824" className="btn btn-primary px-4 rounded-pill shadow">Falar com Dr. Otto</a>
                         </div>
 
                         <p className="mt-4 small text-muted italic">
