@@ -18,13 +18,14 @@ export default function Localizacao() {
           <span className="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill mb-3 px-3 py-2">
             <i className="bi bi-geo-alt me-2"></i>Onde Estamos
           </span>
-          <h2 className="fw-bold text-dark display-6">Nossas Unidades</h2>
-          <p className="text-muted">Encontre a clínica mais próxima de você</p>
+          <h2 className="fw-bold text-dark display-6">Locais de Atendimento</h2>
+          <p className="text-muted">Enquire a clínica mais próxima de você</p>
         </div>
 
         <div className="row g-5 justify-content-center">
           {clinicas.map((clinic) => {
             const contact = getContactInfo(clinic.nome);
+            const city = clinic.nome.includes('Somamed') ? 'Jacutinga' : 'Campinas';
             return (
               <div className="col-lg-6" key={clinic.nome}>
                 <div className="bg-white rounded-4 shadow-lg overflow-hidden h-100 hover-lift transition-all position-relative border border-light">
@@ -34,7 +35,7 @@ export default function Localizacao() {
                   <div className="p-4">
                     <div className="d-flex justify-content-between align-items-start mb-3">
                       <div>
-                        <span className="badge bg-light text-muted border rounded-pill mb-2 px-3">{clinic.nome.includes('Somamed') ? 'Minas Gerais' : 'São Paulo'}</span>
+                        <span className="badge bg-light text-muted border rounded-pill mb-2 px-3">{city === 'Jacutinga' ? 'Minas Gerais' : 'São Paulo'}</span>
                         <h3 className="fw-bold text-dark mb-1">{clinic.nome}</h3>
                       </div>
                       <div className="bg-primary bg-opacity-10 p-3 rounded-circle text-primary">
@@ -64,7 +65,7 @@ export default function Localizacao() {
                       {/* Contact Buttons */}
                       <div className="col-12 mb-2">
                         <a href={contact.whatsappLink} target="_blank" className="btn btn-outline-success w-100 rounded-pill fw-bold py-2 d-flex align-items-center justify-content-center gap-2">
-                          <i className="bi bi-whatsapp"></i> Agendar nessa unidade
+                          <i className="bi bi-whatsapp"></i> Agende em {city}
                         </a>
                       </div>
 
