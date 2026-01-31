@@ -225,15 +225,15 @@ export default function BodySelector({
                                     style={{
                                         top: region.top,
                                         left: region.left,
-                                        width: isEditMode ? '18px' : '20px',
-                                        height: isEditMode ? '18px' : '20px',
+                                        width: isEditMode ? '24px' : '30px',
+                                        height: isEditMode ? '24px' : '30px',
                                         transform: 'translate(-50%, -50%)',
                                         zIndex: isEditMode ? (activeAdjustId === region.id ? 2000 : 1500) : (selectedIds.includes(region.id) ? 100 : 10),
                                         backgroundColor: isEditMode ? '#dc3545' : (selectedIds.includes(region.id) ? 'var(--azul-medio)' : 'white'),
                                         borderColor: selectedIds.includes(region.id) ? 'white' : 'var(--azul-claro)'
                                     }}
                                 >
-                                    <div className={`position-absolute top-50 start-50 translate-middle rounded-circle ${selectedIds.includes(region.id) ? 'bg-white shadow-sm' : ''}`} style={{ width: '4px', height: '4px', backgroundColor: selectedIds.includes(region.id) ? 'white' : (isEditMode ? 'white' : 'var(--azul-claro)') }}></div>
+                                    <div className={`position-absolute top-50 start-50 translate-middle rounded-circle ${selectedIds.includes(region.id) ? 'bg-white shadow-sm' : ''}`} style={{ width: '8px', height: '8px', backgroundColor: selectedIds.includes(region.id) ? 'white' : (isEditMode ? 'white' : 'var(--azul-claro)') }}></div>
 
                                     {isEditMode && (
                                         <div className="position-absolute top-100 start-50 translate-middle-x mt-1 d-flex flex-column align-items-center" style={{ pointerEvents: 'none', zIndex: 2100 }}>
