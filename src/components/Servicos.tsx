@@ -17,7 +17,7 @@ function ServiceIcon({ svgPath }: ServiceIconProps) {
       aria-hidden="true"
       fill="none"
       stroke="currentColor"
-      strokeWidth="1.5"
+      strokeWidth="1.2"
       strokeLinecap="round"
       strokeLinejoin="round"
       dangerouslySetInnerHTML={{ __html: svgPath }}
@@ -26,14 +26,14 @@ function ServiceIcon({ svgPath }: ServiceIconProps) {
 }
 
 const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 30 },
+  hidden: { opacity: 0, y: 10 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.1,
-      duration: 0.6,
-      ease: [0.22, 1, 0.36, 1]
+      delay: i * 0.05,
+      duration: 0.5,
+      ease: "easeOut"
     }
   })
 };
@@ -42,40 +42,30 @@ export default function Servicos() {
   const { items } = siteContent.servicos;
 
   return (
-    <section id="servicos" className="py-5" style={{ backgroundColor: '#f8f9fa' }}>
+    <section id="servicos" className="py-5" style={{ backgroundColor: '#ffffff' }}>
       <div className="container">
-        <div className="row g-4">
+        <div className="row g-0 border-top border-start" style={{ borderColor: '#eee' }}>
           {items.map((item, index) => (
-            <div className="col-lg-4 col-md-6" key={index}>
+            <div className="col-lg-4 col-md-6 border-end border-bottom" key={index} style={{ borderColor: '#eee' }}>
               <motion.div
-                className="bg-white rounded-4 p-4 h-100 shadow-sm border border-light position-relative overflow-hidden hover-card-premium transition-all"
+                className="p-5 h-100 hover-subtle transition-all"
                 custom={index}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-50px" }}
                 variants={cardVariants}
               >
-                {/* Decorative Element */}
-                <div className="position-absolute top-0 end-0 p-3 opacity-10">
-                  <i className="bi bi-plus-lg display-1 fw-bold" style={{ color: '#7d99b2' }}></i>
+                <div className="mb-4 d-inline-block p-3 rounded-circle" style={{ backgroundColor: '#fcfdfe', color: '#7d99b2' }}>
+                  <ServiceIcon svgPath={item.iconSvgPath} />
                 </div>
 
-                <div className="position-relative z-1">
-                  <div className="icon-box-premium mb-4 d-flex align-items-center justify-content-center shadow-sm" style={{ width: '60px', height: '60px', backgroundColor: 'rgba(125, 153, 178, 0.1)', color: '#7d99b2', borderRadius: '16px' }}>
-                    <ServiceIcon svgPath={item.iconSvgPath} />
-                  </div>
+                <h4 className="fw-bold mb-3" style={{ color: '#2a4156', fontSize: '1.15rem', letterSpacing: '-0.2px' }}>
+                  {item.titulo}
+                </h4>
 
-                  <h4 className="fw-bold mb-3" style={{ color: '#2a4156', letterSpacing: '-0.5px' }}>
-                    {item.titulo}
-                  </h4>
-
-                  <p className="text-muted small mb-0" style={{ lineHeight: '1.7', fontSize: '0.95rem' }}>
-                    {item.descricao}
-                  </p>
-                </div>
-
-                {/* Bottom Border Accent */}
-                <div className="position-absolute bottom-0 start-0 w-100 accent-bar" style={{ height: '4px', backgroundColor: '#7d99b2', transform: 'scaleX(0)', transition: 'transform 0.3s ease', transformOrigin: 'left' }}></div>
+                <p className="text-muted mb-0" style={{ lineHeight: '1.8', fontSize: '0.9rem', fontWeight: '400' }}>
+                  {item.descricao}
+                </p>
               </motion.div>
             </div>
           ))}
@@ -84,19 +74,18 @@ export default function Servicos() {
 
       <style jsx>{`
         .servico-icon-premium {
-          width: 32px;
-          height: 32px;
+          width: 36px;
+          height: 36px;
         }
-        .hover-card-premium:hover {
-          transform: translateY(-8px);
-          box-shadow: 0 1rem 3rem rgba(0,0,0,.08)!important;
-          border-color: rgba(125, 153, 178, 0.3)!important;
+        .hover-subtle {
+          background-color: transparent;
+          transition: background-color 0.4s ease, transform 0.4s ease;
         }
-        .hover-card-premium:hover .accent-bar {
-          transform: scaleX(1);
+        .hover-subtle:hover {
+          background-color: #fafafa;
         }
         .transition-all {
-          transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+          transition: all 0.3s ease;
         }
       `}</style>
     </section>
