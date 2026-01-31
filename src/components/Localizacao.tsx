@@ -45,6 +45,12 @@ export default function Localizacao() {
 
                     <p className="text-muted mb-4 small"><i className="bi bi-geo-alt-fill me-2 text-danger opacity-75"></i>{clinic.enderecoCompleto}</p>
 
+                    {/* Phone Display */}
+                    <div className="mb-4 d-flex align-items-center gap-2 text-muted small bg-light p-2 rounded-3 justify-content-center border border-light">
+                      <i className="bi bi-telephone-fill"></i>
+                      <span className="fw-bold">{contact.telefone}</span>
+                    </div>
+
                     {/* Map */}
                     <div className="mapa-wrapper rounded-4 overflow-hidden shadow-sm border mb-4" style={{ height: '250px' }}>
                       <iframe
