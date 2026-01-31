@@ -5,54 +5,82 @@ import path from 'path';
 const BASE_URL = 'https://drotto.com.br';
 
 export default function sitemap(): MetadataRoute.Sitemap {
-    // 1. Páginas Estáticas Conhecidas e Landing Pages
-    // Adicionamos aqui para controlar prioridade manual
-    const staticRoutes = [
-        '',
-        '/sobre',
-        '/procedimentos',
-        '/contato',
-        '/localizacao',
-        '/blog',
-        '/preconsulta',
-        '/ortopedista-campinas',
-        '/ortopedista-jacutinga'
-    ];
+    const appDir = path.join(process.cwd(), 'src', 'app');
+    const blogDir = path.join(appDir, 'blog');
 
-    const staticSitemap = staticRoutes.map((route) => ({
-        url: `${BASE_URL}${route}`,
-        lastModified: new Date(),
-        changeFrequency: route === '' ? 'weekly' as const : 'monthly' as const,
-        priority: route === '' ? 1 : 0.8,
-    }));
+    // Lista para armazenar todas as rotas
+    let allRoutes: MetadataRoute.Sitemap = [];
 
-    // 2. Blog Posts (Dinâmico)
-    // Varre src/app/blog para encontrar qualquer pasta que seja um post
-    const blogDir = path.join(process.cwd(), 'src', 'app', 'blog');
-    let blogPosts: MetadataRoute.Sitemap = [];
-
-    if (fs.existsSync(blogDir)) {
-        const items = fs.readdirSync(blogDir, { withFileTypes: true });
-
-        blogPosts = items
-            .filter(item => item.isDirectory())
-            .map(dir => {
-                // Verifica se existe um arquivo de página válido dentro da pasta
-                const hasMdx = fs.existsSync(path.join(blogDir, dir.name, 'page.mdx'));
-                const hasTsx = fs.existsSync(path.join(blogDir, dir.name, 'page.tsx'));
-
-                if (hasMdx || hasTsx) {
-                    return {
-                        url: `${BASE_URL}/blog/${dir.name}`,
-                        lastModified: new Date(),
-                        changeFrequency: 'monthly' as const,
-                        priority: 0.7,
-                    };
-                }
-                return null;
-            })
-            .filter((item): item is MetadataRoute.Sitemap[number] => item !== null);
+    // 1. Adiciona a Home (root page.tsx)
+    if (fs.existsSync(path.join(appDir, 'page.tsx'))) {
+        allRoutes.push({
+            url: BASE_URL,
+            lastModified: new Date(),
+            changeFrequency: 'weekly',
+            priority: 1,
+        });
     }
 
-    return [...staticSitemap, ...blogPosts];
+    // 2. Varredura Automática na raiz (src/app/*)
+    // Encontra qualquer pasta que tenha page.tsx (ex: /sobre, /contato, /procedimentos)
+    if (fs.existsSync(appDir)) {
+        const folders = fs.readdirSync(appDir, { withFileTypes: true });
+
+        folders.forEach(dirent => {
+            if (dirent.isDirectory()) {
+                const folderName = dirent.name;
+
+                // Ignora pastas especiais do Next.js (api, .) ou o próprio blog (tratado separadamente)
+                if (folderName.startsWith('.') || folderName === 'api' || folderName === 'blog') return;
+
+                const hasPage = fs.existsSync(path.join(appDir, folderName, 'page.tsx'));
+
+                if (hasPage) {
+                    allRoutes.push({
+                        url: `${BASE_URL}/${folderName}`,
+                        lastModified: new Date(),
+                        changeFrequency: 'monthly',
+                        priority: 0.8,
+                    });
+                }
+            }
+        });
+    }
+
+    // 3. Adiciona a raiz do Blog (/blog)
+    if (fs.existsSync(path.join(blogDir, 'page.tsx'))) {
+        allRoutes.push({
+            url: `${BASE_URL}/blog`,
+            lastModified: new Date(),
+            changeFrequency: 'daily',
+            priority: 0.9,
+        });
+    }
+
+    // 4. Varredura Automática dos Posts do Blog (src/app/blog/*)
+    if (fs.existsSync(blogDir)) {
+        const posts = fs.readdirSync(blogDir, { withFileTypes: true });
+
+        posts.forEach(dirent => {
+            if (dirent.isDirectory()) {
+                const slug = dirent.name;
+                const postPath = path.join(blogDir, slug);
+
+                // Aceita .mdx ou .tsx como página de post
+                const hasPage = fs.existsSync(path.join(postPath, 'page.mdx')) ||
+                    fs.existsSync(path.join(postPath, 'page.tsx'));
+
+                if (hasPage) {
+                    allRoutes.push({
+                        url: `${BASE_URL}/blog/${slug}`,
+                        lastModified: new Date(),
+                        changeFrequency: 'monthly',
+                        priority: 0.7,
+                    });
+                }
+            }
+        });
+    }
+
+    return allRoutes;
 }
