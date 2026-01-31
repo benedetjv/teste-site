@@ -33,6 +33,18 @@ const QR_LINKS = [
         url: "https://wa.me/5519999439824",
         desc: "Link direto para o WhatsApp da Clínica.",
         color: "25D366" // Verde WhatsApp
+    },
+    {
+        title: "Site Oficial (Home)",
+        url: "https://drotto.com.br",
+        desc: "Acesso à página inicial completa.",
+        color: "000000"
+    },
+    {
+        title: "Página de Contato/Endereços",
+        url: "https://drotto.com.br/contato",
+        desc: "Mapa e Telefones das Clínicas.",
+        color: "DC3545" // Vermelho (destaque)
     }
 ];
 
