@@ -60,16 +60,30 @@ const testimonials = [
 ];
 
 export default function Testimonials() {
+    const scrollRef = React.useRef<HTMLDivElement>(null);
+
+    const scroll = (direction: 'left' | 'right') => {
+        if (scrollRef.current) {
+            const { current } = scrollRef;
+            const scrollAmount = 340; // Card width (320) + gap (appx)
+            if (direction === 'left') {
+                current.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+            } else {
+                current.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+            }
+        }
+    };
+
     return (
         <section className="py-5 bg-white border-top">
             <div className="container">
                 <div className="row align-items-center mb-5">
-                    <div className="col-md-4 text-center text-md-start mb-4 mb-md-0">
+                    <div className="col-lg-4 text-center text-lg-start mb-4 mb-lg-0">
                         <div className="d-inline-flex align-items-center gap-2 mb-2">
                             <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google" style={{ height: '30px' }} />
                         </div>
                         <h2 className="fw-bold mb-1">O que dizem sobre nós</h2>
-                        <div className="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                        <div className="d-flex align-items-center justify-content-center justify-content-lg-start gap-2">
                             <span className="display-6 fw-bold text-dark">5.0</span>
                             <div className="text-warning small">
                                 <i className="bi bi-star-fill"></i>
@@ -81,20 +95,34 @@ export default function Testimonials() {
                         </div>
                         <p className="text-muted small">Baseado em avaliações reais de pacientes.</p>
 
-                        <a href="https://g.page/r/SeuLinkGoogle" target="_blank" className="btn btn-primary rounded-pill px-4 fw-bold shadow-sm mt-2">
+                        <a href="https://g.page/r/CQ3gfOvMQ6SEEAI/review" target="_blank" className="btn btn-primary rounded-pill px-4 fw-bold shadow-sm mt-2">
                             Avaliar no Google <i className="bi bi-arrow-right ms-2"></i>
                         </a>
                     </div>
 
-                    <div className="col-md-8">
+                    <div className="col-lg-8">
+                        {/* Navigation Buttons (Visible on desktop) */}
+                        <div className="d-none d-lg-flex justify-content-end gap-2 mb-2">
+                            <button onClick={() => scroll('left')} className="btn btn-outline-secondary rounded-circle shadow-sm p-0 d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px' }}>
+                                <i className="bi bi-chevron-left"></i>
+                            </button>
+                            <button onClick={() => scroll('right')} className="btn btn-primary rounded-circle shadow-sm p-0 d-flex align-items-center justify-content-center" style={{ width: '40px', height: '40px' }}>
+                                <i className="bi bi-chevron-right"></i>
+                            </button>
+                        </div>
+
                         {/* Scroll Horizontal Container */}
-                        <div className="d-flex flex-nowrap overflow-auto pb-4 gap-3 px-2 scrollbar-hide" style={{ scrollSnapType: 'x mandatory' }}>
+                        <div
+                            ref={scrollRef}
+                            className="d-flex flex-nowrap overflow-auto pb-4 gap-3 px-2 scrollbar-hide"
+                            style={{ scrollSnapType: 'x mandatory', scrollBehavior: 'smooth' }}
+                        >
                             {testimonials.map((t, index) => (
                                 <div key={index} className="flex-shrink-0" style={{ width: '320px', scrollSnapAlign: 'start' }}>
-                                    <div className="card h-100 border shadow-sm bg-white rounded-3 p-3 position-relative">
+                                    <div className="card h-100 border shadow-sm bg-white rounded-4 p-3 position-relative hover-shadow transition-all">
                                         <div className="d-flex align-items-center gap-3 mb-3">
                                             {/* Foto/Avatar estilo Google */}
-                                            <div className="rounded-circle text-white d-flex align-items-center justify-content-center fw-bold"
+                                            <div className="rounded-circle text-white d-flex align-items-center justify-content-center fw-bold shadow-sm"
                                                 style={{ width: '45px', height: '45px', backgroundColor: ['#AB47BC', '#EF5350', '#42A5F5', '#66BB6A', '#FFCA28'][index % 5], fontSize: '1.1rem' }}>
                                                 {t.initials.charAt(0)}
                                             </div>
@@ -126,6 +154,8 @@ export default function Testimonials() {
                 .scrollbar-hide::-webkit-scrollbar { display: none; }
                 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
                 .x-small { font-size: 11px; }
+                .hover-shadow:hover { box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important; transform: translateY(-2px); }
+                .transition-all { transition: all 0.3s ease; }
             `}</style>
         </section>
     );
