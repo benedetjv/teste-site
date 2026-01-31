@@ -199,7 +199,7 @@ export default function PainCensus() {
 
                     {/* TIPO: RADIO (Única Escolha) */}
                     {step.type === 'radio' && (
-                        <div className="w-100" style={{ maxWidth: '400px' }}>
+                        <div className="w-100" style={{ maxWidth: '800px' }}>
                             {step.options?.map((opt, i) => (
                                 <button
                                     key={i}
@@ -217,7 +217,7 @@ export default function PainCensus() {
 
                     {/* TIPO: CHECKBOX (Múltipla Escolha) */}
                     {step.type === 'checkbox' && (
-                        <div className="w-100" style={{ maxWidth: '400px' }}>
+                        <div className="w-100" style={{ maxWidth: '800px' }}>
                             {step.options?.map((opt, i) => {
                                 const isSelected = (answers[step.id] || []).includes(opt);
                                 return (
@@ -243,7 +243,7 @@ export default function PainCensus() {
 
                     {/* TIPO: SLIDER (0-10) */}
                     {step.type === 'slider' && (
-                        <div className="w-100 px-3" style={{ maxWidth: '400px' }}>
+                        <div className="w-100 px-3" style={{ maxWidth: '800px' }}>
                             <div className="text-center mb-4">
                                 <span className="display-1 fw-bold" style={{ color: (answers[step.id] || 0) > 7 ? 'var(--vermelho-alerta)' : 'var(--azul-medio)' }}>
                                     {answers[step.id] ?? 5}
