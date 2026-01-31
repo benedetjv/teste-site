@@ -19,7 +19,6 @@ export default function Localizacao() {
             <i className="bi bi-geo-alt me-2"></i>Onde Estamos
           </span>
           <h2 className="fw-bold text-dark display-6">Locais de Atendimento</h2>
-          <p className="text-muted">Enquire a clínica mais próxima de você</p>
         </div>
 
         <div className="row g-5 justify-content-center">
