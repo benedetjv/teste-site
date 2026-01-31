@@ -72,7 +72,7 @@ export default function Footer() {
           </div>
           <div className="col-md-6 text-center text-md-end">
             <p className="small mb-0 text-white-50" style={{ fontSize: '0.75rem', opacity: 0.6 }}>
-              Excelência Médica em Ortopedia e Tratamento da Dor. Foco em Patologias da Coluna, Joelho e Quadril.
+              Excelência Médica em Ortopedia e Tratamento da Dor. Foco em Coluna, Articulações e Procedimentos Minimamente Invasivos.
             </p>
           </div>
         </div>
