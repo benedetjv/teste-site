@@ -1,5 +1,5 @@
 import Header from "@/components/Header";
-import Contato from "@/components/Contato";
+import Localizacao from "@/components/Localizacao";
 
 import Footer from "@/components/Footer";
 import { Metadata } from "next";
@@ -15,7 +15,7 @@ export default function ContatoPage() {
             <Header />
             <main className="flex-grow-1">
                 <div className="pt-5 mt-4">
-                    <Contato />
+                    <Localizacao />
                 </div>
             </main>
             <Footer />
