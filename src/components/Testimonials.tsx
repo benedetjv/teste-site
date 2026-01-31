@@ -61,60 +61,71 @@ const testimonials = [
 
 export default function Testimonials() {
     return (
-        <section className="py-5 bg-white">
+        <section className="py-5 bg-white border-top">
             <div className="container">
-                <div className="text-center mb-5">
-                    <h6 className="text-primary fw-bold text-uppercase">Depoimentos Reais</h6>
-                    <h2 className="fw-bold text-dark mb-3">O que os pacientes dizem</h2>
-                    <p className="text-muted">Histórias de quem recuperou a qualidade de vida.</p>
-                </div>
-
-                {/* Scroll Horizontal Container */}
-                <div className="d-flex flex-nowrap overflow-auto pb-4 gap-4 px-2 scrollbar-hide" style={{ scrollSnapType: 'x mandatory' }}>
-                    {testimonials.map((t, index) => (
-                        <div key={index} className="flex-shrink-0" style={{ width: '300px', scrollSnapAlign: 'center' }}>
-                            <div className="card h-100 border-0 shadow-sm bg-light rounded-4 p-4 position-relative">
-                                {/* Aspas Gigantes */}
-                                <div className="position-absolute top-0 start-0 ms-3 mt-n2 display-1 text-primary opacity-25" style={{ fontFamily: 'serif', lineHeight: 0.5 }}>“</div>
-
-                                <div className="mb-3 text-warning">
-                                    {[...Array(t.rating)].map((_, i) => (
-                                        <i key={i} className="bi bi-star-fill small me-1"></i>
-                                    ))}
-                                </div>
-
-                                <p className="card-text text-secondary mb-4 fst-italic" style={{ fontSize: '0.95rem' }}>
-                                    "{t.text}"
-                                </p>
-
-                                <div className="mt-auto d-flex align-items-center gap-3">
-                                    <div className="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center fw-bold shadow-sm" style={{ width: '40px', height: '40px', fontSize: '0.9rem' }}>
-                                        {t.initials}
-                                    </div>
-                                    <div>
-                                        <h6 className="mb-0 fw-bold text-dark small">{t.name}</h6>
-                                        <span className="text-success x-small fw-bold"><i className="bi bi-patch-check-fill me-1"></i>Paciente Verificado</span>
-                                    </div>
-                                </div>
+                <div className="row align-items-center mb-5">
+                    <div className="col-md-4 text-center text-md-start mb-4 mb-md-0">
+                        <div className="d-inline-flex align-items-center gap-2 mb-2">
+                            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google" style={{ height: '30px' }} />
+                        </div>
+                        <h2 className="fw-bold mb-1">O que dizem sobre nós</h2>
+                        <div className="d-flex align-items-center justify-content-center justify-content-md-start gap-2">
+                            <span className="display-6 fw-bold text-dark">5.0</span>
+                            <div className="text-warning small">
+                                <i className="bi bi-star-fill"></i>
+                                <i className="bi bi-star-fill"></i>
+                                <i className="bi bi-star-fill"></i>
+                                <i className="bi bi-star-fill"></i>
+                                <i className="bi bi-star-fill"></i>
                             </div>
                         </div>
-                    ))}
-                </div>
+                        <p className="text-muted small">Baseado em avaliações reais de pacientes.</p>
 
-                <div className="text-center mt-3 d-md-none">
-                    <small className="text-muted"><i className="bi bi-arrow-right-short"></i> Deslize para ver mais</small>
-                </div>
+                        <a href="https://g.page/r/SeuLinkGoogle" target="_blank" className="btn btn-primary rounded-pill px-4 fw-bold shadow-sm mt-2">
+                            Avaliar no Google <i className="bi bi-arrow-right ms-2"></i>
+                        </a>
+                    </div>
 
-                <div className="text-center mt-5">
-                    <a href="https://www.doctoralia.com.br/otto-beckedorff/ortopedista-traumatologista/campinas" target="_blank" className="btn btn-outline-primary rounded-pill px-4 fw-bold">
-                        Ver todas as avaliações no Doctoralia <i className="bi bi-box-arrow-up-right ms-2"></i>
-                    </a>
+                    <div className="col-md-8">
+                        {/* Scroll Horizontal Container */}
+                        <div className="d-flex flex-nowrap overflow-auto pb-4 gap-3 px-2 scrollbar-hide" style={{ scrollSnapType: 'x mandatory' }}>
+                            {testimonials.map((t, index) => (
+                                <div key={index} className="flex-shrink-0" style={{ width: '320px', scrollSnapAlign: 'start' }}>
+                                    <div className="card h-100 border shadow-sm bg-white rounded-3 p-3 position-relative">
+                                        <div className="d-flex align-items-center gap-3 mb-3">
+                                            {/* Foto/Avatar estilo Google */}
+                                            <div className="rounded-circle text-white d-flex align-items-center justify-content-center fw-bold"
+                                                style={{ width: '45px', height: '45px', backgroundColor: ['#AB47BC', '#EF5350', '#42A5F5', '#66BB6A', '#FFCA28'][index % 5], fontSize: '1.1rem' }}>
+                                                {t.initials.charAt(0)}
+                                            </div>
+                                            <div>
+                                                <h6 className="mb-0 fw-bold text-dark" style={{ fontSize: '0.95rem' }}>{t.name}</h6>
+                                                <div className="text-warning x-small" style={{ fontSize: '0.75rem' }}>
+                                                    <i className="bi bi-star-fill me-1"></i>
+                                                    <i className="bi bi-star-fill me-1"></i>
+                                                    <i className="bi bi-star-fill me-1"></i>
+                                                    <i className="bi bi-star-fill me-1"></i>
+                                                    <i className="bi bi-star-fill"></i>
+                                                </div>
+                                            </div>
+                                            <img src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg" className="ms-auto opacity-50" style={{ width: '20px' }} alt="G" />
+                                        </div>
+
+                                        <p className="card-text text-secondary mb-3" style={{ fontSize: '0.9rem', lineHeight: '1.5' }}>
+                                            "{t.text}"
+                                        </p>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+                    </div>
                 </div>
             </div>
 
             <style jsx>{`
                 .scrollbar-hide::-webkit-scrollbar { display: none; }
                 .scrollbar-hide { -ms-overflow-style: none; scrollbar-width: none; }
+                .x-small { font-size: 11px; }
             `}</style>
         </section>
     );
