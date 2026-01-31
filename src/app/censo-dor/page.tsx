@@ -22,7 +22,7 @@ export default function PainCensusPage() {
                             Pesquisa Clínica 2026
                         </span>
                         <h1 className="h2 fw-bold" style={{ color: 'var(--azul-escuro)' }}>Censo da Dor Crônica</h1>
-                        <p className="text-muted">Participe anonimamente e descubra qual perfil de tratamento mais se adequa ao seu caso.</p>
+                        <p className="text-muted">Participe anonimamente e ajude a mapear estatísticas sobre a dor na nossa região.</p>
                     </div>
 
                     <div className="bg-light rounded-4 p-4 shadow-sm border">
