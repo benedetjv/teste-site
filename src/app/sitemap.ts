@@ -54,7 +54,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
                     }
                     return null;
                 })
-                .filter((item): item is MetadataRoute.Sitemap[number] => item !== null);
+                .filter(Boolean) as MetadataRoute.Sitemap;
         }
     } catch (error) {
         console.error('Erro ao gerar sitemap do blog:', error);

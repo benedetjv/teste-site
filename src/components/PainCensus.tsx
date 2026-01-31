@@ -111,7 +111,12 @@ export default function PainCensus() {
                     <div className="d-flex justify-content-center">
                         {step.type === 'body' && (
                             <div style={{ transform: 'scale(0.85)', marginTop: '-20px' }}>
-                                <BodySelector onPartSelect={(part) => handleAnswer('location', part)} />
+                                <BodySelector
+                                    onSelectionChange={(regions) => {
+                                        if (regions.length > 0) handleAnswer('location', regions[0].label);
+                                    }}
+                                    hideFormInSelector={true}
+                                />
                                 <p className="text-center text-muted small mt-2">Toque na região da sua maior dor</p>
                             </div>
                         )}
