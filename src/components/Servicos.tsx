@@ -11,7 +11,7 @@ interface ServiceIconProps {
 function ServiceIcon({ svgPath }: ServiceIconProps) {
   return (
     <svg
-      className="servico-icon-premium"
+      className="servico-icon-elegant"
       viewBox="0 0 24 24"
       role="img"
       aria-hidden="true"
@@ -25,15 +25,15 @@ function ServiceIcon({ svgPath }: ServiceIconProps) {
   );
 }
 
-const cardVariants: Variants = {
-  hidden: { opacity: 0, y: 10 },
+const itemVariants: Variants = {
+  hidden: { opacity: 0, y: 20 },
   visible: (i: number) => ({
     opacity: 1,
     y: 0,
     transition: {
-      delay: i * 0.05,
-      duration: 0.5,
-      ease: "easeOut"
+      delay: i * 0.1,
+      duration: 0.8,
+      ease: [0.215, 0.610, 0.355, 1.000]
     }
   })
 };
@@ -44,26 +44,30 @@ export default function Servicos() {
   return (
     <section id="servicos" className="py-5" style={{ backgroundColor: '#ffffff' }}>
       <div className="container">
-        <div className="row g-0 border-top border-start" style={{ borderColor: '#eee' }}>
+        <div className="row g-4 pt-4">
           {items.map((item, index) => (
-            <div className="col-lg-4 col-md-6 border-end border-bottom" key={index} style={{ borderColor: '#eee' }}>
+            <div className="col-lg-4 col-md-6" key={index}>
               <motion.div
-                className="p-5 h-100 hover-subtle transition-all"
+                className="h-100 p-4 p-md-5 rounded-4 border-0 position-relative hover-elegant-card transition-all"
                 custom={index}
                 initial="hidden"
                 whileInView="visible"
                 viewport={{ once: true, margin: "-50px" }}
-                variants={cardVariants}
+                variants={itemVariants}
+                style={{ backgroundColor: '#fff', border: '1px solid #f2f2f2' }}
               >
-                <div className="mb-4 d-inline-block p-3 rounded-circle" style={{ backgroundColor: '#fcfdfe', color: '#7d99b2' }}>
+                {/* Accent Detail */}
+                <div className="accent-line position-absolute start-0 top-0 bottom-0" style={{ width: '4px', backgroundColor: '#7d99b2', borderRadius: '4px 0 0 4px', opacity: 0, transition: 'opacity 0.3s ease' }}></div>
+
+                <div className="mb-4 d-flex align-items-center justify-content-center" style={{ width: '50px', height: '50px', color: '#7d99b2', transition: 'transform 0.3s ease' }}>
                   <ServiceIcon svgPath={item.iconSvgPath} />
                 </div>
 
-                <h4 className="fw-bold mb-3" style={{ color: '#2a4156', fontSize: '1.15rem', letterSpacing: '-0.2px' }}>
+                <h4 className="fw-bold mb-3" style={{ color: '#2a4156', fontSize: '1.25rem', lineHeight: '1.3' }}>
                   {item.titulo}
                 </h4>
 
-                <p className="text-muted mb-0" style={{ lineHeight: '1.8', fontSize: '0.9rem', fontWeight: '400' }}>
+                <p className="text-muted mb-0" style={{ lineHeight: '1.8', fontSize: '1rem', fontWeight: '300' }}>
                   {item.descricao}
                 </p>
               </motion.div>
@@ -73,19 +77,27 @@ export default function Servicos() {
       </div>
 
       <style jsx>{`
-        .servico-icon-premium {
-          width: 36px;
-          height: 36px;
+        .servico-icon-elegant {
+          width: 44px;
+          height: 44px;
         }
-        .hover-subtle {
-          background-color: transparent;
-          transition: background-color 0.4s ease, transform 0.4s ease;
+        .hover-elegant-card {
+          box-shadow: 0 4px 15px rgba(0,0,0,0.02);
+          cursor: default;
         }
-        .hover-subtle:hover {
-          background-color: #fafafa;
+        .hover-elegant-card:hover {
+          transform: translateY(-8px);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.06);
+          border-color: #eee !important;
+        }
+        .hover-elegant-card:hover .accent-line {
+          opacity: 1 !important;
+        }
+        .hover-elegant-card:hover svg {
+          transform: scale(1.1);
         }
         .transition-all {
-          transition: all 0.3s ease;
+          transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
       `}</style>
     </section>

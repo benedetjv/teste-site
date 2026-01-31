@@ -13,15 +13,13 @@ export default function ProcedimentosPage() {
             <Header />
             <main className="flex-grow-1 pt-5 mt-5">
                 <div className="container py-5 text-center mt-5">
-                    <h1 className="mb-3 display-4" style={{ fontFamily: '"Safira March", serif', color: '#2a4156' }}>Tratamentos e Procedimentos</h1>
-                    <div className="mx-auto" style={{ width: '60px', height: '3px', backgroundColor: '#7d99b2', marginBottom: '1.5rem' }}></div>
-                    <p className="lead text-muted mx-auto" style={{ maxWidth: '800px', fontSize: '1.15rem', fontWeight: '300' }}>
-                        Utilizamos as técnicas mais avançadas da medicina intervencionista para tratar a dor na origem, buscando sempre a preservação da função e o alívio duradouro.
+                    <h5 className="text-uppercase fw-bold mb-3" style={{ color: '#7d99b2', letterSpacing: '3px', fontSize: '0.85rem' }}>Especialidades</h5>
+                    <h1 className="mb-4 display-4" style={{ fontFamily: '"Safira March", serif', color: '#2a4156' }}>Tratamentos e Procedimentos</h1>
+                    <p className="lead text-muted mx-auto mb-0" style={{ maxWidth: '850px', fontSize: '1.2rem', fontWeight: '300', lineHeight: '1.8' }}>
+                        Tecnologia e precisão no diagnóstico e tratamento da dor. Técnicas minimamente invasivas focadas em devolver sua qualidade de vida.
                     </p>
                 </div>
-                <div className="bg-white">
-                    <Servicos />
-                </div>
+                <Servicos />
             </main>
             <Footer />
         </div>
