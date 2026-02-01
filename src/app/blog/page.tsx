@@ -236,7 +236,7 @@ const posts = [
     },
     {
         slug: "epicondilite-lateral-tratamento",
-        title: "Epicondilite Lateral: O guia do Cotovelo de Tenista",
+        title: "Epicondilite Lateral: Nem sempre é quem joga tênis",
         excerpt: "Dor ao pegar peso ou digitar? Conheça as ondas de choque e infiltrações regenerativas.",
         date: "30 Dez 2025",
         category: "Ombro e Cotovelo",
