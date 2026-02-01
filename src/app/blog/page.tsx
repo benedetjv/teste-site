@@ -188,18 +188,10 @@ const posts = [
         image: "/img/blog/medication.png",
         relatedRegions: ['lumbar-back', 'cervical-back', 'knee-left', 'head-front', 'abdomen']
     },
-    {
-        slug: "endoscopia-biportal",
-        title: "Endoscopia Biportal (UBE): A Revolução da Precisão Cirúrgica",
-        excerpt: "A tecnologia de última geração que permite realizar cirurgias de vídeo com mínima agressão muscular.",
-        date: "15 Dez 2025",
-        category: "Tecnologia",
-        image: "/img/blog/biportal-endoscopy.png",
-        relatedRegions: ['lumbar-back', 'sciatica-left', 'sciatica-right']
-    },
+
     {
         slug: "ergonomia-home-office",
-        title: "Ergonomia no Home Office: Proteja sua coluna trabalhando em casa",
+        title: "Home Office sem Dor: Como ajustar seu ambiente",
         excerpt: "Dicas práticas para configurar seu ambiente e evitar que o trabalho destrua sua saúde.",
         date: "18 Dez 2025",
         category: "Prevenção",
@@ -208,7 +200,7 @@ const posts = [
     },
     {
         slug: "bico-de-papagaio-causas-tratamento",
-        title: "Bico de Papagaio: O que é e como tratar a Osteofitose",
+        title: "Bico de Papagaio (Osteofitose): O que você precisa saber",
         excerpt: "Entenda por que essas expansões ósseas aparecem na coluna e como aliviar a dor sem cirurgia.",
         date: "20 Dez 2025",
         category: "Coluna Vertebral",
@@ -217,7 +209,7 @@ const posts = [
     },
     {
         slug: "bursite-quadril-tratamento",
-        title: "Bursite de Quadril: Dor lateral e soluções modernas",
+        title: "Bursite de Quadril: Por que a lateral dói tanto?",
         excerpt: "Sente dor ao deitar de lado? Veja como as infiltrações de precisão resolvem a inflamação da bursa.",
         date: "22 Dez 2025",
         category: "Joelho e Quadril",
@@ -226,7 +218,7 @@ const posts = [
     },
     {
         slug: "fascite-plantar-dor-calcanhar",
-        title: "Fascite Plantar: Por que o primeiro passo do dia dói tanto?",
+        title: "Fascite Plantar: O peso do primeiro passo",
         excerpt: "Entenda a inflamação da sola do pé e conheça os tratamentos para recuperar sua caminhada.",
         date: "26 Dez 2025",
         category: "Pé e Tornozelo",
