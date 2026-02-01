@@ -86,9 +86,9 @@ export default function MariaPlantarJourney() {
                                 <div className="position-absolute bottom-0 end-0 bg-success rounded-circle border border-2 border-white" style={{ width: '25px', height: '25px' }}></div>
                             </div>
                         </div>
-                        <h3 className="fw-bold mb-3" style={{ color: 'var(--azul-escuro)' }}>O Ponto de Virada na Fascite</h3>
+                        <h3 className="fw-bold mb-3" style={{ color: 'var(--azul-escuro)' }}>Tratamento de Precisão</h3>
                         <p className="lead text-muted mb-4 mx-auto" style={{ maxWidth: '600px' }}>
-                            Como a Júlia contou, as orientações caseiras são excelentes aliadas, mas para muitos pacientes, a <strong>medicina intervencionista</strong> é o que realmente devolve a caminhada sem dor.
+                            Assim como no caso da Júlia, quando as medidas conservadoras param de funcionar, o procedimento pode ajudar a resolver a dor.
                         </p>
                         <div className="d-grid gap-3 d-sm-flex justify-content-center">
                             <Link
@@ -96,7 +96,7 @@ export default function MariaPlantarJourney() {
                                 className="btn btn-success btn-lg rounded-pill px-5 shadow-sm hover-lift"
                                 target="_blank"
                             >
-                                <i className="bi bi-whatsapp me-2"></i> Agendar Avaliação Especializada
+                                <i className="bi bi-whatsapp me-2"></i> Agendar sua consulta
                             </Link>
                             <button
                                 onClick={() => setStep(0)}
