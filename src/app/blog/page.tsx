@@ -247,7 +247,7 @@ const posts = [
     // --- JANEIRO 2026 ---
     {
         slug: "tendinite-manguito-rotador",
-        title: "Dor no Ombro: Entenda a Lesão do Manguito Rotador",
+        title: "Manguito Rotador: O motor do seu ombro",
         excerpt: "Dificuldade para levantar o braço ou dormir? Saiba como a medicina da dor acelera a recuperação.",
         date: "02 Jan 2026",
         category: "Ombro e Cotovelo",
