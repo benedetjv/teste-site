@@ -301,8 +301,8 @@ const posts = [
     },
     {
         slug: "canelite-dor-canela-corrida",
-        title: "Canelite: Como tratar a dor na canela ao correr",
-        excerpt: "Sente dor na frente da canela durante ou após a corrida? Entenda a canelite e como evitar fraturas de estresse.",
+        title: "Canelite (Síndrome do Estresse Tibial): Dor na Canela ao Correr",
+        excerpt: "Sente dor na perna ao correr? Entenda por que a canelite acontece e quais os riscos de evoluir para uma fratura por estresse.",
         date: "15 Jan 2026",
         category: "Medicina do Esporte",
         image: "/img/blog/running-pain.png",
