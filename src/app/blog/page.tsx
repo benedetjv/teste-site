@@ -265,8 +265,8 @@ const posts = [
     },
     {
         slug: "hernia-disco-cervical-tratamento",
-        title: "Hérnia de Disco Cervical: Choque e Formigamento no Braço",
-        excerpt: "Entenda por que a dor no pescoço irradia para a mão e como tratar sem cirurgia aberta.",
+        title: "Hérnia de Disco Cervical: Quando a dor no pescoço vai para o braço",
+        excerpt: "Entenda por que a hérnia cervical causa formigamento e fraqueza nos braços, e conheça as opções de tratamento de precisão.",
         date: "06 Jan 2026",
         category: "Coluna Vertebral",
         image: "/img/blog/cervical-hernia.png",
