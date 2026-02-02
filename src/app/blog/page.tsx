@@ -310,8 +310,8 @@ const posts = [
     },
     {
         slug: "dor-cotovelo-ombro-beach-tennis",
-        title: "Beach Tennis: Por que meu cotovelo e ombro doem?",
-        excerpt: "A diversão na areia não pode virar lesão. Saiba como tratar o 'Beach Tennis Elbow' e dores no ombro.",
+        title: "Beach Tennis: Quando a Dor no Ombro, Cotovelo ou Calcanhar Vira Lesão",
+        excerpt: "O esforço repetitivo na areia pode sobrecarregar tendões e articulações. Entenda as lesões mais comuns e como tratar.",
         date: "18 Jan 2026",
         category: "Medicina do Esporte",
         image: "/img/blog/beach-tennis-injury.png",
