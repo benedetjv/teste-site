@@ -327,9 +327,9 @@ const posts = [
         relatedRegions: ['lumbar-back', 'knee-left', 'shoulder-right', 'hip-left']
     },
     {
-        slug: "tendinite-aquiles-dor-calcanhar",
-        title: "Tendinite de Aquiles: Dor no calcanhar que trava o corredor",
-        excerpt: "Sentindo o tendão de Aquiles grosso ou dolorido? Saiba como a medicina de precisão acelera a cura.",
+        slug: "dor-tendao-aquiles-tratamento-intervencionista",
+        title: "Tendinite de Aquiles: Tratamentos e Infiltração Guiada",
+        excerpt: "Entenda as causas da dor no tendão de Aquiles e conheça os tratamentos modernos como a infiltração peritendínea e hidrodissecção.",
         date: "22 Jan 2026",
         category: "Medicina do Esporte",
         image: "/img/blog/achilles-tendonitis.png",
