@@ -292,8 +292,8 @@ const posts = [
     },
     {
         slug: "dor-apos-cirurgia-coluna",
-        title: "Operei a coluna e a dor voltou: O que fazer agora?",
-        excerpt: "Entenda a Síndrome da Falha Cirúrgica e as opções de medicina intervencionista pós-artrodese.",
+        title: "Dor Após Cirurgia de Coluna: Ainda Tem Solução?",
+        excerpt: "Fiz cirurgia na coluna mas continuo com dor? Entenda por que isso acontece e quais as opções de tratamento além de reoperar.",
         date: "13 Jan 2026",
         category: "Coluna Vertebral",
         image: "/img/blog/post-surgery-spine.jpg?v=2",
