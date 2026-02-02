@@ -337,8 +337,8 @@ const posts = [
     },
     {
         slug: "pubalgia-dor-virilha-esporte",
-        title: "Pubalgia: A dor na virilha de quem joga futebol e faz CrossFit",
-        excerpt: "Entenda o desequilíbrio muscular que causa dor profunda na região pubiana e como tratar.",
+        title: "Pubalgia: O Desafio da Dor na Virilha no Esporte",
+        excerpt: "Dor na virilha ao correr ou chutar? Entenda o desequilíbrio do 'cabo de guerra' pélvico e como tratar.",
         date: "24 Jan 2026",
         category: "Medicina do Esporte",
         image: "/img/blog/pubalgia-groin-pain.png",
