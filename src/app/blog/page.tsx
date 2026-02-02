@@ -274,7 +274,7 @@ const posts = [
     },
     {
         slug: "impacto-femoroacetabular-quadril",
-        title: "Impacto Femoroacetabular (IFA): Dor na virilha do atleta",
+        title: "Impacto Femoroacetabular: O conflito no quadril",
         excerpt: "O atrito no quadril pode destruir sua cartilagem. Saiba como preservar a articulação.",
         date: "09 Jan 2026",
         category: "Joelho e Quadril",
