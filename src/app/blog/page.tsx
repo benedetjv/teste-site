@@ -283,8 +283,8 @@ const posts = [
     },
     {
         slug: "neuroma-de-morton-dor-pe",
-        title: "Neuroma de Morton: A sensação de 'pedra no sapato'",
-        excerpt: "Choques e queimação na frente do pé? Saiba como a hidrodissecção alivia o nervo.",
+        title: 'Neuroma de Morton: A "pedra no sapato" constante',
+        excerpt: "Entenda por que a dor na frente do pé causa queimação e a sensação de corpo estranho, e conheça os tratamentos sem cirurgia aberta.",
         date: "11 Jan 2026",
         category: "Pé e Tornozelo",
         image: "/img/blog/mortons-neuroma.png",
