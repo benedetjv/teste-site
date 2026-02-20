@@ -8,7 +8,11 @@ export async function GET() {
             return NextResponse.json({ notes: [] });
         }
 
-        const res = await fetch(blobs[0].url);
+        const res = await fetch(blobs[0].url, {
+            headers: {
+                Authorization: `Bearer ${process.env.BLOB_READ_WRITE_TOKEN}`
+            }
+        });
         const text = await res.text();
         const notes = text ? JSON.parse(text) : [];
         return NextResponse.json({ notes });

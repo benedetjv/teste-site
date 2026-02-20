@@ -18,7 +18,7 @@ export async function POST(req: Request) {
             access: 'private', // User's v-blob store is configured to only allow private files
         });
 
-        return NextResponse.json({ success: true, url: blob.url });
+        return NextResponse.json({ success: true, url: blob.downloadUrl || blob.url });
     } catch (error: any) {
         console.error('Erro no upload Vercel Blob:', error);
         return NextResponse.json({ error: `Erro no upload Vercel Blob: ${error.message || error}` }, { status: 500 });
