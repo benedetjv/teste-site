@@ -429,8 +429,8 @@ const posts = [
     },
     {
         slug: "ombro-congelado-capsulite-adesiva",
-        title: "Ombro Congelado: Quando a dor noturna trava seu braço",
-        excerpt: "Entenda as fases da Capsulite Adesiva e como a hidrodistensão pode 'descolar' seu ombro rapidamente.",
+        title: "Ombro Congelado (Capsulite Adesiva): Fases e Tratamentos",
+        excerpt: "Seu ombro está travado e dói muito? Entenda a Capsulite Adesiva e como a hidrodilatação pode acelerar a recuperação.",
         date: "11 Fev 2026",
         category: "Ombro e Cotovelo",
         image: "/img/blog/capsulitead.png?v=2",
@@ -438,8 +438,8 @@ const posts = [
     },
     {
         slug: "tendinite-calcaria-ombro",
-        title: "Tendinite Calcária: O 'cálcio' no ombro que causa dor aguda",
-        excerpt: "Saiba como a Terapia por Ondas de Choque pode dissolver as calcificações sem necessidade de cirurgia.",
+        title: "Tendinite Calcária no Ombro: Entenda e Trate sem Cirurgia",
+        excerpt: "Saiba como a Terapia por Ondas de Choque e a Barbotagem podem tratar a calcificação no ombro sem cirurgia.",
         date: "14 Fev 2026",
         category: "Ombro e Cotovelo",
         image: "/img/blog/tendicalc.png?v=2",
@@ -447,17 +447,17 @@ const posts = [
     },
     {
         slug: "tenosinovite-de-quervain",
-        title: "Dor no Polegar: Conheça a Tenosinovite de De Quervain",
-        excerpt: "A 'tendinite do celular' ou das mães de recém-nascidos. Saiba como testar e tratar a dor no punho.",
+        title: "Tenossinovite de De Quervain: Quando a Base do Polegar Começa a Doer",
+        excerpt: "Dor no polegar ao segurar o celular? Conheça a Tenossinovite de De Quervain e como tratar.",
         date: "17 Fev 2026",
         category: "Mão e Punho",
         image: "/img/blog/dequer.png?v=2",
         relatedRegions: ['wrist-left', 'wrist-right', 'hand-left', 'hand-right']
     },
     {
-        slug: "text-neck-dor-pescoco-celular",
-        title: "Text Neck: A epidemia de dor cervical causada pelo celular",
-        excerpt: "Olhar para baixo multiplica o peso da cabeça. Descubra exercícios para reverter o dano postural.",
+        slug: "text-neck-dor-cervical-celular-tratamento",
+        title: "Text Neck: Como o uso do celular está sobrecarregando sua coluna",
+        excerpt: "Sua cabeça pode 'pesar' até 27kg quando você olha para o celular. Saiba o que é a síndrome do Text Neck.",
         date: "20 Fev 2026",
         category: "Coluna Vertebral",
         image: "/img/blog/textneck.png?v=2",
@@ -474,7 +474,7 @@ const posts = [
     },
     {
         slug: "escoliose-em-adultos-dor",
-        title: "Tenho Escoliose diagnosticada adulto: Preciso me preocupar?",
+        title: "Escoliose no Adulto: Quando a Dor Realmente Vem da Curva?",
         excerpt: "Mitos e verdades sobre a curvatura da coluna na vida adulta e quando ela realmente causa dor.",
         date: "26 Fev 2026",
         category: "Coluna Vertebral",

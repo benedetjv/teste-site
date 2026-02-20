@@ -118,7 +118,6 @@ export default function BodySelector({
                                     Costas
                                 </button>
                             </div>
-                            {/*
                             <button
                                 onClick={() => setIsEditMode(!isEditMode)}
                                 className={`btn btn-sm rounded-pill px-3 py-2 fw-bold border transition-all ${isEditMode ? 'btn-danger' : 'btn-outline-secondary opacity-50'}`}
@@ -126,7 +125,6 @@ export default function BodySelector({
                             >
                                 {isEditMode ? 'Finalizar' : 'Ajustar'}
                             </button>
-                            */}
                         </div>
 
                         <div className="selected-info rounded-4 p-4 shadow-sm mb-4" style={{ backgroundColor: 'var(--cinza-fundo)', borderLeft: '6px solid var(--azul-claro)' }}>

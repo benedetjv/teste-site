@@ -71,11 +71,9 @@ export default function BodySelectorBlog({ onFilterChange }: BodySelectorBlogPro
                                 <button onClick={() => setView('front')} className={`btn btn-sm rounded-pill px-4 py-2 fw-bold transition-all border-0 ${view === 'front' ? 'shadow-sm text-white' : 'text-muted'}`} style={{ backgroundColor: view === 'front' ? 'var(--azul-medio)' : 'transparent' }}>Frente</button>
                                 <button onClick={() => setView('back')} className={`btn btn-sm rounded-pill px-4 py-2 fw-bold transition-all border-0 ${view === 'back' ? 'shadow-sm text-white' : 'text-muted'}`} style={{ backgroundColor: view === 'back' ? 'var(--azul-medio)' : 'transparent' }}>Costas</button>
                             </div>
-                            {/*
                             <button onClick={() => setIsEditMode(!isEditMode)} className={`btn btn-sm rounded-pill px-3 py-2 fw-bold border transition-all ${isEditMode ? 'btn-danger' : 'btn-outline-secondary opacity-30'}`}>
                                 <i className={`bi ${isEditMode ? 'bi-check-lg' : 'bi-gear'}`}></i>
                             </button>
-                            */}
                         </div>
 
                         {selectedIds.length > 0 && (

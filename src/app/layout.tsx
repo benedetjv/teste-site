@@ -40,9 +40,7 @@ export const metadata: Metadata = {
       url: '/img/favicon.png',
     },
   },
-  alternates: {
-    canonical: "https://drotto.com.br",
-  },
+  metadataBase: new URL("https://drotto.com.br"),
 };
 
 export const viewport: Viewport = {
