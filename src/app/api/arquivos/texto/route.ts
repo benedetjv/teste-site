@@ -23,7 +23,7 @@ export async function POST(req: Request) {
         const { notes } = await req.json();
 
         await put('secret_notes.json', JSON.stringify(notes), {
-            access: 'public',
+            access: 'private',
             contentType: 'application/json',
             addRandomSuffix: false, // ensures we overwrite the same file
         });

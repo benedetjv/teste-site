@@ -15,7 +15,7 @@ export async function POST(req: Request) {
 
         // Put the file into Vercel Blob Storage
         const blob = await put(`arquivos-pessoais/${safeName}`, file, {
-            access: 'public', // this ensures it is available for downloading
+            access: 'private', // User's v-blob store is configured to only allow private files
         });
 
         return NextResponse.json({ success: true, url: blob.url });
