@@ -282,23 +282,60 @@ export default function ArquivosPage() {
                                                             animate={{ opacity: 1, y: 0 }}
                                                             exit={{ opacity: 0, scale: 0.95 }}
                                                             className="p-3 rounded-4 mb-3 position-relative group"
-                                                            style={{ backgroundColor: "rgba(255,255,255,0.05)", border: "1px solid rgba(255,255,255,0.02)" }}
+                                                            style={{ backgroundColor: "#2b2b2b", border: "1px solid rgba(255,255,255,0.05)" }}
                                                         >
                                                             <div className="d-flex justify-content-between align-items-start mb-2">
                                                                 <span className="badge bg-dark text-muted fw-normal" style={{ fontSize: "0.7rem" }}>
                                                                     {formatDate(note.createdAt)}
                                                                 </span>
-                                                                <button
-                                                                    onClick={() => deleteNote(note.id)}
-                                                                    className="btn btn-sm btn-link text-danger p-0 m-0 text-decoration-none hover-opacity"
-                                                                    title="Excluir Nota"
-                                                                >
-                                                                    <i className="bi bi-trash-fill"></i>
-                                                                </button>
+                                                                <div className="d-flex gap-2">
+                                                                    <button
+                                                                        onClick={() => { navigator.clipboard.writeText(note.content); alert('Copiado!') }}
+                                                                        className="btn btn-sm btn-link text-primary p-0 m-0 text-decoration-none hover-opacity"
+                                                                        title="Copiar Nota"
+                                                                    >
+                                                                        <i className="bi bi-copy"></i>
+                                                                    </button>
+                                                                    <button
+                                                                        onClick={() => deleteNote(note.id)}
+                                                                        className="btn btn-sm btn-link text-danger p-0 m-0 text-decoration-none hover-opacity"
+                                                                        title="Excluir Nota"
+                                                                    >
+                                                                        <i className="bi bi-trash-fill"></i>
+                                                                    </button>
+                                                                </div>
                                                             </div>
-                                                            <div className="text-white" style={{ whiteSpace: "pre-wrap", fontSize: "0.95rem", lineHeight: "1.5" }}>
-                                                                {note.content}
-                                                            </div>
+                                                            <textarea
+                                                                value={note.content}
+                                                                onChange={(e) => {
+                                                                    // Update note locally
+                                                                    const updatedNotes = notes.map(n => n.id === note.id ? { ...n, content: e.target.value } : n);
+                                                                    setNotes(updatedNotes);
+                                                                }}
+                                                                onBlur={() => {
+                                                                    // Save to server on blur
+                                                                    fetch("/api/arquivos/texto", {
+                                                                        method: "POST",
+                                                                        headers: { "Content-Type": "application/json" },
+                                                                        body: JSON.stringify({ notes: notes })
+                                                                    });
+                                                                }}
+                                                                className="form-control border-0 bg-transparent text-white shadow-none p-0 w-100"
+                                                                style={{ resize: "none", overflow: "hidden", minHeight: "50px", fontSize: "0.95rem", lineHeight: "1.5" }}
+                                                                spellCheck={false}
+                                                                onInput={(e) => {
+                                                                    // auto-resize height
+                                                                    const target = e.target as HTMLTextAreaElement;
+                                                                    target.style.height = "auto";
+                                                                    target.style.height = target.scrollHeight + "px";
+                                                                }}
+                                                                ref={(el) => {
+                                                                    if (el) {
+                                                                        el.style.height = "auto";
+                                                                        el.style.height = el.scrollHeight + "px";
+                                                                    }
+                                                                }}
+                                                            />
                                                         </motion.div>
                                                     ))
                                                 )}
