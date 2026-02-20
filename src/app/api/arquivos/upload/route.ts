@@ -27,8 +27,8 @@ export async function POST(req: Request) {
         await writeFile(filePath, buffer);
 
         return NextResponse.json({ success: true, url: `/arquivos-pessoais/${safeName}` });
-    } catch (error) {
+    } catch (error: any) {
         console.error('Erro no upload:', error);
-        return NextResponse.json({ error: 'Erro no upload' }, { status: 500 });
+        return NextResponse.json({ error: `Erro no upload: ${error.message || error}` }, { status: 500 });
     }
 }
