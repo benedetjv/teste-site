@@ -171,18 +171,8 @@ export default function ArquivosPage() {
         }
     };
 
-    const handleDownload = async (url: string) => {
-        try {
-            const res = await fetch(`/api/arquivos/link?url=${encodeURIComponent(url)}`);
-            const data = await res.json();
-            if (data.url) {
-                window.open(data.url, '_blank');
-            } else {
-                alert("Erro ao gerar link de download");
-            }
-        } catch (e) {
-            alert("Erro ao conectar ao servidor");
-        }
+    const handleDownload = (url: string) => {
+        window.open(`/api/arquivos/link?url=${encodeURIComponent(url)}`, '_blank');
     };
 
     if (!isAuthenticated) {
