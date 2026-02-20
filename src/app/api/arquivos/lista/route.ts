@@ -10,7 +10,7 @@ export async function GET() {
             totalSize += blob.size;
             return {
                 name: blob.pathname.replace('arquivos-pessoais/', ''),
-                url: blob.downloadUrl || blob.url,
+                url: blob.url,
                 size: blob.size,
                 mtime: new Date(blob.uploadedAt).getTime()
             }

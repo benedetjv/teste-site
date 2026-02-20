@@ -171,6 +171,20 @@ export default function ArquivosPage() {
         }
     };
 
+    const handleDownload = async (url: string) => {
+        try {
+            const res = await fetch(`/api/arquivos/link?url=${encodeURIComponent(url)}`);
+            const data = await res.json();
+            if (data.url) {
+                window.open(data.url, '_blank');
+            } else {
+                alert("Erro ao gerar link de download");
+            }
+        } catch (e) {
+            alert("Erro ao conectar ao servidor");
+        }
+    };
+
     if (!isAuthenticated) {
         return (
             <div className="min-vh-100 d-flex align-items-center justify-content-center" style={{ backgroundColor: "#1e1e1e" }}>
@@ -400,9 +414,13 @@ export default function ArquivosPage() {
                                                                 <i className={`bi ${f.name.match(/\.(jpg|jpeg|png|gif|webp)$/i) ? 'bi-image text-success' : f.name.match(/\.(pdf)$/i) ? 'bi-file-pdf-fill text-danger' : 'bi-file-earmark-text-fill text-primary'}`}></i>
                                                             </div>
                                                             <div className="flex-grow-1 overflow-hidden">
-                                                                <a href={f.url} target="_blank" rel="noopener noreferrer" className="text-white text-decoration-none w-100 text-truncate fw-bold mb-0 d-block" style={{ fontSize: "0.85rem" }}>
+                                                                <button
+                                                                    onClick={() => handleDownload(f.url)}
+                                                                    className="btn btn-link p-0 text-white text-decoration-none w-100 text-truncate fw-bold mb-0 d-block text-start"
+                                                                    style={{ fontSize: "0.85rem", border: "none" }}
+                                                                >
                                                                     {f.name}
-                                                                </a>
+                                                                </button>
                                                                 <div className="text-muted d-flex gap-2" style={{ fontSize: "0.7rem" }}>
                                                                     <span>{formatSize(f.size)}</span>
                                                                     <span>•</span>
@@ -412,9 +430,13 @@ export default function ArquivosPage() {
 
                                                             {/* Actions container */}
                                                             <div className="d-flex gap-1">
-                                                                <a href={f.url} target="_blank" rel="noopener noreferrer" className="btn btn-sm btn-link text-muted p-2 hover-opacity" title="Baixar">
+                                                                <button
+                                                                    onClick={() => handleDownload(f.url)}
+                                                                    className="btn btn-sm btn-link text-muted p-2 hover-opacity"
+                                                                    title="Baixar"
+                                                                >
                                                                     <i className="bi bi-download"></i>
-                                                                </a>
+                                                                </button>
                                                                 <button onClick={() => deleteFile(f.url)} className="btn btn-sm btn-link text-danger p-2 hover-opacity" title="Excluir Definitivamente">
                                                                     <i className="bi bi-trash-fill"></i>
                                                                 </button>
