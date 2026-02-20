@@ -320,15 +320,15 @@ export default function ArquivosPage() {
                                                 <i className="bi bi-folder-fill text-warning"></i> Arquivos
                                             </h5>
                                             <span className="badge bg-dark fw-normal px-2 py-1" style={{ fontSize: "0.75rem", fontFamily: "monospace", color: "#ccc" }}>
-                                                {formatSize(totalSize)} / 250 MB
+                                                {formatSize(totalSize)} / 1 GB
                                             </span>
                                         </div>
                                         {/* Progress bar visual */}
                                         <div className="progress rounded-pill bg-dark" style={{ height: "4px" }}>
                                             <div
-                                                className={`progress-bar ${totalSize > 250 * 1024 * 1024 * 0.8 ? 'bg-danger' : 'bg-primary'}`}
+                                                className={`progress-bar ${totalSize > 1024 * 1024 * 1024 * 0.8 ? 'bg-danger' : 'bg-primary'}`}
                                                 role="progressbar"
-                                                style={{ width: `${Math.min((totalSize / (250 * 1024 * 1024)) * 100, 100)}%` }}
+                                                style={{ width: `${Math.min((totalSize / (1024 * 1024 * 1024)) * 100, 100)}%` }}
                                             ></div>
                                         </div>
                                     </div>
