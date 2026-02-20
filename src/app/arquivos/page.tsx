@@ -95,15 +95,13 @@ export default function ArquivosPage() {
         }
     };
 
-    // Auto-save delay
-    useEffect(() => {
-        if (!isAuthenticated) return;
-        const delayDebounceFn = setTimeout(() => {
+    // Save manually via CTRL+S
+    const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 's') {
+            e.preventDefault();
             saveText(text);
-        }, 1000); // Salva 1s após parar de digitar
-
-        return () => clearTimeout(delayDebounceFn);
-    }, [text, isAuthenticated]);
+        }
+    };
 
     if (!isAuthenticated) {
         return (
@@ -166,16 +164,22 @@ export default function ArquivosPage() {
                                         <h5 className="text-white mb-0 fw-bold d-flex align-items-center gap-2">
                                             <i className="bi bi-journal-text text-primary"></i> Notepad Online
                                         </h5>
-                                        <span className={`badge ${status === 'Salvo!' || status === 'Sincronizado' ? 'bg-success' : 'bg-warning'} bg-opacity-25 rounded-pill`} style={{ color: status === 'Salvo!' || status === 'Sincronizado' ? '#28a745' : '#ffc107' }}>
-                                            {status === 'Sincronizado' ? <><i className="bi bi-cloud-check-fill me-1"></i> {status}</> : <><i className="bi bi-arrow-repeat spin me-1"></i> {status}</>}
-                                        </span>
+                                        <div className="d-flex align-items-center gap-2">
+                                            <span className={`badge ${status === 'Salvo!' || status === 'Sincronizado' ? 'bg-success' : 'bg-warning'} bg-opacity-25 rounded-pill d-none d-md-inline-block`} style={{ color: status === 'Salvo!' || status === 'Sincronizado' ? '#28a745' : '#ffc107' }}>
+                                                {status === 'Sincronizado' ? <><i className="bi bi-cloud-check-fill me-1"></i> {status}</> : <><i className="bi bi-arrow-repeat spin me-1"></i> {status}</>}
+                                            </span>
+                                            <button onClick={() => saveText(text)} className="btn btn-sm btn-primary rounded-pill fw-bold px-3 shadow-sm">
+                                                Salvar <i className="bi bi-save ms-1"></i>
+                                            </button>
+                                        </div>
                                     </div>
                                     <div className="card-body p-0 position-relative d-flex flex-column h-100">
                                         <textarea
                                             value={text}
                                             onChange={(e) => setText(e.target.value)}
+                                            onKeyDown={handleKeyDown}
                                             className="form-control border-0 bg-transparent text-white shadow-none w-100 flex-grow-1 p-4"
-                                            placeholder="Cole links ou textos aqui no celular e pegue no PC (ou vice-versa)... O salvamento é automático!"
+                                            placeholder="Cole links ou textos aqui no celular e clique em Salvar (ou aperte Ctrl+S no PC)..."
                                             style={{ minHeight: "400px", resize: "none" }}
                                             spellCheck={false}
                                         />

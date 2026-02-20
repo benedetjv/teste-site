@@ -1,23 +1,16 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
-
-const UPLOAD_DIR = path.join(process.cwd(), 'public/arquivos-pessoais');
+import { list } from '@vercel/blob';
 
 export async function GET() {
     try {
-        if (!fs.existsSync(UPLOAD_DIR)) {
-            return NextResponse.json({ files: [] });
-        }
+        const { blobs } = await list({ prefix: 'arquivos-pessoais/' });
 
-        const filesStats = fs.readdirSync(UPLOAD_DIR).map(f => {
-            const filePath = path.join(UPLOAD_DIR, f);
-            const stats = fs.statSync(filePath);
+        const filesStats = blobs.map(blob => {
             return {
-                name: f,
-                url: `/arquivos-pessoais/${f}`,
-                size: stats.size,
-                mtime: stats.mtime.getTime()
+                name: blob.pathname.replace('arquivos-pessoais/', ''),
+                url: blob.url,
+                size: blob.size,
+                mtime: new Date(blob.uploadedAt).getTime()
             }
         });
 
@@ -26,8 +19,8 @@ export async function GET() {
 
         return NextResponse.json({ files: filesStats });
 
-    } catch (e) {
-        console.error('Erro na lista:', e);
-        return NextResponse.json({ error: 'Erro ao ler arquivos', files: [] }, { status: 500 });
+    } catch (e: any) {
+        console.error('Erro na lista Vercel Blob:', e);
+        return NextResponse.json({ error: `Erro ao ler arquivos: ${e.message}`, files: [] }, { status: 500 });
     }
 }
