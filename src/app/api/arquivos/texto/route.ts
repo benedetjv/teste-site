@@ -3,33 +3,34 @@ import { put, list } from '@vercel/blob';
 
 export async function GET() {
     try {
-        const { blobs } = await list({ prefix: 'secret_note.txt', limit: 1 });
+        const { blobs } = await list({ prefix: 'secret_notes.json', limit: 1 });
         if (blobs.length === 0) {
-            return NextResponse.json({ text: '' });
+            return NextResponse.json({ notes: [] });
         }
 
         const res = await fetch(blobs[0].url);
         const text = await res.text();
-        return NextResponse.json({ text });
+        const notes = text ? JSON.parse(text) : [];
+        return NextResponse.json({ notes });
     } catch (e: any) {
-        console.error('Erro ao ler texto Vercel Blob:', e);
+        console.error('Erro ao ler notas Vercel Blob:', e);
         return NextResponse.json({ error: `Erro ao ler: ${e.message}` }, { status: 500 });
     }
 }
 
 export async function POST(req: Request) {
     try {
-        const { text } = await req.json();
+        const { notes } = await req.json();
 
-        await put('secret_note.txt', text, {
+        await put('secret_notes.json', JSON.stringify(notes), {
             access: 'public',
-            contentType: 'text/plain',
+            contentType: 'application/json',
             addRandomSuffix: false, // ensures we overwrite the same file
         });
 
         return NextResponse.json({ success: true });
     } catch (e: any) {
-        console.error('Erro ao salvar texto Vercel Blob:', e);
+        console.error('Erro ao salvar notas Vercel Blob:', e);
         return NextResponse.json({ error: `Erro ao salvar: ${e.message}` }, { status: 500 });
     }
 }
