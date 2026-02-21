@@ -31,7 +31,7 @@ export default function ArquivosPage() {
     const [isUploading, setIsUploading] = useState(false);
 
     // TODO: Change password se quiser
-    const SECRET_KEY = "otto123";
+    const SECRET_KEY = "1010@";
 
     useEffect(() => {
         // Mudar fundo só desta página
