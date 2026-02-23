@@ -71,7 +71,7 @@ export default function Header() {
                 {/* Botão de Agendamento no Header (Opcional - mas fica moderno) */}
                 <li className="nav-item ms-lg-3">
                   <a
-                    href="#agende"
+                    href="/#agende"
                     className="btn btn-primary rounded-pill px-4 btn-sm fw-bold shadow-sm"
                     style={{ backgroundColor: 'var(--azul-principal)', borderColor: 'var(--azul-principal)' }}
                   >
