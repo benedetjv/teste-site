@@ -55,8 +55,8 @@ export default function FacilitadorAgendamentosPage() {
                                     <div className="mb-4">
                                         <p className="text-muted mb-2"><i className="bi bi-geo-alt-fill me-2" style={{ color: 'var(--azul-claro)' }}></i>R. Barreto Leme, 245 - Conceição, Campinas - SP, 13025-085</p>
                                         <p className="text-muted mb-1"><i className="bi bi-telephone-fill me-2" style={{ color: 'var(--azul-claro)' }}></i>(19) 3739-3700</p>
-                                        <div className="mt-2">
-                                            <a href="https://app.tuotempo.com/mop/index.php?dbName=tt_elf_tasy_careveracruz_prod#search/query/typologyid%3Dsc164a82826642fc%26typologyTitle%3DEXAMES%7BPERCENT%7D20DE%7BPERCENT%7D20RESSON%7BPERCENT%7DC3%7BPERCENT%7D82NCIA%7BPERCENT%7D20MAGN%7BPERCENT%7DC3%7BPERCENT%7D89TICA%26activityid%3Dsc164b01fdd02d3b%26activityTitle%3DRM%7BPERCENT%7D20DE%7BPERCENT%7D20COLUNA%7BPERCENT%7D20LOMBAR%26areaid%7BPERCENT%7D5B%7BPERCENT%7D5D%3Dsc164a6cf0d57ddc" target="_blank" rel="noopener noreferrer" className="text-decoration-none fw-bold" style={{ color: 'var(--azul-medio)' }}>
+                                        <div className="mt-3">
+                                            <a href="https://app.tuotempo.com/mop/index.php?dbName=tt_elf_tasy_careveracruz_prod#search/query/typologyid%3Dsc164a82826642fc%26typologyTitle%3DEXAMES%7BPERCENT%7D20DE%7BPERCENT%7D20RESSON%7BPERCENT%7DC3%7BPERCENT%7D82NCIA%7BPERCENT%7D20MAGN%7BPERCENT%7DC3%7BPERCENT%7D89TICA%26activityid%3Dsc164b01fdd02d3b%26activityTitle%3DRM%7BPERCENT%7D20DE%7BPERCENT%7D20COLUNA%7BPERCENT%7D20LOMBAR%26areaid%7BPERCENT%7D5B%7BPERCENT%7D5D%3Dsc164a6cf0d57ddc" target="_blank" rel="noopener noreferrer" className="btn btn-outline-primary fw-bold rounded-pill px-4">
                                                 <i className="bi bi-laptop me-1"></i> Agendar direto pelo site
                                             </a>
                                         </div>
@@ -92,7 +92,6 @@ export default function FacilitadorAgendamentosPage() {
                                     <h3 className="fw-bold mb-1" style={{ color: 'var(--azul-escuro)' }}>CDE - Clínica de Imagem Campinas</h3>
                                     <div className="d-flex align-items-center mb-3">
                                         <span className="badge bg-secondary rounded-pill me-2">2ª Opção</span>
-                                        <span className="small text-warning fw-bold"><i className="bi bi-star-fill"></i> 4,8 (3.871 avaliações no Google)</span>
                                     </div>
 
                                     <div className="mb-4">
@@ -131,7 +130,6 @@ export default function FacilitadorAgendamentosPage() {
                                     <h3 className="fw-bold mb-1" style={{ color: 'var(--azul-escuro)' }}>RCC Radiologia Clínica de Campinas</h3>
                                     <div className="d-flex align-items-center mb-3">
                                         <span className="badge bg-secondary rounded-pill me-2">3ª Opção</span>
-                                        <span className="small text-warning fw-bold"><i className="bi bi-star-fill"></i> 4,5 (2,6 mil avaliações)</span>
                                     </div>
 
                                     <div className="mb-4">
