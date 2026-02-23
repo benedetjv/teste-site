@@ -167,9 +167,9 @@ export default function RadiofrequencySimulator() {
                     <span className="small text-muted text-uppercase" style={{ fontSize: '10px' }}>SIMULADOR EDUCACIONAL</span>
                 </div>
                 <div className="d-flex gap-2">
-                    <button className="btn btn-sm btn-outline-secondary rounded-circle" onClick={() => setIsEditMode(!isEditMode)}>
+                    {/*<button className="btn btn-sm btn-outline-secondary rounded-circle" onClick={() => setIsEditMode(!isEditMode)}>
                         <i className={`bi ${isEditMode ? 'bi-lock-fill text-danger' : 'bi-gear-fill'}`}></i>
-                    </button>
+                    </button>*/}
                     {step > 0 && <button className="btn btn-sm btn-light rounded-pill px-3 fw-bold" onClick={reset}>VOLTAR</button>}
                 </div>
             </div>

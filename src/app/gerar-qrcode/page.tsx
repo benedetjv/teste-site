@@ -45,6 +45,12 @@ const QR_LINKS = [
         url: "https://drotto.com.br/contato",
         desc: "Mapa e Telefones das Clínicas.",
         color: "DC3545" // Vermelho (destaque)
+    },
+    {
+        title: "Facilitador de Agendamentos",
+        url: "https://drotto.com.br/facilitadoragendamentos",
+        desc: "Links rápidos para agendamento de exames e consultas.",
+        color: "8A2BE2" // Roxo
     }
 ];
 
