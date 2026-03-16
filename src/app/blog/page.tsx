@@ -7,15 +7,6 @@ import BodySelectorBlog from "@/components/BodySelectorBlog";
 const posts = [
     // --- TOP TRENDING GOOGLE (MARÇO 2026) ---
     {
-        slug: "dor-nas-costas-o-que-pode-ser",
-        title: "Muita dor nas costas: O que pode ser? (Lado Esquerdo, Direito e Rins)",
-        excerpt: "Aprenda a diferenciar uma contratura lombar de um problema nos rins ou no coração, e entenda a raiz da dor.",
-        date: "16 Mar 2026",
-        category: "Coluna Vertebral",
-        image: "/img/blog/dor-nas-costas-incognita.png",
-        relatedRegions: ['lumbar-back', 'cervical-back', 'abdomen', 'chest']
-    },
-    {
         slug: "ibuprofeno-cetoprofeno-dor-nas-costas-riscos",
         title: "Ibuprofeno e Cetoprofeno servem para dor nas costas?",
         excerpt: "Os perigos de mascarar cronicamente os sintomas da coluna com anti-inflamatórios em vez de tratar a inflamação mecânica na origem.",
@@ -23,6 +14,15 @@ const posts = [
         category: "Ortopedia e Saúde",
         image: "/img/blog/dor-costas-ibuprofeno.png",
         relatedRegions: ['lumbar-back', 'cervical-back']
+    },
+    {
+        slug: "dor-nas-costas-o-que-pode-ser",
+        title: "Muita dor nas costas: O que pode ser? (Lado Esquerdo, Direito e Rins)",
+        excerpt: "Aprenda a diferenciar uma contratura lombar de um problema nos rins ou no coração, e entenda a raiz da dor.",
+        date: "16 Mar 2026",
+        category: "Coluna Vertebral",
+        image: "/img/blog/dor-nas-costas-incognita.png",
+        relatedRegions: ['lumbar-back', 'cervical-back', 'abdomen', 'chest']
     },
     // --- NOVEMBRO 2025 ---
     {
