@@ -5,6 +5,16 @@ import Link from "next/link";
 import BodySelectorBlog from "@/components/BodySelectorBlog";
 
 const posts = [
+    // --- CIÊNCIA E REGENERAÇÃO (MARÇO 2026) ---
+    {
+        slug: "peptideo-ghk-cu-para-que-serve",
+        title: "Peptídeo GHK-Cu: para que serve? Pode ajudar na dor?",
+        excerpt: "Muitos pacientes perguntam sobre peptídeos. Entenda o que o GHK-Cu realmente faz e o que a literatura diz sobre ele na dor e na ortopedia.",
+        date: "20 Mar 2026",
+        category: "Tratamentos Ortopédicos",
+        image: "/img/blog/peptideo-ghk-cu.png",
+        relatedRegions: ['shoulder', 'knee-leg']
+    },
     // --- LESÕES ESPORTIVAS (MARÇO 2026) ---
     {
         slug: "dor-padel-lesoes-ortopedicas",
