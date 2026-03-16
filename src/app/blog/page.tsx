@@ -7,6 +7,15 @@ import BodySelectorBlog from "@/components/BodySelectorBlog";
 const posts = [
     // --- CIÊNCIA E REGENERAÇÃO (MARÇO 2026) ---
     {
+        slug: "o-que-sao-peptideos-para-que-servem",
+        title: "O que são peptídeos? Para que servem e o que se sabe hoje no Brasil",
+        excerpt: "Entenda o que são BPC-157, TB-500 e GHK-Cu, a utilidade médica dos peptídeos e as regras de aprovação e uso pela Anvisa e WADA.",
+        date: "20 Mar 2026",
+        category: "Tratamentos Ortopédicos",
+        image: "/img/blog/o-que-sao-peptideos.png",
+        relatedRegions: ['arm-elbow', 'shoulder', 'knee-leg', 'lumbar-back']
+    },
+    {
         slug: "peptideo-ghk-cu-para-que-serve",
         title: "Peptídeo GHK-Cu: para que serve? Pode ajudar na dor?",
         excerpt: "Muitos pacientes perguntam sobre peptídeos. Entenda o que o GHK-Cu realmente faz e o que a literatura diz sobre ele na dor e na ortopedia.",
