@@ -10,7 +10,7 @@ const posts = [
         slug: "o-que-sao-peptideos-para-que-servem",
         title: "O que são peptídeos? Para que servem e o que se sabe hoje no Brasil",
         excerpt: "Entenda o que são BPC-157, TB-500 e GHK-Cu, a utilidade médica dos peptídeos e as regras de aprovação e uso pela Anvisa e WADA.",
-        date: "26 Mar 2026",
+        date: "16 Mar 2026",
         category: "Tratamentos Ortopédicos",
         image: "/img/blog/o-que-sao-peptideos.png",
         relatedRegions: ['arm-elbow', 'shoulder', 'knee-leg', 'lumbar-back']
@@ -66,7 +66,7 @@ const posts = [
         slug: "dor-no-joelho-cid-significado",
         title: "Recebeu um atestado com CID para dor no joelho? Saiba o que significa",
         excerpt: "Entenda o que significam os códigos do seu laudo (M22, M23, M25.5) e qual o melhor caminho terapêutico pós-emergência.",
-        date: "23 Mar 2026",
+        date: "15 Mar 2026",
         category: "Joelho e Quadril",
         image: "/img/blog/dor-joelho-cid.png",
         relatedRegions: ['knee-leg']
@@ -75,7 +75,7 @@ const posts = [
         slug: "ibuprofeno-cetoprofeno-dor-nas-costas-riscos",
         title: "Ibuprofeno e Cetoprofeno servem para dor nas costas?",
         excerpt: "Os perigos de mascarar cronicamente os sintomas da coluna com anti-inflamatórios em vez de tratar a inflamação mecânica na origem.",
-        date: "21 Mar 2026",
+        date: "13 Mar 2026",
         category: "Ortopedia e Saúde",
         image: "/img/blog/dor-costas-ibuprofeno.png",
         relatedRegions: ['lumbar-back', 'cervical-back']
@@ -84,7 +84,7 @@ const posts = [
         slug: "dor-nas-costas-o-que-pode-ser",
         title: "Muita dor nas costas: O que pode ser? (Lado Esquerdo, Direito e Rins)",
         excerpt: "Aprenda a diferenciar uma contratura lombar de um problema nos rins ou no coração, e entenda a raiz da dor.",
-        date: "19 Mar 2026",
+        date: "12 Mar 2026",
         category: "Coluna Vertebral",
         image: "/img/blog/dor-nas-costas-incognita.png",
         relatedRegions: ['lumbar-back', 'cervical-back', 'abdomen', 'chest']
