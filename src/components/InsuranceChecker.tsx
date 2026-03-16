@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 
 const insurances = [
+    { id: 'particular', name: 'Atendimento Particular' },
     { id: 'amil', name: 'Amil' },
     { id: 'bradesco', name: 'Bradesco Saúde' },
     { id: 'gama', name: 'GAMA Saúde' },
@@ -22,7 +23,11 @@ export default function InsuranceChecker() {
 
     const handleSelectInsurance = (name: string) => {
         setSelectedInsurance(name);
-        setStep(2);
+        if (name === 'Atendimento Particular') {
+            setStep(3);
+        } else {
+            setStep(2);
+        }
     };
 
     const handleReset = () => {
@@ -45,18 +50,36 @@ export default function InsuranceChecker() {
             {/* STEP 1: SELECT INSURANCE */}
             {step === 1 && (
                 <div className="animate__animated animate__fadeIn">
-                    <h3 className="h4 fw-bold mb-2" style={{ color: 'var(--azul-escuro)' }}>Qual é o seu plano de saúde?</h3>
-                    <p className="text-muted mb-4">Selecione o seu convênio para iniciarmos o agendamento.</p>
+                    <h3 className="h4 fw-bold mb-2" style={{ color: 'var(--azul-escuro)' }}>Como deseja ser atendido?</h3>
+                    <p className="text-muted mb-4">Selecione o seu convênio ou atendimento particular para iniciarmos o agendamento.</p>
                     
                     <div className="row g-3">
                         {insurances.map((ins) => (
-                            <div className="col-6 col-md-4" key={ins.id}>
+                            <div className="col-12 col-md-4" key={ins.id}>
                                 <button 
                                     onClick={() => handleSelectInsurance(ins.name)}
-                                    className="btn btn-outline-primary w-100 py-3 fw-bold rounded-3 h-100 d-flex align-items-center justify-content-center"
-                                    style={{ transition: 'all 0.2s', borderColor: '#e6e6e6', color: 'var(--azul-escuro)' }}
-                                    onMouseOver={(e) => { e.currentTarget.style.borderColor = 'var(--azul-principal)'; e.currentTarget.style.backgroundColor = '#f4f8fb'; }}
-                                    onMouseOut={(e) => { e.currentTarget.style.borderColor = '#e6e6e6'; e.currentTarget.style.backgroundColor = 'transparent'; }}
+                                    className={`btn ${ins.id === 'particular' ? 'btn-primary text-white' : 'btn-outline-primary'} w-100 py-3 fw-bold rounded-3 h-100 d-flex align-items-center justify-content-center`}
+                                    style={{ 
+                                        transition: 'all 0.2s', 
+                                        borderColor: ins.id === 'particular' ? 'transparent' : '#e6e6e6', 
+                                        color: ins.id === 'particular' ? 'white' : 'var(--azul-escuro)' 
+                                    }}
+                                    onMouseOver={(e) => { 
+                                        if (ins.id !== 'particular') {
+                                            e.currentTarget.style.borderColor = 'var(--azul-principal)'; 
+                                            e.currentTarget.style.backgroundColor = '#f4f8fb'; 
+                                        } else {
+                                            e.currentTarget.style.opacity = '0.9';
+                                        }
+                                    }}
+                                    onMouseOut={(e) => { 
+                                        if (ins.id !== 'particular') {
+                                            e.currentTarget.style.borderColor = '#e6e6e6'; 
+                                            e.currentTarget.style.backgroundColor = 'transparent'; 
+                                        } else {
+                                            e.currentTarget.style.opacity = '1';
+                                        }
+                                    }}
                                 >
                                     {ins.name}
                                 </button>
@@ -67,7 +90,7 @@ export default function InsuranceChecker() {
             )}
 
             {/* STEP 2: VERA CRUZ CHECK */}
-            {step === 2 && (
+            {step === 2 && selectedInsurance !== 'Atendimento Particular' && (
                 <div className="animate__animated animate__fadeIn text-center py-3">
                     <span className="badge bg-primary bg-opacity-10 text-primary px-3 py-2 mb-3 rounded-pill">Convênio selecionado: {selectedInsurance}</span>
                     
@@ -75,7 +98,7 @@ export default function InsuranceChecker() {
                     
                     <div className="bg-light p-4 rounded-3 border mb-4 text-start">
                         <p className="mb-0 text-dark fw-medium" style={{ fontSize: '1.1rem', lineHeight: '1.6' }}>
-                            O Dr. Otto Beckedorff presta os atendimentos intervencionistas e procedimentos da Clínica Adora diretamente na estrutura de ponta do <strong>Hospital Vera Cruz</strong> (Campinas).
+                            O Dr. Otto Beckedorff presta os atendimentos intervencionistas e cirúrgicos diretamente na estrutura de ponta do <strong>Hospital Vera Cruz</strong> (Campinas).
                         </p>
                         <hr className="my-3"/>
                         <p className="mb-0 text-danger fw-bold">
@@ -112,8 +135,8 @@ export default function InsuranceChecker() {
                     <div className="display-4 text-primary mb-3">
                         <i className="bi bi-calendar2-check-fill" style={{ color: 'var(--azul-principal)' }}></i>
                     </div>
-                    <h3 className="h4 fw-bold mb-2" style={{ color: 'var(--azul-escuro)' }}>Excelente! Vamos ao próximo passo.</h3>
-                    <p className="text-secondary mb-5">Escolha abaixo como prefere realizar o seu agendamento no nosso centro (Clínica Adora & Vera Cruz).</p>
+                    <h3 className="h4 fw-bold mb-2" style={{ color: 'var(--azul-escuro)' }}>Excelente! Vamos ao seu agendamento.</h3>
+                    <p className="text-secondary mb-5">Escolha abaixo como prefere realizar o seu agendamento na Clínica Adora (Campinas).</p>
 
                     <div className="row justify-content-center g-4">
                         
@@ -121,7 +144,7 @@ export default function InsuranceChecker() {
                             <div className="card h-100 border-0 shadow-sm rounded-4 hover-shadow" style={{ backgroundColor: '#f8fbfe' }}>
                                 <div className="card-body p-4 p-lg-5">
                                     <h4 className="fw-bold mb-3" style={{ color: 'var(--azul-escuro)' }}>Agendamento Imediato</h4>
-                                    <p className="text-muted small mb-4">Veja a agenda livre em tempo real agora mesmo e garanta o seu horário na Clínica Adora.</p>
+                                    <p className="text-muted small mb-4">Veja a agenda livre em tempo real agora mesmo e garanta o seu horário de forma automática.</p>
                                     <a 
                                         href="https://www.doctoralia.com.br" 
                                         target="_blank" 
@@ -139,9 +162,16 @@ export default function InsuranceChecker() {
                             <div className="card h-100 border-0 shadow-sm rounded-4 hover-shadow" style={{ backgroundColor: '#f0fdf4' }}>
                                 <div className="card-body p-4 p-lg-5">
                                     <h4 className="fw-bold text-success mb-3">Assistência Humana</h4>
-                                    <p className="text-muted small mb-4">Nossa secretária confirmará a viabilidade do nível do seu plano <em>{selectedInsurance}</em> para o Vera Cruz.</p>
+                                    <p className="text-muted small mb-4">
+                                        {selectedInsurance === 'Atendimento Particular' 
+                                            ? "Fale com nossa secretária para escolher seu horário e tirar dúvidas sobre a consulta."
+                                            : <span>Nossa secretária confirmará a viabilidade da sua categoria <em>{selectedInsurance}</em> e agendará seu horário.</span>
+                                        }
+                                    </p>
                                     <a 
-                                        href={`https://wa.me/5519999439824?text=Ol%C3%A1!%20Vim%20pelo%20Google.%20Tenho%20o%20plano%20${selectedInsurance}%20e%20gostaria%20de%20agendar%20consulta%20para%20dor.`} 
+                                        href={selectedInsurance === 'Atendimento Particular' 
+                                            ? `https://wa.me/5519999439824?text=Ol%C3%A1!%20Vim%20pelo%20Google.%20Gostaria%20de%20agendar%20uma%20consulta%20particular%20para%20tratamento%20de%20dor.` 
+                                            : `https://wa.me/5519999439824?text=Ol%C3%A1!%20Vim%20pelo%20Google.%20Tenho%20o%20plano%20${selectedInsurance}%20e%20gostaria%20de%20agendar%20consulta%20para%20dor.`} 
                                         target="_blank" 
                                         rel="noopener noreferrer"
                                         className="btn btn-lg w-100 text-white fw-bold rounded-pill"
