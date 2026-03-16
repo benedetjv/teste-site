@@ -5,6 +5,43 @@ import Link from "next/link";
 import BodySelectorBlog from "@/components/BodySelectorBlog";
 
 const posts = [
+    // --- LESÕES ESPORTIVAS (MARÇO 2026) ---
+    {
+        slug: "dor-padel-lesoes-ortopedicas",
+        title: "Dor no Padel: O que causa e como voltar às quadras",
+        excerpt: "Epicondilite, dor no ombro e torções no joelho são as grandes vilãs do Padel. Entenda por que o repouso puro não resolve e como tratar de verdade.",
+        date: "19 Mar 2026",
+        category: "Lesões Esportivas",
+        image: "/img/blog/dor-padel.png",
+        relatedRegions: ['arm-elbow', 'shoulder', 'knee-leg']
+    },
+    {
+        slug: "dor-crossfit-lesoes-lombar-ombro",
+        title: "Dor e Lesões no CrossFit: Quando o corpo pede ajuda",
+        excerpt: "Dores lombares crônicas, sobrecarga de ombro e lesões no menisco. Entenda os sinais mecânicos agudos do CrossFit e como recuperar sua performance.",
+        date: "19 Mar 2026",
+        category: "Lesões Esportivas",
+        image: "/img/blog/dor-crossfit.png",
+        relatedRegions: ['lumbar-back', 'shoulder', 'knee-leg']
+    },
+    {
+        slug: "dor-beach-tennis-ombro-cotovelo",
+        title: "Beach Tennis e a Dor Articular: Não deixe a areia parar você",
+        excerpt: "Ombros com tendinite, cotovelos doendo e tornozelos torcendo. Compreenda por que sacar na areia desgasta tendões e veja abordagens conservadoras.",
+        date: "19 Mar 2026",
+        category: "Lesões Esportivas",
+        image: "/img/blog/dor-beachtennis.png",
+        relatedRegions: ['shoulder', 'arm-elbow', 'knee-leg']
+    },
+    {
+        slug: "dor-musculacao-academia-lesoes",
+        title: "Musculação e Lesões: Dor na Academia não é só ácido lático",
+        excerpt: "Estalos no ombro pelo supino ou dores rotulares no leg-press? Veja quando a exaustão do treino virou lesão por atrito e as opções ortopédicas modernas.",
+        date: "19 Mar 2026",
+        category: "Lesões Esportivas",
+        image: "/img/blog/dor-musculacao.png",
+        relatedRegions: ['shoulder', 'knee-leg', 'lumbar-back']
+    },
     // --- TOP TRENDING GOOGLE (MARÇO 2026) ---
     {
         slug: "dor-no-joelho-cid-significado",
