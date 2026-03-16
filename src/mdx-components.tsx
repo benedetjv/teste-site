@@ -19,7 +19,20 @@ export function useMDXComponents(components: MDXComponents): MDXComponents {
         p: ({ children }) => <p className="lead mb-4 text-secondary" style={{ lineHeight: '1.8' }}>{children}</p>,
         ul: ({ children }) => <ul className="list-unstyled ps-3 mb-4 border-start border-4 ps-4" style={{ borderColor: 'var(--azul-claro)' }}>{children}</ul>,
         li: ({ children }) => <li className="mb-2 d-flex align-items-start"><i className="bi bi-check-circle-fill me-2 fs-5 mt-1" style={{ color: 'var(--azul-medio)' }}></i><span>{children}</span></li>,
-        a: ({ href, children }) => <a href={href} className="btn btn-lg mt-3 text-white fw-bold shadow-sm px-5 rounded-pill" style={{ backgroundColor: 'var(--azul-escuro)', border: 'none' }}>{children}</a>,
+        a: ({ href, children, ...props }) => {
+            if (href?.startsWith('https://wa.me/')) {
+                return (
+                    <a href={href} {...props} target="_blank" rel="noopener noreferrer" className="btn btn-lg mt-3 text-white fw-bold shadow-sm px-5 rounded-pill d-inline-block" style={{ backgroundColor: 'var(--azul-escuro)', border: 'none' }}>
+                        {children}
+                    </a>
+                )
+            }
+            return (
+                <a href={href} {...props} target="_blank" rel="noopener noreferrer" className="fw-bold" style={{ color: 'var(--azul-medio)', textDecoration: 'underline' }}>
+                    {children}
+                </a>
+            )
+        },
         strong: ({ children }) => <span className="fw-bolder" style={{ color: 'var(--azul-escuro)' }}>{children}</span>,
 
         // Custom Components for MDX
