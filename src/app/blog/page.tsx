@@ -10,7 +10,7 @@ const posts = [
         slug: "o-que-sao-peptideos-para-que-servem",
         title: "O que são peptídeos? Para que servem e o que se sabe hoje no Brasil",
         excerpt: "Entenda o que são BPC-157, TB-500 e GHK-Cu, a utilidade médica dos peptídeos e as regras de aprovação e uso pela Anvisa e WADA.",
-        date: "20 Mar 2026",
+        date: "26 Mar 2026",
         category: "Tratamentos Ortopédicos",
         image: "/img/blog/o-que-sao-peptideos.png",
         relatedRegions: ['arm-elbow', 'shoulder', 'knee-leg', 'lumbar-back']
@@ -19,7 +19,7 @@ const posts = [
         slug: "peptideo-ghk-cu-para-que-serve",
         title: "Peptídeo GHK-Cu: para que serve? Pode ajudar na dor?",
         excerpt: "Muitos pacientes perguntam sobre peptídeos. Entenda o que o GHK-Cu realmente faz e o que a literatura diz sobre ele na dor e na ortopedia.",
-        date: "20 Mar 2026",
+        date: "14 Mar 2026",
         category: "Tratamentos Ortopédicos",
         image: "/img/blog/peptideo-ghk-cu.png",
         relatedRegions: ['shoulder', 'knee-leg']
@@ -29,7 +29,7 @@ const posts = [
         slug: "dor-padel-lesoes-ortopedicas",
         title: "Dor no Padel: O que causa e como voltar às quadras",
         excerpt: "Epicondilite, dor no ombro e torções no joelho são as grandes vilãs do Padel. Entenda por que o repouso puro não resolve e como tratar de verdade.",
-        date: "19 Mar 2026",
+        date: "11 Mar 2026",
         category: "Lesões Esportivas",
         image: "/img/blog/dor-padel.png",
         relatedRegions: ['arm-elbow', 'shoulder', 'knee-leg']
@@ -38,7 +38,7 @@ const posts = [
         slug: "dor-crossfit-lesoes-lombar-ombro",
         title: "Dor e Lesões no CrossFit: Quando o corpo pede ajuda",
         excerpt: "Dores lombares crônicas, sobrecarga de ombro e lesões no menisco. Entenda os sinais mecânicos agudos do CrossFit e como recuperar sua performance.",
-        date: "19 Mar 2026",
+        date: "08 Mar 2026",
         category: "Lesões Esportivas",
         image: "/img/blog/dor-crossfit.png",
         relatedRegions: ['lumbar-back', 'shoulder', 'knee-leg']
@@ -47,7 +47,7 @@ const posts = [
         slug: "dor-beach-tennis-ombro-cotovelo",
         title: "Beach Tennis e a Dor Articular: Não deixe a areia parar você",
         excerpt: "Ombros com tendinite, cotovelos doendo e tornozelos torcendo. Compreenda por que sacar na areia desgasta tendões e veja abordagens conservadoras.",
-        date: "19 Mar 2026",
+        date: "05 Mar 2026",
         category: "Lesões Esportivas",
         image: "/img/blog/dor-beachtennis.png",
         relatedRegions: ['shoulder', 'arm-elbow', 'knee-leg']
@@ -56,7 +56,7 @@ const posts = [
         slug: "dor-musculacao-academia-lesoes",
         title: "Musculação e Lesões: Dor na Academia não é só ácido lático",
         excerpt: "Estalos no ombro pelo supino ou dores rotulares no leg-press? Veja quando a exaustão do treino virou lesão por atrito e as opções ortopédicas modernas.",
-        date: "19 Mar 2026",
+        date: "02 Mar 2026",
         category: "Lesões Esportivas",
         image: "/img/blog/dor-musculacao.png",
         relatedRegions: ['shoulder', 'knee-leg', 'lumbar-back']
@@ -66,7 +66,7 @@ const posts = [
         slug: "dor-no-joelho-cid-significado",
         title: "Recebeu um atestado com CID para dor no joelho? Saiba o que significa",
         excerpt: "Entenda o que significam os códigos do seu laudo (M22, M23, M25.5) e qual o melhor caminho terapêutico pós-emergência.",
-        date: "18 Mar 2026",
+        date: "23 Mar 2026",
         category: "Joelho e Quadril",
         image: "/img/blog/dor-joelho-cid.png",
         relatedRegions: ['knee-leg']
@@ -75,7 +75,7 @@ const posts = [
         slug: "ibuprofeno-cetoprofeno-dor-nas-costas-riscos",
         title: "Ibuprofeno e Cetoprofeno servem para dor nas costas?",
         excerpt: "Os perigos de mascarar cronicamente os sintomas da coluna com anti-inflamatórios em vez de tratar a inflamação mecânica na origem.",
-        date: "17 Mar 2026",
+        date: "21 Mar 2026",
         category: "Ortopedia e Saúde",
         image: "/img/blog/dor-costas-ibuprofeno.png",
         relatedRegions: ['lumbar-back', 'cervical-back']
@@ -84,7 +84,7 @@ const posts = [
         slug: "dor-nas-costas-o-que-pode-ser",
         title: "Muita dor nas costas: O que pode ser? (Lado Esquerdo, Direito e Rins)",
         excerpt: "Aprenda a diferenciar uma contratura lombar de um problema nos rins ou no coração, e entenda a raiz da dor.",
-        date: "16 Mar 2026",
+        date: "19 Mar 2026",
         category: "Coluna Vertebral",
         image: "/img/blog/dor-nas-costas-incognita.png",
         relatedRegions: ['lumbar-back', 'cervical-back', 'abdomen', 'chest']
@@ -603,24 +603,30 @@ function parseDate(dateStr: string): Date {
 
 export default function BlogIndex() {
     const [filterRegions, setFilterRegions] = useState<string[]>([]);
+    
+    // Ordena todos os posts por data (mais recente primeiro) automaticamente
+    const sortedPosts = [...posts].sort((a, b) => {
+        return parseDate(b.date).getTime() - parseDate(a.date).getTime();
+    });
+
     // Estado para controlar posts visíveis baseado na data
-    const [visiblePosts, setVisiblePosts] = useState(posts);
+    const [visiblePosts, setVisiblePosts] = useState(sortedPosts);
 
     useEffect(() => {
         // MODO REVISÃO ATIVADO: Mostra todos os posts, inclusive futuros
-        // Para voltar ao modo agendado, descomente o código abaixo e remova o setVisiblePosts(posts)
+        // Para voltar ao modo agendado, descomente o código abaixo e remova o setVisiblePosts(sortedPosts)
 
         /*
         const now = new Date();
         now.setHours(23, 59, 59, 999);
-        const releasedPosts = posts.filter(post => {
+        const releasedPosts = sortedPosts.filter(post => {
             const postDate = parseDate(post.date);
             return postDate <= now;
         });
         setVisiblePosts(releasedPosts);
         */
 
-        setVisiblePosts(posts);
+        setVisiblePosts(sortedPosts);
     }, []);
 
     const filteredPosts = filterRegions.length > 0
