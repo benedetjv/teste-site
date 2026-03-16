@@ -15,6 +15,15 @@ const posts = [
         image: "/img/blog/dor-nas-costas-incognita.png",
         relatedRegions: ['lumbar-back', 'cervical-back', 'abdomen', 'chest']
     },
+    {
+        slug: "ibuprofeno-cetoprofeno-dor-nas-costas-riscos",
+        title: "Ibuprofeno e Cetoprofeno servem para dor nas costas?",
+        excerpt: "Os perigos de mascarar cronicamente os sintomas da coluna com anti-inflamatórios em vez de tratar a inflamação mecânica na origem.",
+        date: "17 Mar 2026",
+        category: "Ortopedia e Saúde",
+        image: "/img/blog/dor-costas-ibuprofeno.png",
+        relatedRegions: ['lumbar-back', 'cervical-back']
+    },
     // --- NOVEMBRO 2025 ---
     {
         slug: "dor-na-coluna-quando-preocupar",
