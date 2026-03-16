@@ -7,12 +7,12 @@ import BodySelectorBlog from "@/components/BodySelectorBlog";
 const posts = [
     // --- TOP TRENDING GOOGLE (MARÇO 2026) ---
     {
-        slug: "dor-no-joelho-cid-joelheira-funciona",
-        title: "CID Dor no Joelho: Por que a joelheira não resolve o desgaste articular?",
-        excerpt: "Entenda o que significa o código do seu atestado, os limites da joelheira de farmácia e a ação moderna da Viscossuplementação.",
+        slug: "dor-no-joelho-cid-significado",
+        title: "Recebeu um atestado com CID para dor no joelho? Saiba o que significa",
+        excerpt: "Entenda o que significam os códigos do seu laudo (M22, M23, M25.5) e qual o melhor caminho terapêutico pós-emergência.",
         date: "18 Mar 2026",
         category: "Joelho e Quadril",
-        image: "/img/blog/dor-joelho-cid-joelheira.png",
+        image: "/img/blog/dor-joelho-cid.png",
         relatedRegions: ['knee-leg']
     },
     {
