@@ -8,6 +8,7 @@ import { useState, useEffect } from "react";
 export default function Header() {
   const { logoText, logoPath, menu } = siteContent.header;
   const [isScrolled, setIsScrolled] = useState(false);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -30,7 +31,7 @@ export default function Header() {
           zIndex: 1030
         }}
       >
-        <nav className="navbar navbar-expand-lg navbar-light py-3">
+        <nav className="navbar navbar-expand-lg navbar-dark py-3">
           <div className="container">
             <Link className="navbar-brand" href="/">
               <Image
@@ -47,14 +48,14 @@ export default function Header() {
             <button
               className="navbar-toggler border-0"
               type="button"
-              data-bs-toggle="collapse"
-              data-bs-target="#navbarNav"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
               aria-label="Alternar navegação"
+              aria-expanded={isMenuOpen}
             >
               <span className="navbar-toggler-icon"></span>
             </button>
 
-            <div className="collapse navbar-collapse justify-content-end" id="navbarNav">
+            <div className={`collapse navbar-collapse justify-content-end ${isMenuOpen ? "show" : ""}`} id="navbarNav">
               <ul className="navbar-nav align-items-center gap-3">
                 {menu.map((item) => (
                   <li className="nav-item position-relative" key={item.href}>

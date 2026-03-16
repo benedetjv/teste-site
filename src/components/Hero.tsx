@@ -21,16 +21,7 @@ export default function Hero({ customTitle }: HeroProps) {
   return (
     <section id="topo" className="hero-section position-relative overflow-hidden" style={{ backgroundColor: 'var(--bg-light)', paddingBottom: '60px' }}>
 
-      {/* Círculo decorativo de fundo (300px * 1.45 = ~435px) */}
-      <div className="position-absolute top-0 end-0 rounded-circle opacity-10"
-        style={{
-          width: '450px',
-          height: '450px',
-          background: 'var(--azul-principal)',
-          filter: 'blur(80px)',
-          transform: 'translate(30%, -30%)'
-        }}>
-      </div>
+
 
       <div className="container position-relative" style={{ zIndex: 1 }}>
         {/* align-items-start: Alinha texto e foto pelo topo */}
@@ -38,7 +29,7 @@ export default function Hero({ customTitle }: HeroProps) {
           <div className="col-lg-7 py-5">
             {/* Tagline com CRM */}
             <div className="d-inline-block px-3 py-1 mb-3 rounded-pill" style={{ backgroundColor: 'rgba(var(--azul-principal-rgb), 0.1)', color: 'var(--azul-escuro)' }}>
-              <small className="fw-bold text-uppercase ls-1">Dr. Otto Beckedorff | CRM 226325SP | RQE 139078</small>
+              <small className="fw-bold text-uppercase ls-1">{crmRqe}</small>
             </div>
 
             <h1 className="display-4 fw-bold mb-4 lh-sm animate__animated animate__fadeInUp" style={{ color: 'var(--azul-escuro)' }}>
@@ -67,15 +58,14 @@ export default function Hero({ customTitle }: HeroProps) {
             <div className="position-relative d-inline-block mt-lg-4">
               {/* mt-lg-4: Empurra um pouquinho pra baixo pra "casar" visualmente com a altura da linha do Título H1 */}
 
-              {/* Moldura ou efeito na foto */}
-              <div className="position-absolute top-0 start-0 w-100 h-100 bg-primary rounded-circle opacity-25" style={{ transform: 'translate(15px, 15px)', filter: 'blur(0px)' }}></div>
-
+              {/* Moldura ou efeito na foto removido a pedido */}
               <Image
                 src={imagePath}
                 alt={title}
                 width={imgSize * 2} // Carrega 2x maior para retina
                 height={imgSize * 2}
                 priority
+                sizes="(max-width: 768px) 100vw, 50vw"
                 className="img-fluid position-relative rounded-circle shadow-lg animate__animated animate__zoomIn"
                 style={{
                   objectFit: "cover",
