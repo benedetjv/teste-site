@@ -5,6 +5,16 @@ import Link from "next/link";
 import BodySelectorBlog from "@/components/BodySelectorBlog";
 
 const posts = [
+    // --- TOP TRENDING GOOGLE (MARÇO 2026) ---
+    {
+        slug: "dor-nas-costas-o-que-pode-ser",
+        title: "Muita dor nas costas: O que pode ser? (Lado Esquerdo, Direito e Rins)",
+        excerpt: "Aprenda a diferenciar uma contratura lombar de um problema nos rins ou no coração, e entenda a raiz da dor.",
+        date: "16 Mar 2026",
+        category: "Coluna Vertebral",
+        image: "/img/blog/back-pain-faq.png",
+        relatedRegions: ['lumbar-back', 'cervical-back', 'abdomen', 'chest']
+    },
     // --- NOVEMBRO 2025 ---
     {
         slug: "dor-na-coluna-quando-preocupar",
