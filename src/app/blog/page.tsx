@@ -12,7 +12,7 @@ const posts = [
         excerpt: "Aprenda a diferenciar uma contratura lombar de um problema nos rins ou no coração, e entenda a raiz da dor.",
         date: "16 Mar 2026",
         category: "Coluna Vertebral",
-        image: "/img/blog/back-pain-faq.png",
+        image: "/img/blog/dor-nas-costas-incognita.png",
         relatedRegions: ['lumbar-back', 'cervical-back', 'abdomen', 'chest']
     },
     // --- NOVEMBRO 2025 ---
