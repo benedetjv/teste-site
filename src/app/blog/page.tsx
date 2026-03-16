@@ -7,6 +7,15 @@ import BodySelectorBlog from "@/components/BodySelectorBlog";
 const posts = [
     // --- TOP TRENDING GOOGLE (MARÇO 2026) ---
     {
+        slug: "dor-no-joelho-cid-joelheira-funciona",
+        title: "CID Dor no Joelho: Por que a joelheira não resolve o desgaste articular?",
+        excerpt: "Entenda o que significa o código do seu atestado, os limites da joelheira de farmácia e a ação moderna da Viscossuplementação.",
+        date: "18 Mar 2026",
+        category: "Joelho e Quadril",
+        image: "/img/blog/dor-joelho-cid-joelheira.png",
+        relatedRegions: ['knee-leg']
+    },
+    {
         slug: "ibuprofeno-cetoprofeno-dor-nas-costas-riscos",
         title: "Ibuprofeno e Cetoprofeno servem para dor nas costas?",
         excerpt: "Os perigos de mascarar cronicamente os sintomas da coluna com anti-inflamatórios em vez de tratar a inflamação mecânica na origem.",
