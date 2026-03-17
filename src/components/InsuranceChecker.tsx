@@ -20,10 +20,12 @@ const insurances = [
 export default function InsuranceChecker() {
     const [step, setStep] = useState(1);
     const [selectedInsurance, setSelectedInsurance] = useState<string | null>(null);
+    const [veraCruzStatus, setVeraCruzStatus] = useState<'yes' | 'unknown' | 'particular' | null>(null);
 
     const handleSelectInsurance = (name: string) => {
         setSelectedInsurance(name);
         if (name === 'Atendimento Particular') {
+            setVeraCruzStatus('particular');
             setStep(3);
         } else {
             setStep(2);
@@ -33,6 +35,7 @@ export default function InsuranceChecker() {
     const handleReset = () => {
         setStep(1);
         setSelectedInsurance(null);
+        setVeraCruzStatus(null);
     };
 
     return (
@@ -55,7 +58,7 @@ export default function InsuranceChecker() {
                     
                     <div className="row g-3">
                         {insurances.map((ins) => (
-                            <div className="col-12 col-md-4" key={ins.id}>
+                            <div className="col-12 col-md-6" key={ins.id}>
                                 <button 
                                     onClick={() => handleSelectInsurance(ins.name)}
                                     className={`btn ${ins.id === 'particular' ? 'btn-primary text-white' : 'btn-outline-primary'} w-100 py-3 fw-bold rounded-3 h-100 d-flex align-items-center justify-content-center`}
@@ -109,14 +112,20 @@ export default function InsuranceChecker() {
 
                     <div className="d-flex flex-column flex-md-row gap-3 justify-content-center mt-4">
                         <button 
-                            onClick={() => setStep(3)}
+                            onClick={() => {
+                                setVeraCruzStatus('yes');
+                                setStep(3);
+                            }}
                             className="btn btn-lg text-white fw-bold px-4 py-3 rounded-pill d-flex align-items-center justify-content-center shadow-sm"
                             style={{ backgroundColor: '#2e7d32', border: 'none' }}
                         >
                             <i className="bi bi-check-circle me-2 fs-5"></i> Sim, atende no Vera Cruz
                         </button>
                         <button 
-                            onClick={() => setStep(3)}
+                            onClick={() => {
+                                setVeraCruzStatus('unknown');
+                                setStep(3);
+                            }}
                             className="btn btn-lg btn-outline-secondary fw-bold px-4 py-3 rounded-pill d-flex align-items-center justify-content-center"
                         >
                             <i className="bi bi-question-circle me-2 fs-5"></i> Não sei / Preciso de ajuda
@@ -133,52 +142,75 @@ export default function InsuranceChecker() {
             {step === 3 && (
                 <div className="animate__animated animate__fadeIn text-center py-4">
                     <div className="display-4 text-primary mb-3">
-                        <i className="bi bi-calendar2-check-fill" style={{ color: 'var(--azul-principal)' }}></i>
+                        <i className={`bi ${veraCruzStatus === 'unknown' ? 'bi-whatsapp text-success' : 'bi-calendar2-check-fill'}`} style={{ color: 'var(--azul-principal)' }}></i>
                     </div>
-                    <h3 className="h4 fw-bold mb-2" style={{ color: 'var(--azul-escuro)' }}>Excelente! Vamos ao seu agendamento.</h3>
-                    <p className="text-secondary mb-5">Escolha abaixo como prefere realizar o seu agendamento na Clínica Adora (Campinas).</p>
+                    <h3 className="h4 fw-bold mb-2" style={{ color: 'var(--azul-escuro)' }}>
+                        {veraCruzStatus === 'unknown' ? 'Sem problemas! Vamos te ajudar.' : 'Excelente! Vamos ao seu agendamento.'}
+                    </h3>
+                    <p className="text-secondary mb-5">
+                        {veraCruzStatus === 'unknown' 
+                            ? 'Nossa equipe verificará a cobertura do seu plano para você.' 
+                            : 'Escolha abaixo como prefere realizar o seu agendamento na Clínica Adora (Campinas).'}
+                    </p>
 
                     <div className="row justify-content-center g-4">
                         
-                        <div className="col-md-6">
-                            <div className="card h-100 border-0 shadow-sm rounded-4 hover-shadow" style={{ backgroundColor: '#f8fbfe' }}>
-                                <div className="card-body p-4 p-lg-5">
-                                    <h4 className="fw-bold mb-3" style={{ color: 'var(--azul-escuro)' }}>Agendamento Imediato</h4>
-                                    <p className="text-muted small mb-4">Veja a agenda livre em tempo real agora mesmo e garanta o seu horário de forma automática.</p>
-                                    <a 
-                                        href="https://www.doctoralia.com.br" 
-                                        target="_blank" 
-                                        rel="noopener noreferrer"
-                                        className="btn btn-lg w-100 text-white fw-bold rounded-pill"
-                                        style={{ backgroundColor: 'var(--azul-principal)' }}
-                                    >
-                                        <i className="bi bi-calendar-event me-2"></i> Agendar Online
-                                    </a>
+                        {/* Only show Doctoralia if they know their plan works or if it's Particular */}
+                        {(veraCruzStatus === 'yes' || veraCruzStatus === 'particular') && (
+                            <div className="col-12 col-lg-10">
+                                <div className="card h-100 border-0 shadow-sm rounded-4 hover-shadow" style={{ backgroundColor: '#f8fbfe' }}>
+                                    <div className="card-body p-4 p-lg-5 d-flex flex-column flex-md-row align-items-center text-center text-md-start">
+                                        <div className="flex-grow-1 me-md-4 mb-4 mb-md-0">
+                                            <h4 className="fw-bold mb-2" style={{ color: 'var(--azul-escuro)' }}>Agendamento Imediato</h4>
+                                            <p className="text-muted small mb-0">Veja a agenda livre em tempo real agora mesmo e garanta o seu horário de forma automática.</p>
+                                        </div>
+                                        <div>
+                                            <a 
+                                                href="https://www.doctoralia.com.br" 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="btn btn-lg text-white fw-bold rounded-pill text-nowrap px-4"
+                                                style={{ backgroundColor: 'var(--azul-principal)' }}
+                                            >
+                                                <i className="bi bi-calendar-event me-2"></i> Agendar Online
+                                            </a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+                        )}
 
-                        <div className="col-md-6">
-                            <div className="card h-100 border-0 shadow-sm rounded-4 hover-shadow" style={{ backgroundColor: '#f0fdf4' }}>
-                                <div className="card-body p-4 p-lg-5">
-                                    <h4 className="fw-bold text-success mb-3">Assistência Humana</h4>
-                                    <p className="text-muted small mb-4">
-                                        {selectedInsurance === 'Atendimento Particular' 
-                                            ? "Fale com nossa secretária para escolher seu horário e tirar dúvidas sobre a consulta."
-                                            : <span>Nossa secretária confirmará a viabilidade da sua categoria <em>{selectedInsurance}</em> e agendará seu horário.</span>
-                                        }
-                                    </p>
-                                    <a 
-                                        href={selectedInsurance === 'Atendimento Particular' 
-                                            ? `https://wa.me/5519999439824?text=Ol%C3%A1!%20Vim%20pelo%20Google.%20Gostaria%20de%20agendar%20uma%20consulta%20particular%20para%20tratamento%20de%20dor.` 
-                                            : `https://wa.me/5519999439824?text=Ol%C3%A1!%20Vim%20pelo%20Google.%20Tenho%20o%20plano%20${selectedInsurance}%20e%20gostaria%20de%20agendar%20consulta%20para%20dor.`} 
-                                        target="_blank" 
-                                        rel="noopener noreferrer"
-                                        className="btn btn-lg w-100 text-white fw-bold rounded-pill"
-                                        style={{ backgroundColor: '#25D366' }}
-                                    >
-                                        <i className="bi bi-whatsapp me-2"></i> Falar com a Secretária
-                                    </a>
+                        {/* WhatsApp is always shown */}
+                        <div className="col-12 col-lg-10">
+                            <div className={`card h-100 border-0 shadow-sm rounded-4 hover-shadow ${veraCruzStatus === 'unknown' ? 'border-success' : ''}`} style={{ backgroundColor: '#f0fdf4' }}>
+                                <div className="card-body p-4 p-lg-5 d-flex flex-column flex-md-row align-items-center text-center text-md-start">
+                                    <div className="flex-grow-1 me-md-4 mb-4 mb-md-0">
+                                        <h4 className="fw-bold text-success mb-2">Assistência Humana no WhatsApp</h4>
+                                        <p className="text-muted small mb-0">
+                                            {veraCruzStatus === 'particular' 
+                                                ? "Fale com nossa secretária para escolher seu horário e tirar dúvidas sobre procedimentos e valores."
+                                                : veraCruzStatus === 'unknown'
+                                                    ? `Nossa secretária confirmará se o plano ${selectedInsurance} cobre o Hospital Vera Cruz e organizará sua consulta.`
+                                                    : `Deseja ajuda? Fale com a nossa secretária para agendar a consulta usando seu plano ${selectedInsurance}.`
+                                            }
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <a 
+                                            href={veraCruzStatus === 'particular' 
+                                                ? `https://wa.me/5519999439824?text=Ol%C3%A1!%20Vim%20pelo%20Google.%20Gostaria%20de%20agendar%20uma%20consulta%20particular%20para%20tratamento%20de%20dor.` 
+                                                : veraCruzStatus === 'unknown'
+                                                    ? `https://wa.me/5519999439824?text=Ol%C3%A1!%20Vim%20pelo%20Google.%20Tenho%20o%20plano%20${selectedInsurance}.%20Gostaria%20de%20ajuda%20para%20saber%20se%20o%20meu%20plano%20cobre%20o%20Hospital%20Vera%20Cruz%20e%20agendar%20consulta.`
+                                                    : `https://wa.me/5519999439824?text=Ol%C3%A1!%20Vim%20pelo%20Google.%20Possuo%20o%20plano%20${selectedInsurance}%20com%20cobertura%20no%20Vera%20Cruz.%20Gostaria%20de%20agendar%20uma%20consulta.`
+                                            }
+                                            target="_blank" 
+                                            rel="noopener noreferrer"
+                                            className="btn btn-lg text-white fw-bold rounded-pill text-nowrap px-4"
+                                            style={{ backgroundColor: '#25D366' }}
+                                        >
+                                            <i className="bi bi-whatsapp me-2"></i> Falar com a Secretária
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
