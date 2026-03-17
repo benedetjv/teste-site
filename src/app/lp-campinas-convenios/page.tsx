@@ -13,12 +13,14 @@ export default function LPVeraCruzCampinas() {
         <main className="bg-light min-vh-100">
             {/* Minimalist Ads Navbar (without external distraction links) */}
             <nav className="navbar navbar-expand-lg px-4 py-3 bg-white shadow-sm sticky-top">
-                <div className="container d-flex justify-content-center justify-content-md-between">
-                    <Link className="navbar-brand fw-bold mb-0 d-flex align-items-center" href="/lp-campinas-convenios">
-                        <span className="fs-4 me-2" style={{ color: 'var(--azul-secundario)' }}>Dr.</span>
-                        <span className="fs-4" style={{ color: 'var(--azul-principal)' }}>Otto Beckedorff</span>
+                <div className="container d-flex flex-column flex-md-row justify-content-center justify-content-md-between align-items-center">
+                    <Link className="navbar-brand fw-bold mb-2 mb-md-0 d-flex flex-column flex-md-row align-items-center text-center text-md-start" href="/lp-campinas-convenios">
+                        <div>
+                            <span className="fs-5 me-1" style={{ color: 'var(--azul-secundario)' }}>Dr.</span>
+                            <span className="fs-4" style={{ color: 'var(--azul-principal)' }}>Otto Beckedorff</span>
+                        </div>
                     </Link>
-                    <div className="d-none d-md-flex align-items-center text-muted small fw-medium">
+                    <div className="d-flex align-items-center text-muted small fw-medium mt-1 mt-md-0 text-center">
                         <i className="bi bi-geo-alt-fill me-2 text-danger"></i> Atendimento em Campinas - Clinica Adora / Vera Cruz
                     </div>
                 </div>
@@ -87,8 +89,8 @@ export default function LPVeraCruzCampinas() {
                                     <div className="d-flex align-items-center">
                                         <div className="display-4 text-primary me-3"><i className="bi bi-hospital"></i></div>
                                         <div className="text-start">
-                                            <div className="fw-bold small text-dark">Especialista</div>
-                                            <div className="text-muted" style={{ fontSize: '0.8rem' }}>Intervencionismo</div>
+                                            <div className="fw-bold small text-dark">Ortopedista com foco</div>
+                                            <div className="text-muted" style={{ fontSize: '0.8rem' }}>em Tratamento da Dor</div>
                                         </div>
                                     </div>
                                 </div>
@@ -96,9 +98,12 @@ export default function LPVeraCruzCampinas() {
                         </div>
                         <div className="col-md-7 col-lg-6 ms-lg-5">
                             <h2 className="h1 fw-bold mb-3" style={{ color: 'var(--azul-escuro)' }}>Quem cuidará da sua dor?</h2>
-                            <p className="lead text-primary mb-4 fw-medium">Mão firme, medicina atualizada e empatia. O fim das dores não resolvidas.</p>
+                            <p className="lead text-primary mb-4 fw-medium">Alívio da Dor com Precisão, Tecnologia e Cuidado Humano.</p>
+                            <p className="text-muted mb-3" style={{ lineHeight: '1.8' }}>
+                                Sou ortopedista com formação pelo Hospital Vera Cruz (Campinas/SP) e atuação focada no diagnóstico e tratamento da dor musculoesquelética, especialmente dores na coluna, joelho, quadril e ombro. Atendo pacientes com dores agudas ou crônicas, que muitas vezes convivem com limitações físicas e impacto direto na qualidade de vida.
+                            </p>
                             <p className="text-muted mb-4" style={{ lineHeight: '1.8' }}>
-                                Sou especializado em Medicina Esportiva e no Tratamento da Dor Crônica através de procedimentos da Medicina Intervencionista, como infiltrações de alta precisão baseadas em ultrassom, bloqueios articulares e rizotomias por radiofrequência térmicas. O objetivo não é apagar o sintoma com remédios que prejudicam o estômago, mas desativar a via da inflamação física no consultório ou no ambiente seguro de centro cirúrgico do <strong>Vera Cruz Hospital</strong>.
+                                Utilizo procedimentos minimamente invasivos, como bloqueios, infiltrações, ácido hialurônico, neuromodulação e radiofrequência, para oferecer alívio efetivo da dor — com recuperação rápida e, ajudando muitos pacientes a evitar cirurgias desnecessárias. Minha missão é ajudar meus pacientes a voltarem às suas atividades com mais conforto, movimento e autonomia, sempre com escuta ativa, abordagem moderna e tratamento individualizado.
                             </p>
                         </div>
                     </div>
