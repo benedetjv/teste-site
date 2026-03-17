@@ -169,6 +169,16 @@ export default function InsuranceChecker() {
                                                 href="https://www.doctoralia.com.br" 
                                                 target="_blank" 
                                                 rel="noopener noreferrer"
+                                                onClick={() => {
+                                                    // Trigger Google Ads Conversion
+                                                    if (typeof window !== 'undefined' && (window as any).gtag) {
+                                                        (window as any).gtag('event', 'conversion', {
+                                                            'send_to': 'AW-18020943185/NOStCM78h4ocENGKh5FD',
+                                                            'value': 1.0,
+                                                            'currency': 'BRL'
+                                                        });
+                                                    }
+                                                }}
                                                 className="btn btn-lg text-white fw-bold rounded-pill text-nowrap px-4"
                                                 style={{ backgroundColor: 'var(--azul-principal)' }}
                                             >
@@ -205,6 +215,16 @@ export default function InsuranceChecker() {
                                             }
                                             target="_blank" 
                                             rel="noopener noreferrer"
+                                            onClick={() => {
+                                                // Trigger Google Ads Conversion
+                                                if (typeof window !== 'undefined' && (window as any).gtag) {
+                                                    (window as any).gtag('event', 'conversion', {
+                                                        'send_to': 'AW-18020943185/NOStCM78h4ocENGKh5FD',
+                                                        'value': 1.0,
+                                                        'currency': 'BRL'
+                                                    });
+                                                }
+                                            }}
                                             className="btn btn-lg text-white fw-bold rounded-pill text-nowrap px-4"
                                             style={{ backgroundColor: '#25D366' }}
                                         >
