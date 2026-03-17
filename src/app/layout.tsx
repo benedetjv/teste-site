@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Nunito_Sans } from "next/font/google";
+import Script from "next/script";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "bootstrap-icons/font/bootstrap-icons.css";
 import "./globals.css";
@@ -52,6 +53,21 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="pt-BR">
+      <head>
+        <Script 
+          src="https://www.googletagmanager.com/gtag/js?id=AW-18020943185" 
+          strategy="afterInteractive" 
+        />
+        <Script id="google-ads-tag" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+
+            gtag('config', 'AW-18020943185');
+          `}
+        </Script>
+      </head>
       <body className={nunito.className} style={{ backgroundColor: '#f8f9fa', position: 'relative' }}>
         <SchemaOrganization />
         {/* Fundo Premium Sutil */}
