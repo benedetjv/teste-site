@@ -22,7 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url: `${BASE_URL}${route}`,
         lastModified: new Date(),
         changeFrequency: route === '' ? 'weekly' as const : 'monthly' as const,
-        priority: route === '' ? 1 : 0.8,
+        priority: route === '' ? 1 : route === '/ortopedista-campinas' ? 0.95 : 0.8,
     }));
 
     // 2. Blog Posts (Dinâmico com Proteção de Erro)
@@ -40,8 +40,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
                     try {
                         const hasMdx = fs.existsSync(path.join(blogDir, dir.name, 'page.mdx'));
                         const hasTsx = fs.existsSync(path.join(blogDir, dir.name, 'page.tsx'));
+                        const hasJs = fs.existsSync(path.join(blogDir, dir.name, 'page.js'));
 
-                        if (hasMdx || hasTsx) {
+                        if (hasMdx || hasTsx || hasJs) {
                             return {
                                 url: `${BASE_URL}/blog/${dir.name}`,
                                 lastModified: new Date(),
@@ -58,7 +59,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
         }
     } catch (error) {
         console.error('Erro ao gerar sitemap do blog:', error);
-        // Em caso de erro, continua retornando o que conseguiu (staticSitemap)
     }
 
     // 3. App Root Discovery (Dinâmico com Proteção)
@@ -73,7 +73,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
                     const folderName = dirent.name;
                     if (folderName.startsWith('.') || folderName === 'api' || folderName === 'blog') return;
 
-                    const hasPage = fs.existsSync(path.join(appDir, folderName, 'page.tsx'));
+                    const hasPage = fs.existsSync(path.join(appDir, folderName, 'page.tsx')) || fs.existsSync(path.join(appDir, folderName, 'page.js'));
                     if (hasPage && !staticRoutes.includes(`/${folderName}`)) {
                         dynamicPages.push({
                             url: `${BASE_URL}/${folderName}`,
