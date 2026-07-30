@@ -14,6 +14,16 @@ export default function SchemaOrganization() {
             "Pain Management",
             "Interventional Pain Medicine"
         ],
+        "alumniOf": {
+            "@type": "Organization",
+            "name": "Hospital Vera Cruz"
+        },
+        "memberOf": [
+            {
+                "@type": "MedicalOrganization",
+                "name": "Sociedade Brasileira de Ortopedia e Traumatologia (SBOT)"
+            }
+        ],
         "identifier": "CRM 226325SP",
         "medicalLicense": "RQE 139078",
         "url": "https://drotto.com.br",
