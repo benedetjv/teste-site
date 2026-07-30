@@ -22,7 +22,18 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url: `${BASE_URL}${route}`,
         lastModified: new Date(),
         changeFrequency: route === '' ? 'weekly' as const : 'monthly' as const,
-        priority: route === '' ? 1 : (route === '/ortopedista-campinas' || route === '/hernia-de-disco-campinas') ? 0.95 : 0.8,
+        priority: route === '' ? 1 : (route === '/ortopedista-campinas' || route === '/hernia-de-disco-campinas' || route === '/viscossuplementacao-campinas' || route === '/infiltracao-joelho-campinas') ? 0.95 : 0.8,
+    }));
+
+    const extraRoutes = [
+        { url: `${BASE_URL}/hernia-de-disco-campinas`, priority: 0.95 },
+        { url: `${BASE_URL}/viscossuplementacao-campinas`, priority: 0.95 },
+        { url: `${BASE_URL}/infiltracao-joelho-campinas`, priority: 0.95 }
+    ].map(item => ({
+        url: item.url,
+        lastModified: new Date(),
+        changeFrequency: 'monthly' as const,
+        priority: item.priority
     }));
 
     // 2. Blog Posts (Dinâmico com Proteção de Erro)
@@ -90,5 +101,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
 
 
-    return [...staticSitemap, ...blogPosts, ...dynamicPages];
+    return [...staticSitemap, ...extraRoutes, ...blogPosts, ...dynamicPages];
 }
