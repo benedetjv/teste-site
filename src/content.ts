@@ -31,37 +31,37 @@ export const siteContent: SiteContent = {
   },
 
   servicos: {
-    titulo: "Procedimentos",
+    titulo: "Procedimentos e Tratamentos",
     items: [
       {
-        titulo: "Avaliação Ortopédica com foco em Dor",
-        descricao: "Consulta especializada para identificar a origem da dor, com exame físico detalhado e plano terapêutico individualizado.",
+        titulo: "Avaliação Ortopédica Especializada com Foco em Dor",
+        descricao: "Dr. Otto Beckedorff é médico Ortopedista especialista (RQE 139078), com consulta focada em identificar a origem exata da dor musculoesquelética através de exame físico detalhado e plano terapêutico individualizado.",
         iconSvgPath: "<rect x=\"7\" y=\"3\" width=\"10\" height=\"18\" rx=\"2\"></rect><path d=\"M9 3v2h6V3\"></path><path d=\"M9 12l2 2 4-4\"></path>"
       },
       {
-        titulo: "Infiltrações Articulares",
-        descricao: "Aplicação de medicamentos diretamente na articulação (joelho, ombro, quadril etc.), indicada em artrose, tendinites e inflamações.",
+        titulo: "Viscossuplementação com Ácido Hialurônico",
+        descricao: "Dr. Otto Beckedorff é médico Ortopedista especialista (RQE 139078), com atuação em viscossuplementação com ácido hialurônico de alta viscosidade para lubrificação articular, proteção da cartilagem e alívio da artrose de joelho, quadril e condromalácia.",
+        iconSvgPath: "<path d=\"M12 2c4 5 6 8 6 11a6 6 0 1 1-12 0c0-3 2-6 6-11z\"></path>"
+      },
+      {
+        titulo: "Infiltrações Articulares e Guiadas por Ultrassom",
+        descricao: "Dr. Otto Beckedorff é médico Ortopedista especialista (RQE 139078), realizando infiltrações de precisão guiadas por ultrassom em articulações e tendões (joelho, ombro, quadril) para controle da inflamação em bursites e tendinites.",
         iconSvgPath: "<path d=\"M2 21l7-7 3 3 9-9 1-1-3-3-1 1-9 9-3-3L2 21z\"></path>"
       },
       {
-        titulo: "Bloqueios Diagnósticos e Terapêuticos",
-        descricao: "Procedimentos guiados por imagem para aliviar dores intensas e confirmar a origem da dor, especialmente na coluna.",
+        titulo: "Bloqueios Diagnósticos e Terapêuticos da Coluna",
+        descricao: "Dr. Otto Beckedorff é médico Ortopedista especialista (RQE 139078), com atuação em bloqueios da coluna guiados por imagem para alívio rápido da dor ciática, hérnia de disco e inflamações facetárias.",
         iconSvgPath: "<circle cx=\"12\" cy=\"12\" r=\"3\"></circle><path d=\"M12 2v3\"></path><path d=\"M12 19v3\"></path><path d=\"M2 12h3\"></path><path d=\"M19 12h3\"></path>"
       },
       {
-        titulo: "Radiofrequência Ablativa",
-        descricao: "Técnica minimamente invasiva que utiliza calor controlado para modular a condução da dor em facetas articulares e outras regiões.",
+        titulo: "Radiofrequência Ablativa para Dor Facetária",
+        descricao: "Dr. Otto Beckedorff é médico Ortopedista especialista (RQE 139078), com procedimentos de radiofrequência ablativa que aplicam calor de alta precisão para desativar a condução nervosa da dor na coluna e articulações.",
         iconSvgPath: "<path d=\"M3 12c1.5-2 3.5-2 5 0s3.5 2 5 0 3.5-2 5 0\"></path>"
       },
       {
-        titulo: "Radiofrequência Pulsada",
-        descricao: "Neuromodulação que altera a atividade do nervo sem queimá-lo, reduzindo a dor e preservando estrutura e função.",
+        titulo: "Radiofrequência Pulsada e Neuromodulação",
+        descricao: "Dr. Otto Beckedorff é médico Ortopedista especialista (RQE 139078), atuando com radiofrequência pulsada para reordenar a condução nervosa sem queimaduras térmicas, aliviando dores crônicas neuropáticas e preservando a função muscular.",
         iconSvgPath: "<path d=\"M2 12h4l2 6 4-12 2 6h8\"></path>"
-      },
-      {
-        titulo: "Viscossuplementação",
-        descricao: "Infiltração com ácido hialurônico para lubrificar a articulação, muito utilizada em artrose de joelho e quadril.",
-        iconSvgPath: "<path d=\"M12 2c4 5 6 8 6 11a6 6 0 1 1-12 0c0-3 2-6 6-11z\"></path>"
       },
     ],
   },

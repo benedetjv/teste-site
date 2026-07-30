@@ -8,7 +8,7 @@ export default function SchemaOrganization() {
         "@type": "Physician",
         "name": "Dr. Otto Beckedorff",
         "image": "https://drotto.com.br/img/foto-otto.jpg",
-        "description": "Médico Ortopedista especialista em Tratamento da Dor, Coluna e Articulações em Campinas (Clínica Adora / Hospital Vera Cruz) e Jacutinga. Atendimento a Hérnia de Disco, Dor na Coluna e procedimentos minimamente invasivos.",
+        "description": "Dr. Otto Beckedorff é médico Ortopedista especialista (RQE 139078 | CRM 226325SP) em Campinas (Clínica Adora / Hospital Vera Cruz) e Jacutinga, com atuação dedicada ao tratamento de Hérnia de Disco, Dor na Coluna, Viscossuplementação com Ácido Hialurônico, Bloqueios e Infiltrações guiadas.",
         "medicalSpecialty": [
             "Orthopedic Surgery",
             "Pain Management",
@@ -56,17 +56,20 @@ export default function SchemaOrganization() {
             "Bradesco Saúde",
             "SulAmérica",
             "Porto Seguro",
-            "GAMA Saúde",
-            "Omint"
+            "Care Plus",
+            "Omint",
+            "Reembolso Médico"
         ],
         "knowsAbout": [
             "Ortopedista em Campinas",
+            "Ortopedista especialista",
             "Dor na Coluna",
             "Hérnia de Disco Cervical e Lombar",
             "Dor Ciática",
-            "Rizotomia por Radiofrequência",
-            "Bloqueio de Coluna",
-            "Viscossuplementação",
+            "Viscossuplementação com Ácido Hialurônico",
+            "Infiltração de Joelho e Quadril",
+            "Bloqueio de Coluna Guiado por Imagem",
+            "Radiofrequência para Dor Facetária",
             "Ortopedista Convenio Amil Campinas"
         ],
         "medicalConditionTreated": [
@@ -75,28 +78,30 @@ export default function SchemaOrganization() {
             "Cervicalgia",
             "Estenose de Canal Vertebral",
             "Artrose de Joelho e Quadril",
-            "Dor Ciática"
+            "Condromalácia Patelar",
+            "Dor Ciática",
+            "Bursite e Tendinite"
         ],
         "availableService": [
             {
                 "@type": "MedicalProcedure",
                 "name": "Tratamento de Hérnia de Disco e Dor na Coluna",
-                "description": "Procedimentos minimamente invasivos (bloqueios, rizotomia e neuromodulação) para alívio de dor na coluna sem cirurgia aberta."
+                "description": "Procedimentos minimamente invasivos (bloqueios, radiofrequência e neuromodulação) para alívio de dor na coluna sem cirurgia aberta por médico Ortopedista especialista."
             },
             {
                 "@type": "MedicalProcedure",
                 "name": "Bloqueio Foraminal e Infiltração de Coluna",
-                "description": "Infiltração guiada por imagem para alívio imediato e diagnóstico de dor cervical e lombar."
+                "description": "Infiltração guiada por imagem para alívio imediato e diagnóstico de dor cervical, lombar e ciática."
             },
             {
                 "@type": "MedicalProcedure",
-                "name": "Rizotomia por Radiofrequência",
-                "description": "Desativação térmica controlada dos nervos causadores de dor facetária na coluna."
+                "name": "Radiofrequência Ablativa e Pulsada",
+                "description": "Desativação térmica controlada dos nervos causadores de dor facetária e neuromodulação da dor crônica."
             },
             {
                 "@type": "MedicalProcedure",
-                "name": "Viscossuplementação",
-                "description": "Infiltração de Ácido Hialurônico para Artrose e desgaste articular."
+                "name": "Viscossuplementação com Ácido Hialurônico",
+                "description": "Infiltração de Ácido Hialurônico de alta viscosidade para lubrificação e proteção articular na artrose e condromalácia."
             }
         ]
     };
