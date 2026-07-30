@@ -352,41 +352,47 @@ export default function HerniaDeDiscoCampinasPage() {
           <div className="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-2xl">
             <div className="p-6 border-b border-slate-800 bg-slate-800/30">
               <h3 className="text-xl font-bold text-white mb-2">Comparativo de Tratamentos</h3>
-              <p className="text-slate-400 text-sm">Entenda por que a intervenção minimamente invasiva é a principal escolha para uma recuperação mais rápida e maior qualidade de vida.</p>
+              <p className="text-slate-400 text-sm">Entenda as diferenças entre as abordagens e por que a intervenção minimamente invasiva, <strong className="text-teal-400 font-semibold">em casos bem indicados</strong>, oferece um excelente equilíbrio entre alívio e qualidade de vida.</p>
             </div>
             <table className="w-full text-left text-sm text-slate-300">
               <thead className="bg-slate-950 text-slate-400 uppercase text-xs font-semibold">
                 <tr>
                   <th scope="col" className="px-6 py-4">Critério Médico</th>
                   <th scope="col" className="px-6 py-4 border-l border-slate-800">Tratamento Conservador</th>
-                  <th scope="col" className="px-6 py-4 border-l border-teal-900/50 bg-teal-950/20 text-teal-300">Minimamente Invasivo (Foco)</th>
-                  <th scope="col" className="px-6 py-4 border-l border-slate-800">Cirurgia Aberta</th>
+                  <th scope="col" className="px-6 py-4 border-l border-teal-900/50 bg-teal-950/20 text-teal-300">Minimamente Invasivo *(Quando Indicado)*</th>
+                  <th scope="col" className="px-6 py-4 border-l border-slate-800">Cirurgia Aberta *(Casos Refratários)*</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-slate-800/50">
                 <tr className="hover:bg-slate-800/20 transition-colors">
-                  <th scope="row" className="px-6 py-4 font-medium text-white">Alívio da Dor</th>
-                  <td className="px-6 py-4 border-l border-slate-800">Lento (Semana/Meses)</td>
-                  <td className="px-6 py-4 border-l border-teal-900/30 bg-teal-950/10 text-white font-semibold">Rápido a Imediato (Direto no alvo)</td>
-                  <td className="px-6 py-4 border-l border-slate-800">Variável (Cicatrização)</td>
+                  <th scope="row" className="px-6 py-4 font-medium text-white">Indicação Principal</th>
+                  <td className="px-6 py-4 border-l border-slate-800">Sintomas iniciais, sem déficit motor.</td>
+                  <td className="px-6 py-4 border-l border-teal-900/30 bg-teal-950/10 text-white font-semibold">Falha do método conservador ou dor intensa limitante.</td>
+                  <td className="px-6 py-4 border-l border-slate-800">Déficit neurológico progressivo ou falha total.</td>
                 </tr>
                 <tr className="hover:bg-slate-800/20 transition-colors">
-                  <th scope="row" className="px-6 py-4 font-medium text-white">Recuperação e Retorno</th>
-                  <td className="px-6 py-4 border-l border-slate-800">Gradual</td>
-                  <td className="px-6 py-4 border-l border-teal-900/30 bg-teal-950/10 text-white font-semibold">Rápido (Mesmo dia ou 24h)</td>
-                  <td className="px-6 py-4 border-l border-slate-800">Lento (Meses restritos)</td>
+                  <th scope="row" className="px-6 py-4 font-medium text-white">Alívio da Dor</th>
+                  <td className="px-6 py-4 border-l border-slate-800">Lento e progressivo.</td>
+                  <td className="px-6 py-4 border-l border-teal-900/30 bg-teal-950/10 text-white font-semibold">Geralmente rápido (Age direto no foco inflamatório).</td>
+                  <td className="px-6 py-4 border-l border-slate-800">Variável (Depende da cicatrização pós-cirúrgica).</td>
+                </tr>
+                <tr className="hover:bg-slate-800/20 transition-colors">
+                  <th scope="row" className="px-6 py-4 font-medium text-white">Recuperação e Rotina</th>
+                  <td className="px-6 py-4 border-l border-slate-800">Gradual, atrelada à fisioterapia.</td>
+                  <td className="px-6 py-4 border-l border-teal-900/30 bg-teal-950/10 text-white font-semibold">Rápida (Maioria retoma atividades em poucos dias).</td>
+                  <td className="px-6 py-4 border-l border-slate-800">Lenta (Exige meses de reabilitação e restrições).</td>
                 </tr>
                 <tr className="hover:bg-slate-800/20 transition-colors">
                   <th scope="row" className="px-6 py-4 font-medium text-white">Necessidade de Internação</th>
-                  <td className="px-6 py-4 border-l border-slate-800">Nenhuma</td>
-                  <td className="px-6 py-4 border-l border-teal-900/30 bg-teal-950/10 text-white font-semibold">Ambulatorial (Alta em horas)</td>
-                  <td className="px-6 py-4 border-l border-slate-800">Sim (Dias no Hospital)</td>
+                  <td className="px-6 py-4 border-l border-slate-800">Nenhuma.</td>
+                  <td className="px-6 py-4 border-l border-teal-900/30 bg-teal-950/10 text-white font-semibold">Ambulatorial (Alta no mesmo dia, horas após).</td>
+                  <td className="px-6 py-4 border-l border-slate-800">Sim (Dias de internação hospitalar).</td>
                 </tr>
                 <tr className="hover:bg-slate-800/20 transition-colors">
-                  <th scope="row" className="px-6 py-4 font-medium text-white">Preservação da Anatomia</th>
-                  <td className="px-6 py-4 border-l border-slate-800">Total</td>
-                  <td className="px-6 py-4 border-l border-teal-900/30 bg-teal-950/10 text-white font-semibold">Total (Microagulhamento Guiado)</td>
-                  <td className="px-6 py-4 border-l border-slate-800">Alterada (Remoção tecidual)</td>
+                  <th scope="row" className="px-6 py-4 font-medium text-white">Trauma Biológico</th>
+                  <td className="px-6 py-4 border-l border-slate-800">Nenhum.</td>
+                  <td className="px-6 py-4 border-l border-teal-900/30 bg-teal-950/10 text-white font-semibold">Mínimo (Apenas trajeto da agulha guiada).</td>
+                  <td className="px-6 py-4 border-l border-slate-800">Maior (Incisão, dissecção muscular).</td>
                 </tr>
               </tbody>
             </table>
