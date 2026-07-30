@@ -22,7 +22,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
         url: `${BASE_URL}${route}`,
         lastModified: new Date(),
         changeFrequency: route === '' ? 'weekly' as const : 'monthly' as const,
-        priority: route === '' ? 1 : route === '/ortopedista-campinas' ? 0.95 : 0.8,
+        priority: route === '' ? 1 : (route === '/ortopedista-campinas' || route === '/hernia-de-disco-campinas') ? 0.95 : 0.8,
     }));
 
     // 2. Blog Posts (Dinâmico com Proteção de Erro)
