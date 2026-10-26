@@ -115,25 +115,27 @@ END:VCARD`;
       <div className="w-100" style={{ maxWidth: "480px" }}>
 
         {/* ======================================================== */}
-        {/* BOTÃO MODO FÁCIL / ACESSIBILIDADE NO TOPO */}
+        {/* BOTÃO MODO FÁCIL / ACESSIBILIDADE NO TOPO (ALTA VISIBILIDADE) */}
         {/* ======================================================== */}
         <div className="mb-2">
           <button
             type="button"
             onClick={() => setModoFacil(!modoFacil)}
-            className="btn w-100 rounded-pill py-2 px-3 fw-bold shadow-sm d-flex align-items-center justify-content-center gap-2 transition-all border-0"
+            className="btn w-100 rounded-4 py-3 px-3 fw-bolder shadow d-flex align-items-center justify-content-center gap-2 transition-all border-2"
             style={{
-              backgroundColor: modoFacil ? "#2a4156" : "#ffffff",
-              color: modoFacil ? "#ffffff" : "#1a3038",
-              boxShadow: "0 2px 8px rgba(0,0,0,0.08)",
-              fontSize: modoFacil ? "0.95rem" : "0.82rem",
+              backgroundColor: modoFacil ? "#2a4156" : "#FFD500",
+              color: modoFacil ? "#ffffff" : "#0d1b2a",
+              borderColor: modoFacil ? "#6B9BB4" : "#e6bf00",
+              boxShadow: "0 4px 12px rgba(255, 213, 0, 0.35)",
+              fontSize: "1.05rem",
+              letterSpacing: "-0.2px",
             }}
           >
-            <i className={`bi ${modoFacil ? "bi-check-circle-fill text-warning" : "bi-eyeglasses text-primary"} fs-5`}></i>
-            <span>
+            <i className={`bi ${modoFacil ? "bi-arrow-counterclockwise fs-4 text-warning" : "bi-eyeglasses fs-3 text-dark"}`}></i>
+            <span style={{ lineHeight: "1.25" }}>
               {modoFacil
-                ? "✓ Modo Fácil Ativado (Clique para Voltar)"
-                : "Dificuldade na leitura ou tecnologia? Ative o Modo Fácil"}
+                ? "Voltar ao Modo Normal (Letras padrão)"
+                : "Dificuldade na leitura ou tecnologia? Toque aqui"}
             </span>
           </button>
         </div>
@@ -280,7 +282,7 @@ END:VCARD`;
 
             {/* 2. LIGAR POR TELEFONE (GIGANTE) */}
             <a
-              href="tel:+5519999439824"
+              href="tel:+5519996558008"
               className="btn w-100 rounded-4 p-4 text-white text-start d-flex align-items-center gap-3 shadow"
               style={{ backgroundColor: "#2a4156" }}
             >
@@ -288,7 +290,7 @@ END:VCARD`;
               <div>
                 <div className="fw-bolder fs-4">Ligar por Telefone</div>
                 <div className="small text-white-50 fs-6">
-                  Toque para telefonar agora: (19) 99943-9824
+                  Toque para telefonar agora: (19) 99655-8008
                 </div>
               </div>
             </a>
