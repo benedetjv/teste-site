@@ -104,5 +104,14 @@ export default function sitemap(): MetadataRoute.Sitemap {
     }
 
 
-    return [...staticSitemap, ...extraRoutes, ...blogPosts, ...dynamicPages];
+    // 4. Deduplicação inteligente preservando maior prioridade
+    const allRoutesMap = new Map<string, MetadataRoute.Sitemap[number]>();
+    [...staticSitemap, ...extraRoutes, ...blogPosts, ...dynamicPages].forEach(item => {
+        const existing = allRoutesMap.get(item.url);
+        if (!existing || ((item.priority || 0) > (existing.priority || 0))) {
+            allRoutesMap.set(item.url, item);
+        }
+    });
+
+    return Array.from(allRoutesMap.values());
 }
