@@ -107,14 +107,14 @@ export default function QrCodePage() {
                     {/* MODELO COM CHECKLIST PARA PACIENTE DO PS */}
                     {model === "orientacao" && (
                         <div className="p-2 rounded mb-2" style={{ backgroundColor: "#f5f5f5", border: "1px dashed #777", fontSize: "0.72rem" }}>
-                            <div className="fw-bold mb-1" style={{ color: "#000" }}>ORIENTAÇÕES PÓS-ATENDIMENTO:</div>
+                            <div className="fw-bold mb-1" style={{ color: "#000", letterSpacing: "0.3px" }}>ORIENTAÇÕES PÓS-ATENDIMENTO:</div>
                             <div className="d-flex align-items-center gap-1 mb-1">
                                 <span className="badge bg-dark rounded-circle" style={{ width: "16px", height: "16px", padding: "2px", fontSize: "9px" }}>1</span>
-                                <span>Agende seu exame de RM (Vera Cruz / CDE)</span>
+                                <span className="fw-bold">Agende seus exames</span>
                             </div>
-                            <div className="d-flex align-items-center gap-1">
-                                <span className="badge bg-dark rounded-circle" style={{ width: "16px", height: "16px", padding: "2px", fontSize: "9px" }}>2</span>
-                                <span>Retorne ao consultório com as imagens</span>
+                            <div className="d-flex align-items-start gap-1">
+                                <span className="badge bg-dark rounded-circle mt-1" style={{ width: "16px", height: "16px", padding: "2px", fontSize: "9px" }}>2</span>
+                                <span className="fw-bold" style={{ lineHeight: "1.25" }}>Agende seu retorno após os resultados dos exames.</span>
                             </div>
                         </div>
                     )}
@@ -135,11 +135,11 @@ export default function QrCodePage() {
                 <div
                     className="d-flex flex-column align-items-center justify-content-center text-center ps-3"
                     style={{
-                        flex: "0 0 35%",
+                        flex: "0 0 38%",
                         borderLeft: `1px solid ${isPB ? "#ddd" : "#e4edf2"}`
                     }}
                 >
-                    <span className="fw-bolder text-uppercase mb-1" style={{ fontSize: "0.65rem", color: primaryColor, letterSpacing: "0.5px" }}>
+                    <span className="fw-bolder text-uppercase mb-1" style={{ fontSize: "0.62rem", color: primaryColor, letterSpacing: "0.3px" }}>
                         Aponte a Câmera
                     </span>
 
@@ -147,16 +147,15 @@ export default function QrCodePage() {
                         <img
                             src={qrImage}
                             alt="QR Code Dr. Otto"
-                            style={{ width: "115px", height: "115px", display: "block" }}
+                            style={{ width: "105px", height: "105px", display: "block" }}
                         />
                     </div>
 
-                    <span className="small text-muted fw-semibold" style={{ fontSize: "0.62rem", lineHeight: "1.2" }}>
-                        Agendamento de RM,<br />
-                        Waze e Retorno
+                    <span className="fw-bold text-dark" style={{ fontSize: "0.53rem", lineHeight: "1.15", textTransform: "uppercase" }}>
+                        TUDO QUE PRECISA ESTÁ NESSE QR CODE, CASO NÃO CONSIGA ESCANEAR ENTRE NO SITE ABAIXO:
                     </span>
 
-                    <span className="fw-bold mt-1 text-dark" style={{ fontSize: "0.65rem" }}>
+                    <span className="fw-bolder mt-1 text-dark" style={{ fontSize: "0.68rem" }}>
                         drotto.com.br/cartao
                     </span>
                 </div>
