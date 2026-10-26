@@ -1,16 +1,59 @@
 import React from 'react';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
+import Script from 'next/script';
 
 export const metadata = {
-    title: 'Ortopedista Omint Campinas | Tratamento da Dor, Coluna e Joelho',
-    description: 'Avaliação especializada em ortopedia, coluna e tratamento da dor em Campinas para beneficiários Omint. Tratamentos modernos e atendimento premium com hora marcada.',
-    robots: 'noindex, nofollow' // Oculto do orgânico, ideal para Ads
+    title: 'Ortopedista para Omint em Campinas | Coluna, Joelho e Dor',
+    description: 'Atendimento ortopédico em Campinas para beneficiários Omint. Coluna, joelho, ombro, dor, infiltrações, bloqueios e radiofrequência conforme indicação.',
+    robots: 'index, follow',
+    alternates: {
+        canonical: 'https://drotto.com.br/ortopedista-omint-campinas'
+    }
 };
 
 export default function LPOmintCampinas() {
+    const jsonLdPhysician = {
+        "@context": "https://schema.org",
+        "@type": "Physician",
+        "name": "Dr. Otto Beckedorff",
+        "description": "Ortopedista e Traumatologia em Campinas (CRM-SP 226325 | RQE 139078).",
+        "url": "https://drotto.com.br/ortopedista-omint-campinas",
+        "image": "https://drotto.com.br/img/foto-otto.jpg",
+        "medicalSpecialty": "Orthopedic",
+        "telephone": "+55-19-99943-9824",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Campinas",
+            "addressRegion": "SP",
+            "addressCountry": "BR"
+        }
+    };
+
+    const jsonLdWebPage = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Ortopedista para Omint em Campinas | Coluna, Joelho e Dor",
+        "description": "Atendimento ortopédico em Campinas para beneficiários Omint. Coluna, joelho, ombro, dor, infiltrações, bloqueios e radiofrequência conforme indicação.",
+        "url": "https://drotto.com.br/ortopedista-omint-campinas"
+    };
+
+    const jsonLdBreadcrumb = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://drotto.com.br" },
+            { "@type": "ListItem", "position": 2, "name": "Convênios", "item": "https://drotto.com.br/#convenios" },
+            { "@type": "ListItem", "position": 3, "name": "Omint", "item": "https://drotto.com.br/ortopedista-omint-campinas" }
+        ]
+    };
+
     return (
         <main className="bg-light min-vh-100">
+            <Script id="json-ld-physician" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdPhysician) }} />
+            <Script id="json-ld-webpage" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWebPage) }} />
+            <Script id="json-ld-breadcrumb" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumb) }} />
+
             {/* WhatsApp Fixo */}
             <a 
                 href="https://wa.me/5519999439824?text=Olá,%20gostaria%20de%20saber%20mais%20sobre%20o%20atendimento%20para%20Omint." 
@@ -24,7 +67,7 @@ export default function LPOmintCampinas() {
             </a>
 
             {/* Minimalist Ads Navbar */}
-            <nav className="navbar navbar-expand-lg px-4 py-3 bg-white shadow-sm sticky-top">
+            <nav className="navbar navbar-expand-lg px-4 py-3 bg-white shadow-sm border-bottom sticky-top">
                 <div className="container d-flex flex-column flex-md-row justify-content-center justify-content-md-between align-items-center">
                     <Link className="navbar-brand fw-bold mb-2 mb-md-0 d-flex flex-column flex-md-row align-items-center text-center text-md-start" href="/ortopedista-omint-campinas">
                         <div>
@@ -33,10 +76,23 @@ export default function LPOmintCampinas() {
                         </div>
                     </Link>
                     <div className="d-flex align-items-center text-muted small fw-medium mt-1 mt-md-0 text-center">
-                        <i className="bi bi-geo-alt-fill me-2 text-danger"></i> Campinas | Hospital Vera Cruz ou Clínica Adora
+                        <i className="bi bi-geo-alt-fill me-2 text-danger"></i> Campinas | Hospital Vera Cruz ou Instituto Orthesen
                     </div>
                 </div>
             </nav>
+
+            {/* BREADCRUMB VISUAL */}
+            <div className="bg-light border-bottom pt-3 pb-2 px-3">
+                <div className="container">
+                    <nav aria-label="breadcrumb">
+                        <ol className="breadcrumb mb-0 small fw-medium">
+                            <li className="breadcrumb-item"><Link href="/" className="text-decoration-none text-muted">Início</Link></li>
+                            <li className="breadcrumb-item"><span className="text-muted">Convênios</span></li>
+                            <li className="breadcrumb-item active fw-bold text-dark" aria-current="page">Omint</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
 
             {/* HERO SECTION */}
             <section className="py-5 position-relative bg-white" style={{ overflow: 'hidden' }}>
@@ -71,7 +127,7 @@ export default function LPOmintCampinas() {
                             <div className="d-flex flex-wrap justify-content-center align-items-center text-muted small fw-medium gap-3">
                                 <span><i className="bi bi-geo-alt me-1"></i> Campinas</span>
                                 <span className="d-none d-md-inline text-light">•</span>
-                                <span><i className="bi bi-building me-1"></i> Hospital Vera Cruz ou Clínica Adora</span>
+                                <span><i className="bi bi-building me-1"></i> Hospital Vera Cruz ou Instituto Orthesen</span>
                                 <span className="d-none d-md-inline text-light">•</span>
                                 <span><i className="bi bi-clock me-1"></i> Atendimento com hora marcada</span>
                             </div>
@@ -81,6 +137,23 @@ export default function LPOmintCampinas() {
                                     Cobertura, reembolso e condições de atendimento dependem do produto contratado pelo beneficiário e devem ser confirmados previamente. A Omint possui produtos com livre escolha e reembolso, mas as regras aplicam-se a cada plano.
                                 </p>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* BLOCO RESPOSTA DIRETA PARA IA E SEO */}
+            <section className="py-5" style={{ backgroundColor: '#f0f4f8' }}>
+                <div className="container py-4">
+                    <div className="mx-auto" style={{ maxWidth: '800px' }}>
+                        <h2 className="fw-bold mb-4" style={{ color: 'var(--azul-escuro)', fontSize: '1.8rem' }}>Atendimento ortopédico para Omint em Campinas</h2>
+                        <div className="text-dark fs-5" style={{ lineHeight: '1.7' }}>
+                            <p>
+                                O Dr. Otto Beckedorff realiza atendimento ortopédico em Campinas para beneficiários Omint, com avaliação de problemas da coluna, joelho, ombro e dores persistentes. Também realiza procedimentos intervencionistas como infiltrações, bloqueios e radiofrequência quando há indicação médica.
+                            </p>
+                            <p className="mb-0">
+                                As condições de atendimento, credenciamento, cobertura e reembolso dependem do produto Omint contratado e devem ser confirmadas previamente.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -115,7 +188,7 @@ export default function LPOmintCampinas() {
                                 </li>
                                 <li className="mb-3 d-flex align-items-start text-dark fw-medium">
                                     <i className="bi bi-check2-circle text-primary me-3 fs-5"></i> 
-                                    <span>Atendimento realizado na Clínica Adora e Hospital Vera Cruz</span>
+                                    <span>Atendimento realizado no Instituto Orthesen e Hospital Vera Cruz</span>
                                 </li>
                             </ul>
                         </div>
@@ -254,23 +327,24 @@ export default function LPOmintCampinas() {
                         <div className="col-lg-8">
                             <div className="accordion accordion-flush bg-white rounded-4 shadow-sm p-2" id="faqAccordion">
                                 {[
-                                    { q: 'Vocês atendem Omint em Campinas?', a: 'Sim, realizamos atendimento para beneficiários Omint em Campinas. As condições de credenciamento ou modalidade de reembolso devem ser confirmadas previamente.' },
-                                    { q: 'Meu plano Omint possui cobertura para consulta?', a: 'A cobertura depende exclusivamente da categoria do produto Omint que você possui. Nossa equipe ajuda a orientar no WhatsApp.' },
-                                    { q: 'Posso utilizar reembolso Omint?', a: 'Se o seu produto permitir livre escolha, sim. Apoiamos na organização da documentação (nota fiscal e relatório médico) para a sua solicitação.' },
-                                    { q: 'Como funciona o reembolso?', a: 'Você realiza o pagamento e emitimos a documentação necessária para que você acione a Omint. O valor reembolsado depende do seu contrato.' },
-                                    { q: 'Preciso de autorização para infiltração ou bloqueio?', a: 'Sim, na maioria das vezes. O plano avalia o pedido médico. Auxiliamos em todo o fluxo de organização dos documentos.' },
-                                    { q: 'Vocês tratam hérnia de disco?', a: 'Sim. A avaliação foca no controle da dor e opções de bloqueios e terapias não cirúrgicas sempre que bem indicadas.' },
-                                    { q: 'Realizam infiltração com ácido hialurônico no joelho?', a: 'Sim, realizamos esse e outros procedimentos de infiltração, após avaliação minuciosa da indicação clínica.' },
-                                    { q: 'Realizam radiofrequência?', a: 'Sim. O procedimento de radiofrequência (rizotomia) está disponível, sujeito à avaliação médica.' },
-                                    { q: 'Onde fica o atendimento?', a: 'Em Campinas, com atuação no Hospital Vera Cruz ou Clínica Adora (verifique no agendamento).' },
-                                    { q: 'Como agendar?', a: 'A forma mais rápida é via WhatsApp. Nossa equipe passará opções de horários e todas as instruções.' }
+                                    { q: 'Vocês atendem beneficiários Omint em Campinas?', a: 'Sim, realizamos atendimento para beneficiários Omint em Campinas. As condições exatas (credenciamento ou reembolso) devem ser confirmadas de acordo com o seu produto Omint.' },
+                                    { q: 'Como funciona o atendimento para Omint?', a: 'Basta entrar em contato com nossa equipe via WhatsApp. Iremos verificar a modalidade do seu plano e orientar sobre os próximos passos para o agendamento da sua consulta com hora marcada.' },
+                                    { q: 'Meu plano Omint possui reembolso?', a: 'Se o produto Omint contratado tiver a funcionalidade de livre escolha, sim. A nossa equipe apoia integralmente no fornecimento da nota fiscal e relatório médico para você acionar a Omint.' },
+                                    { q: 'Como funciona o reembolso Omint?', a: 'O paciente realiza o pagamento diretamente na clínica e em seguida solicita o reembolso à operadora utilizando a documentação que emitimos. O valor exato do reembolso depende do contrato.' },
+                                    { q: 'Onde o Dr. Otto atende em Campinas?', a: 'Os atendimentos são realizados em estruturas de excelência em Campinas, como o Hospital Vera Cruz e o Instituto Orthesen.' },
+                                    { q: 'Há atendimento para problemas de coluna?', a: 'Sim. A avaliação foca em dor na coluna lombar e cervical, incluindo quadros de hérnia de disco e dor ciática.' },
+                                    { q: 'Realiza tratamento para joelho?', a: 'Sim. Avaliamos quadros de dor, desgaste articular e artrose no joelho, propondo abordagens que podem ajudar no alívio e mobilidade.' },
+                                    { q: 'Realiza tratamento para ombro?', a: 'Sim. O tratamento visa identificar e tratar causas de dores persistentes ou lesões no ombro que limitam as atividades.' },
+                                    { q: 'Realiza infiltração no joelho?', a: 'Sim. Procedimentos como a viscossuplementação com ácido hialurônico são realizados quando há avaliação médica indicando esse tratamento para artrose.' },
+                                    { q: 'Realiza bloqueio para dor?', a: 'Sim. Bloqueios guiados são opções intervencionistas empregadas no manejo da dor crônica (especialmente dor na coluna) quando indicados.' },
+                                    { q: 'Realiza radiofrequência?', a: 'Sim. A radiofrequência (ou rizotomia) também faz parte dos tratamentos para dor oferecidos pelo Dr. Otto, dependendo estritamente da indicação de cada paciente.' }
                                 ].map((faq, idx) => (
                                     <div className="accordion-item border-0 border-bottom" key={idx}>
-                                        <h2 className="accordion-header">
+                                        <h3 className="accordion-header m-0 p-0">
                                             <button className="accordion-button collapsed fw-bold py-3 bg-white text-dark shadow-none" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${idx}`}>
                                                 {faq.q}
                                             </button>
-                                        </h2>
+                                        </h3>
                                         <div id={`collapse${idx}`} className="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                                             <div className="accordion-body text-muted pt-0 pb-4">
                                                 {faq.a}

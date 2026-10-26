@@ -124,8 +124,8 @@ export const siteContent: SiteContent = {
         whatsappLink: "https://wa.me/553536270006"
       },
       {
-        nome: "Clínica Adora",
-        endereco: "Av. Andrade Neves, 699 – 6º Andar – Centro, Campinas – SP",
+        nome: "Instituto Orthesen",
+        endereco: "Av. Andrade Neves, 707 – 5º Andar – Centro, Campinas – SP",
         telefone: "(19) 99943-9824",
         whatsappLink: "https://wa.me/5519999439824"
       }
@@ -142,10 +142,10 @@ export const siteContent: SiteContent = {
         wazeUrl: "https://ul.waze.com/ul?ll=-22.30069090%2C-46.61998987&navigate=yes&zoom=17&utm_campaign=default&utm_source=waze_website&utm_medium=lm_share_location"
       },
       {
-        nome: "Clínica Adora",
-        enderecoCompleto: "Av. Andrade Neves, 699 – 6º Andar – Centro, Campinas – SP, 13013-161",
-        mapIframeSrc: "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3675.251236859197!2d-47.0626!3d-22.90655!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x94c8c8bbdb1b8121%3A0xb482f5937ca4cb84!2sAv.%20Andrade%20Neves%2C%20699%20-%206%C2%BA%20andar%20-%20Centro%2C%20Campinas%20-%20SP%2C%2013013-161!5e0!3m2!1spt-BR!2sbr!4v1731612345678",
-        wazeUrl: "https://waze.com/ul/h6gyt8ysqp"
+        nome: "Instituto Orthesen",
+        enderecoCompleto: "Av. Andrade Neves, 707 – 5º Andar – Centro, Campinas – SP, CEP 13013-161",
+        mapIframeSrc: "https://www.google.com/maps?q=Av.+Andrade+Neves+707+Campinas+SP&hl=pt-BR&z=16&output=embed",
+        wazeUrl: "https://waze.com/ul?q=Av.+Andrade+Neves+707+Campinas"
       }
     ],
     instagramUrl: "https://www.instagram.com/drottobeckedorff/"

@@ -1,16 +1,59 @@
 import React from 'react';
 import Link from 'next/link';
 import Footer from '@/components/Footer';
+import Script from 'next/script';
 
 export const metadata = {
     title: 'Ortopedista Saúde Petrobras Campinas | AMS Petrobras',
-    description: 'Atendimento ortopédico para beneficiários Saúde Petrobras (antiga AMS) em Campinas. Tratamento para dor, coluna, joelho e ombro. Agende fácil pelo WhatsApp.',
-    robots: 'noindex, nofollow'
+    description: 'Atendimento ortopédico em Campinas para Saúde Petrobras e AMS. Coluna, joelho, ombro, infiltrações, bloqueios e radiofrequência conforme indicação.',
+    robots: 'index, follow',
+    alternates: {
+        canonical: 'https://drotto.com.br/ortopedista-petrobras-campinas'
+    }
 };
 
 export default function LPPetrobrasCampinas() {
+    const jsonLdPhysician = {
+        "@context": "https://schema.org",
+        "@type": "Physician",
+        "name": "Dr. Otto Beckedorff",
+        "description": "Ortopedista e Traumatologia em Campinas (CRM-SP 226325 | RQE 139078).",
+        "url": "https://drotto.com.br/ortopedista-petrobras-campinas",
+        "image": "https://drotto.com.br/img/foto-otto.jpg",
+        "medicalSpecialty": "Orthopedic",
+        "telephone": "+55-19-99943-9824",
+        "address": {
+            "@type": "PostalAddress",
+            "addressLocality": "Campinas",
+            "addressRegion": "SP",
+            "addressCountry": "BR"
+        }
+    };
+
+    const jsonLdWebPage = {
+        "@context": "https://schema.org",
+        "@type": "WebPage",
+        "name": "Ortopedista Saúde Petrobras Campinas | AMS Petrobras",
+        "description": "Atendimento ortopédico em Campinas para Saúde Petrobras e AMS. Coluna, joelho, ombro, infiltrações, bloqueios e radiofrequência conforme indicação.",
+        "url": "https://drotto.com.br/ortopedista-petrobras-campinas"
+    };
+
+    const jsonLdBreadcrumb = {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+            { "@type": "ListItem", "position": 1, "name": "Início", "item": "https://drotto.com.br" },
+            { "@type": "ListItem", "position": 2, "name": "Convênios", "item": "https://drotto.com.br/#convenios" },
+            { "@type": "ListItem", "position": 3, "name": "Saúde Petrobras", "item": "https://drotto.com.br/ortopedista-petrobras-campinas" }
+        ]
+    };
+
     return (
         <main className="bg-light" style={{ minHeight: '100vh', fontSize: '1.15rem' }}>
+            <Script id="json-ld-physician" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdPhysician) }} />
+            <Script id="json-ld-webpage" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdWebPage) }} />
+            <Script id="json-ld-breadcrumb" type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLdBreadcrumb) }} />
+
             {/* WhatsApp Fixo Gigante */}
             <a 
                 href="https://wa.me/5519999439824?text=Olá,%20gostaria%20de%20agendar%20uma%20consulta%20pela%20Saúde%20Petrobras." 
@@ -37,6 +80,19 @@ export default function LPPetrobrasCampinas() {
                     </div>
                 </div>
             </nav>
+
+            {/* BREADCRUMB VISUAL */}
+            <div className="bg-light border-bottom pt-3 pb-2 px-3">
+                <div className="container">
+                    <nav aria-label="breadcrumb">
+                        <ol className="breadcrumb mb-0 fs-6 fw-medium">
+                            <li className="breadcrumb-item"><Link href="/" className="text-decoration-none text-muted">Início</Link></li>
+                            <li className="breadcrumb-item"><span className="text-muted">Convênios</span></li>
+                            <li className="breadcrumb-item active fw-bold text-dark" aria-current="page">Saúde Petrobras</li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
 
             {/* HERO SECTION */}
             <section className="py-5 bg-white border-bottom">
@@ -74,6 +130,23 @@ export default function LPPetrobrasCampinas() {
                                 <span className="d-none d-md-inline text-muted">|</span>
                                 <span><i className="bi bi-clock text-primary me-2"></i> Consulta com hora marcada</span>
                             </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            {/* BLOCO DE RESPOSTA DIRETA (SEO / IA) */}
+            <section className="py-5" style={{ backgroundColor: '#f0f4f8' }}>
+                <div className="container py-4">
+                    <div className="mx-auto" style={{ maxWidth: '850px' }}>
+                        <h2 className="fw-bolder mb-4" style={{ color: 'var(--azul-escuro)', fontSize: '2rem' }}>Atendimento ortopédico de coluna para Saúde Petrobras em Campinas</h2>
+                        <div className="text-dark fs-5" style={{ lineHeight: '1.7' }}>
+                            <p>
+                                O Dr. Otto Beckedorff realiza atendimento ortopédico em Campinas para beneficiários Saúde Petrobras, anteriormente conhecida como AMS Petrobras. A avaliação inclui problemas da coluna, hérnia de disco, dor ciática, joelho, ombro e dores persistentes.
+                            </p>
+                            <p className="mb-0">
+                                Quando indicado após avaliação médica, também podem ser realizados tratamentos como infiltrações, bloqueios para dor, radiofrequência e viscossuplementação. Cobertura e necessidade de autorização dependem das regras do plano.
+                            </p>
                         </div>
                     </div>
                 </div>
@@ -245,7 +318,7 @@ export default function LPPetrobrasCampinas() {
                         <div className="col-lg-8">
                             <div className="card border-0 shadow-sm rounded-4 overflow-hidden bg-light">
                                 <div className="card-body p-4 text-center">
-                                    <h3 className="fw-bold mb-3 text-dark">Clínica Adora / Hospital Vera Cruz</h3>
+                                    <h3 className="fw-bold mb-3 text-dark">Instituto Orthesen / Hospital Vera Cruz</h3>
                                     <p className="fs-5 text-secondary mb-4">
                                         <i className="bi bi-geo-alt-fill text-danger me-2"></i>
                                         Campinas - SP
@@ -278,6 +351,10 @@ export default function LPPetrobrasCampinas() {
                         <div className="col-lg-8">
                             <div className="accordion accordion-flush bg-white rounded-4 shadow-sm p-3 border" id="faqAccordion">
                                 {[
+                                    { 
+                                        q: 'Onde encontrar atendimento ortopédico de coluna para Saúde Petrobras em Campinas?', 
+                                        a: 'O Dr. Otto Beckedorff realiza atendimento ortopédico em Campinas para beneficiários Saúde Petrobras, antiga AMS, incluindo avaliação de dores na coluna, hérnia de disco e dor ciática. As condições de cobertura devem ser confirmadas de acordo com o plano do beneficiário.' 
+                                    },
                                     { 
                                         q: 'Vocês atendem Saúde Petrobras?', 
                                         a: 'Sim, recebemos beneficiários da Saúde Petrobras. As regras exatas de credenciamento ou reembolso para o seu plano específico devem ser confirmadas com nossa equipe no WhatsApp.' 
@@ -328,11 +405,11 @@ export default function LPPetrobrasCampinas() {
                                     }
                                 ].map((faq, idx) => (
                                     <div className="accordion-item border-0 border-bottom" key={idx}>
-                                        <h2 className="accordion-header">
+                                        <h3 className="accordion-header m-0 p-0">
                                             <button className="accordion-button collapsed fw-bold py-4 bg-white text-dark shadow-none fs-5" type="button" data-bs-toggle="collapse" data-bs-target={`#collapse${idx}`}>
                                                 {faq.q}
                                             </button>
-                                        </h2>
+                                        </h3>
                                         <div id={`collapse${idx}`} className="accordion-collapse collapse" data-bs-parent="#faqAccordion">
                                             <div className="accordion-body text-dark pt-0 pb-4 fs-5" style={{ lineHeight: '1.6' }}>
                                                 {faq.a}

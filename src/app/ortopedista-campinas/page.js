@@ -11,7 +11,7 @@ import Footer from "@/components/Footer";
 
 export const metadata = {
     title: "Ortopedista em Campinas - Dor na Coluna & Hérnia de Disco | Dr. Otto Beckedorff",
-    description: "Ortopedista especialista em Tratamento da Dor na Coluna e Hérnia de Disco em Campinas (Clínica Adora / Vera Cruz). Atendimento particular, convênio Amil e reembolso facilitado.",
+    description: "Ortopedista especialista em Tratamento da Dor na Coluna e Hérnia de Disco em Campinas (Instituto Orthesen / Vera Cruz). Atendimento particular, convênio Amil e reembolso facilitado.",
     keywords: [
         "Ortopedista em Campinas",
         "Ortopedista Campinas Amil",
@@ -40,7 +40,7 @@ const campinasFaqSchema = {
             "name": "O Dr. Otto Beckedorff atende os planos Amil, Bradesco e Omint em Campinas?",
             "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Sim! O Dr. Otto Beckedorff é médico Ortopedista especialista (RQE 139078). O atendimento contempla a rede Amil na Clínica Adora, além de procedimentos no Hospital Vera Cruz e suporte completo para solicitação de Reembolso Médico em planos como Bradesco Saúde, Omint, SulAmérica, Porto Seguro e Care Plus."
+                "text": "Sim! O Dr. Otto Beckedorff é médico Ortopedista especialista (RQE 139078). O atendimento contempla a rede Amil no Instituto Orthesen, além de procedimentos no Hospital Vera Cruz e suporte completo para solicitação de Reembolso Médico em planos como Bradesco Saúde, Omint, SulAmérica, Porto Seguro e Care Plus."
             }
         },
         {
@@ -72,7 +72,7 @@ const campinasFaqSchema = {
             "name": "Onde fica a clínica de atendimento do Dr. Otto Beckedorff em Campinas?",
             "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "O atendimento de consulta ocorre na Clínica Adora - Instituto da Dor, localizada na Avenida Andrade Neves, 699, 6º Andar (Centro), Campinas – SP. Procedimentos hospitalares são realizados no Hospital Vera Cruz."
+                "text": "O atendimento de consulta ocorre no Instituto Orthesen, localizado na Avenida Andrade Neves, 707, 5º Andar (Centro), Campinas – SP. Procedimentos hospitalares são realizados no Hospital Vera Cruz."
             }
         }
     ]

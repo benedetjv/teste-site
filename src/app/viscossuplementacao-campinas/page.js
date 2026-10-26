@@ -60,7 +60,7 @@ export default function ViscossuplementacaoCampinasPage() {
         ],
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Av. Andrade Neves, 699, 6º andar - Clínica Adora",
+          "streetAddress": "Av. Andrade Neves, 707, 5º andar - Instituto Orthesen",
           "addressLocality": "Campinas",
           "addressRegion": "SP",
           "postalCode": "13013-161",
@@ -235,7 +235,7 @@ export default function ViscossuplementacaoCampinasPage() {
           Dr. Otto Beckedorff — Ortopedia e Traumatologia • CRM 226325SP | RQE 139078
         </p>
         <p>
-          Clínica Adora: Av. Andrade Neves, 699, 6º andar - Campinas/SP
+          Instituto Orthesen: Av. Andrade Neves, 707, 5º andar - Campinas/SP
         </p>
       </footer>
     </main>

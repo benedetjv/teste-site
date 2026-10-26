@@ -34,15 +34,21 @@ export default function Footer() {
             </ul>
           </div>
 
-          {/* Coluna 3: Tratamentos SEO */}
+          {/* Coluna 3: Tratamentos SEO e Convênios */}
           <div className="col-lg-3 col-md-6">
             <h6 className="fw-bold text-white mb-3 text-uppercase small" style={{ letterSpacing: '1px' }}>Áreas de Atuação</h6>
-            <ul className="list-unstyled d-flex flex-column gap-2 small">
+            <ul className="list-unstyled d-flex flex-column gap-2 small mb-4">
               <li><Link href="/blog/hernia-l4-l5-s1" className="text-white-50 text-decoration-none hover-white">Hérnia de Disco</Link></li>
               <li><Link href="/blog/radiofrequencia-lombar-recuperacao" className="text-white-50 text-decoration-none hover-white">Radiofrequência Lombar</Link></li>
               <li><Link href="/blog/protese-vs-viscossuplementacao" className="text-white-50 text-decoration-none hover-white">Infiltração de Joelho</Link></li>
               <li><Link href="/blog/bursite-quadril-tratamento" className="text-white-50 text-decoration-none hover-white">Bursite de Quadril</Link></li>
               <li><Link href="/procedimentos" className="text-white-50 text-decoration-none hover-white">Tratamento da Dor</Link></li>
+            </ul>
+
+            <h6 className="fw-bold text-white mb-3 text-uppercase small" style={{ letterSpacing: '1px' }}>Convênios</h6>
+            <ul className="list-unstyled d-flex flex-column gap-2 small">
+              <li><Link href="/ortopedista-omint-campinas" className="text-white-50 text-decoration-none hover-white">Atendimento Omint em Campinas</Link></li>
+              <li><Link href="/ortopedista-petrobras-campinas" className="text-white-50 text-decoration-none hover-white">Atendimento Saúde Petrobras (AMS)</Link></li>
             </ul>
           </div>
 

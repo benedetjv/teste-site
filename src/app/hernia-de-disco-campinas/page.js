@@ -23,7 +23,7 @@ export const metadata = {
   openGraph: {
     title: "Tratamento de Hérnia de Disco em Campinas | Dr. Otto Beckedorff",
     description:
-      "Alívio da dor na coluna e tratamento da hérnia de disco sem cirurgia aberta em Campinas. Atendimento na Clínica Adora e Hospital Vera Cruz.",
+      "Alívio da dor na coluna e tratamento da hérnia de disco sem cirurgia aberta em Campinas. Atendimento no Instituto Orthesen e Hospital Vera Cruz.",
     url: "https://drotto.com.br/hernia-de-disco-campinas",
     siteName: "Dr. Otto Beckedorff",
     locale: "pt_BR",
@@ -70,7 +70,7 @@ export default function HerniaDeDiscoCampinasPage() {
         ],
         "address": {
           "@type": "PostalAddress",
-          "streetAddress": "Av. Andrade Neves, 699, 6º andar - Clínica Adora",
+          "streetAddress": "Av. Andrade Neves, 707, 5º andar - Instituto Orthesen",
           "addressLocality": "Campinas",
           "addressRegion": "SP",
           "postalCode": "13013-161",
@@ -127,7 +127,7 @@ export default function HerniaDeDiscoCampinasPage() {
             "name": "O Dr. Otto Beckedorff aceita planos como Amil, Bradesco e Omint em Campinas?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Sim. O atendimento na Clínica Adora em Campinas contempla plano Amil, além de fornecer toda a documentação médica detalhada (relatórios e recibos) para solicitação de Reembolso Médico em planos como Bradesco Saúde, Omint, SulAmérica, Porto Seguro e Care Plus."
+              "text": "Sim. O atendimento no Instituto Orthesen em Campinas contempla plano Amil, além de fornecer toda a documentação médica detalhada (relatórios e recibos) para solicitação de Reembolso Médico em planos como Bradesco Saúde, Omint, SulAmérica, Porto Seguro e Care Plus."
             }
           },
           {
@@ -135,7 +135,7 @@ export default function HerniaDeDiscoCampinasPage() {
             "name": "Onde fica o consultório de atendimento para hérnia de disco em Campinas?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "O Dr. Otto Beckedorff atende na Clínica Adora - Instituto da Dor de Campinas, localizada na Avenida Andrade Neves, 699, 6º andar (próximo à região central e hospitais de referência como o Vera Cruz), Campinas - SP."
+              "text": "O Dr. Otto Beckedorff atende no Instituto Orthesen, localizado na Avenida Andrade Neves, 707, 5º andar (próximo à região central e hospitais de referência como o Vera Cruz), Campinas - SP."
             }
           }
         ]
@@ -197,7 +197,7 @@ export default function HerniaDeDiscoCampinasPage() {
           </div>
 
           <div className="mt-8 flex flex-wrap justify-center items-center gap-6 text-xs text-slate-400">
-            <span>✓ Atendimento Clínica Adora (Andrade Neves)</span>
+            <span>✓ Atendimento Instituto Orthesen (Andrade Neves)</span>
             <span>✓ Suporte Hospital Vera Cruz</span>
             <span>✓ Amil & Reembolso Médio</span>
           </div>
@@ -407,7 +407,7 @@ export default function HerniaDeDiscoCampinasPage() {
             Planos de Saúde & Reembolso Médico em Campinas
           </h2>
           <p className="text-slate-300 text-sm mb-6 leading-relaxed">
-            Realizamos atendimento presencial na Clínica Adora em Campinas com cobertura do plano **Amil**, além de oferecer suporte completo para solicitação de **Reembolso Médico** para os demais convênios de saúde.
+            Realizamos atendimento presencial no Instituto Orthesen em Campinas com cobertura do plano **Amil**, além de oferecer suporte completo para solicitação de **Reembolso Médico** para os demais convênios de saúde.
           </p>
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 text-center">
             <div className="bg-slate-950/80 p-3 rounded-xl border border-slate-800 text-teal-300 text-xs font-bold">
@@ -493,7 +493,7 @@ export default function HerniaDeDiscoCampinasPage() {
               <span className="text-teal-400 group-open:rotate-180 transition-transform">↓</span>
             </summary>
             <p className="mt-3 text-slate-400 text-sm leading-relaxed">
-              Sim! O atendimento na Clínica Adora em Campinas contempla o convênio Amil. Além disso, disponibilizamos todos os relatórios médicos, laudos e recibos necessários para que pacientes de convênios como Bradesco Saúde, Omint, SulAmérica, Porto Seguro e Care Plus solicitem o Reembolso Médico integral ou parcial.
+              Sim! O atendimento no Instituto Orthesen em Campinas contempla o convênio Amil. Além disso, disponibilizamos todos os relatórios médicos, laudos e recibos necessários para que pacientes de convênios como Bradesco Saúde, Omint, SulAmérica, Porto Seguro e Care Plus solicitem o Reembolso Médico integral ou parcial.
             </p>
           </details>
 
@@ -503,7 +503,7 @@ export default function HerniaDeDiscoCampinasPage() {
               <span className="text-teal-400 group-open:rotate-180 transition-transform">↓</span>
             </summary>
             <p className="mt-3 text-slate-400 text-sm leading-relaxed">
-              O consultório fica localizado na Clínica Adora - Instituto da Dor, na Avenida Andrade Neves, 699, 6º andar, Campinas - SP (próximo à região central e com fácil acesso aos principais hospitais de Campinas, como o Hospital Vera Cruz).
+              O consultório fica localizado no Instituto Orthesen, na Avenida Andrade Neves, 707, 5º andar, Campinas - SP (próximo à região central e com fácil acesso aos principais hospitais de Campinas, como o Hospital Vera Cruz).
             </p>
           </details>
         </div>
@@ -535,7 +535,7 @@ export default function HerniaDeDiscoCampinasPage() {
           Dr. Otto Beckedorff — Ortopedia e Traumatologia • CRM 226325SP | RQE 139078
         </p>
         <p>
-          Clínica Adora: Av. Andrade Neves, 699, 6º andar - Campinas/SP
+          Instituto Orthesen: Av. Andrade Neves, 707, 5º andar - Campinas/SP
         </p>
       </footer>
     </main>

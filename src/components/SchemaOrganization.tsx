@@ -8,7 +8,7 @@ export default function SchemaOrganization() {
         "@type": "Physician",
         "name": "Dr. Otto Beckedorff",
         "image": "https://drotto.com.br/img/foto-otto.jpg",
-        "description": "Dr. Otto Beckedorff é médico Ortopedista especialista (RQE 139078 | CRM 226325SP) em Campinas (Clínica Adora / Hospital Vera Cruz) e Jacutinga, com atuação dedicada ao tratamento de Hérnia de Disco, Dor na Coluna, Viscossuplementação com Ácido Hialurônico, Bloqueios e Infiltrações guiadas.",
+        "description": "Dr. Otto Beckedorff é médico Ortopedista especialista (RQE 139078 | CRM 226325SP) em Campinas (Instituto Orthesen / Hospital Vera Cruz) e Jacutinga, com atuação dedicada ao tratamento de Hérnia de Disco, Dor na Coluna, Viscossuplementação com Ácido Hialurônico, Bloqueios e Infiltrações guiadas.",
         "medicalSpecialty": [
             "Orthopedic Surgery",
             "Pain Management",
@@ -41,7 +41,7 @@ export default function SchemaOrganization() {
         "address": [
             {
                 "@type": "PostalAddress",
-                "streetAddress": "Av. Andrade Neves, 699 – 6º Andar – Centro",
+                "streetAddress": "Av. Andrade Neves, 707 – 5º Andar – Centro",
                 "addressLocality": "Campinas",
                 "addressRegion": "SP",
                 "postalCode": "13013-161",

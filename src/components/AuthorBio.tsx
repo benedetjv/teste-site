@@ -4,7 +4,7 @@ import { siteContent } from '@/content';
 
 export default function AuthorBio() {
     const { sobre, contato } = siteContent;
-    const whatsappLink = contato.clinicas[1].whatsappLink; // Using Adora/Campinas as default or verify logic
+    const whatsappLink = contato.clinicas[1].whatsappLink; // Using Orthesen/Campinas as default or verify logic
 
     return (
         <div className="mt-5 pt-4 border-top">

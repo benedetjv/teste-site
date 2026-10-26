@@ -11,6 +11,13 @@ export const metadata = {
 
 const QR_LINKS = [
     {
+        title: "Cartão de Visita Digital",
+        url: "https://drotto.com.br/cartao",
+        desc: "QR Code oficial para impressão no cartão de visita físico.",
+        color: "6B9BB4", // Cor solicitada: #6B9BB4
+        destaque: true
+    },
+    {
         title: "Censo da Dor (Pesquisa)",
         url: "https://drotto.com.br/censo-dor",
         desc: "Para pacientes contribuírem com a pesquisa.",
@@ -59,37 +66,59 @@ export default function QrCodePage() {
         <div className="container py-5">
             <div className="text-center mb-5">
                 <h1 className="fw-bold">Central de QR Codes 🖨️</h1>
-                <p className="text-muted">Salve estas imagens para imprimir placas ou cartões.</p>
+                <p className="text-muted">Salve estas imagens para imprimir placas ou cartões de visita.</p>
             </div>
 
             <div className="row g-4 justify-content-center">
-                {QR_LINKS.map((item, index) => (
-                    <div key={index} className="col-md-6 col-lg-4">
-                        <div className="card h-100 shadow-sm border-0 text-center">
-                            <div className="card-body p-4">
-                                <h5 className="fw-bold mb-3">{item.title}</h5>
+                {QR_LINKS.map((item, index) => {
+                    const qrUrlNormal = `https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=${encodeURIComponent(item.url)}&color=${item.color}&margin=10`;
+                    const qrUrlHighRes = `https://api.qrserver.com/v1/create-qr-code/?size=1000x1000&data=${encodeURIComponent(item.url)}&color=${item.color}&margin=20`;
 
-                                <div className="bg-light p-3 rounded mb-3 d-inline-block">
-                                    {/* Usando API QR Server (padrão da indústria, rápido e confiável) */}
-                                    <img
-                                        src={`https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(item.url)}&color=${item.color}`}
-                                        alt={item.title}
-                                        className="img-fluid"
-                                        style={{ width: '200px', height: '200px' }}
-                                    />
-                                </div>
+                    return (
+                        <div key={index} className={item.destaque ? "col-12 col-md-8 col-lg-6" : "col-md-6 col-lg-4"}>
+                            <div className={`card h-100 shadow-sm border-0 text-center ${item.destaque ? "border-2 border-primary" : ""}`} style={{ backgroundColor: item.destaque ? "#f8fbfe" : "#ffffff" }}>
+                                <div className="card-body p-4 d-flex flex-column align-items-center">
+                                    {item.destaque && (
+                                        <span className="badge rounded-pill px-3 py-1 text-white mb-2" style={{ backgroundColor: "#6B9BB4", fontSize: "0.75rem" }}>
+                                            ⭐ Destaque Cartão de Visita (#6B9BB4)
+                                        </span>
+                                    )}
 
-                                <p className="small text-muted mb-3">{item.desc}</p>
+                                    <h5 className="fw-bold mb-2">{item.title}</h5>
+                                    <p className="small text-muted mb-3">{item.desc}</p>
 
-                                <div className="d-grid gap-2">
-                                    <a href={item.url} target="_blank" className="btn btn-outline-secondary btn-sm">
-                                        Testar Link <i className="bi bi-box-arrow-up-right"></i>
-                                    </a>
+                                    <div className="bg-white p-3 rounded-4 shadow-sm mb-3 d-inline-block border">
+                                        <img
+                                            src={qrUrlNormal}
+                                            alt={item.title}
+                                            className="img-fluid rounded"
+                                            style={{ width: item.destaque ? '220px' : '180px', height: item.destaque ? '220px' : '180px' }}
+                                        />
+                                    </div>
+
+                                    <div className="small font-monospace text-muted mb-3 px-2 py-1 rounded bg-light border" style={{ fontSize: '0.75rem', wordBreak: 'break-all' }}>
+                                        {item.url}
+                                    </div>
+
+                                    <div className="w-100 d-grid gap-2 mt-auto">
+                                        <a
+                                            href={qrUrlHighRes}
+                                            target="_blank"
+                                            rel="noopener noreferrer"
+                                            className={`btn btn-sm fw-bold ${item.destaque ? "btn-primary text-white" : "btn-outline-primary"}`}
+                                            style={item.destaque ? { backgroundColor: "#6B9BB4", borderColor: "#6B9BB4" } : {}}
+                                        >
+                                            <i className="bi bi-download me-1"></i> Baixar Imagem para Gráfica (1000x1000)
+                                        </a>
+                                        <a href={item.url} target="_blank" rel="noopener noreferrer" className="btn btn-outline-secondary btn-sm">
+                                            Testar Link no Navegador <i className="bi bi-box-arrow-up-right ms-1"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
-                ))}
+                    );
+                })}
             </div>
         </div>
     );

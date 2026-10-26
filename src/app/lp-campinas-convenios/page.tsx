@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 export const metadata = {
     title: 'Dr. Otto Beckedorff | Ortopedia e Dor Crônica - Campinas',
-    description: 'Especialista em dor crônica, intervencionismo em Campinas. Corpo Clínico do Hospital Vera Cruz. Aceitamos Amil, Bradesco e convênios selecionados na Clínica Adora.',
+    description: 'Especialista em dor crônica, intervencionismo em Campinas. Corpo Clínico do Hospital Vera Cruz. Aceitamos Amil, Bradesco e convênios selecionados no Instituto Orthesen.',
     robots: 'noindex, nofollow' // Escondido do Google geral, só quem clica no Anúncio acha!
 };
 
@@ -21,7 +21,7 @@ export default function LPVeraCruzCampinas() {
                         </div>
                     </Link>
                     <div className="d-flex align-items-center text-muted small fw-medium mt-1 mt-md-0 text-center">
-                        <i className="bi bi-geo-alt-fill me-2 text-danger"></i> Atendimento em Campinas - Clinica Adora / Vera Cruz
+                        <i className="bi bi-geo-alt-fill me-2 text-danger"></i> Atendimento em Campinas - Instituto Orthesen / Vera Cruz
                     </div>
                 </div>
             </nav>
@@ -32,7 +32,7 @@ export default function LPVeraCruzCampinas() {
                     <div className="row justify-content-between align-items-center">
                         <div className="col-lg-6 mb-5 mb-lg-0 text-center text-lg-start animate__animated animate__fadeInLeft">
                             <span className="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold mb-3 shadow-sm border border-primary border-opacity-25">
-                                <i className="bi bi-star-fill text-warning me-2"></i> Clínica Adora & Hospital Vera Cruz
+                                <i className="bi bi-star-fill text-warning me-2"></i> Instituto Orthesen & Hospital Vera Cruz
                             </span>
                             
                             <h1 className="display-4 fw-bold mb-4" style={{ color: 'var(--azul-escuro)', lineHeight: '1.2' }}>

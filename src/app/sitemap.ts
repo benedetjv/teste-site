@@ -15,7 +15,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
         '/blog',
         '/preconsulta',
         '/ortopedista-campinas',
-        '/ortopedista-jacutinga'
+        '/ortopedista-jacutinga',
+        '/ortopedista-omint-campinas',
+        '/ortopedista-petrobras-campinas'
     ];
 
     const staticSitemap = staticRoutes.map((route) => ({

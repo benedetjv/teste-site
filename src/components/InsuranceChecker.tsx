@@ -150,7 +150,7 @@ export default function InsuranceChecker() {
                     <p className="text-secondary mb-5">
                         {veraCruzStatus === 'unknown' 
                             ? 'Nossa equipe verificará a cobertura do seu plano para você.' 
-                            : 'Escolha abaixo como prefere realizar o seu agendamento na Clínica Adora (Campinas).'}
+                            : 'Escolha abaixo como prefere realizar o seu agendamento no Instituto Orthesen (Campinas).'}
                     </p>
 
                     <div className="row justify-content-center g-4">
