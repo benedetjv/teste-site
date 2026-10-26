@@ -97,7 +97,7 @@ export default function QrCodePage() {
                             </span>
                         </div>
                         <div className="fw-bold mb-1" style={{ fontSize: "0.85rem", color: accentColor }}>
-                            Ortopedia e Traumatologia • Tratamento da Dor
+                            Ortopedia • Tratamento da Dor (Coluna e Articulações)
                         </div>
                         <div className="badge border text-dark bg-light px-2 py-1 mb-3" style={{ fontSize: "0.7rem", borderColor: "#bbb" }}>
                             CRM-SP 226325 | RQE 139078

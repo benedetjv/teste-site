@@ -203,8 +203,8 @@ END:VCARD`;
               <h1 className="h5 fw-bold text-white mb-0" style={{ letterSpacing: "-0.2px", lineHeight: "1.2" }}>
                 Dr. Otto Beckedorff
               </h1>
-              <p className="fw-semibold mb-1" style={{ color: "#d9e8f2", fontSize: "0.85rem" }}>
-                Ortopedista & Especialista em Dor
+              <p className="fw-semibold mb-1" style={{ color: "#d9e8f2", fontSize: "0.82rem" }}>
+                Ortopedia • Tratamento da Dor (Coluna e Articulações)
               </p>
               <div className="d-flex flex-wrap gap-1">
                 <span
@@ -848,7 +848,7 @@ END:VCARD`;
         {/* FOOTER */}
         <footer className="text-center text-muted small mt-4 pt-2 pb-2" style={{ fontSize: "0.72rem" }}>
           <p className="mb-1">
-            Dr. Otto Beckedorff — Ortopedia e Traumatologia • RQE 139078 • CRM-SP 226325
+            Dr. Otto Beckedorff — Ortopedia • Tratamento da Dor (Coluna e Articulações) • RQE 139078 • CRM-SP 226325
           </p>
           <p className="mb-0 text-secondary">
             Instituto Orthesen & Hospital Vera Cruz • Campinas - SP
