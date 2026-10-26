@@ -77,6 +77,9 @@ export default function SchemaOrganization() {
             "Hérnia de Disco Cervical e Lombar",
             "Dor Ciática",
             "Viscossuplementação com Ácido Hialurônico",
+            "Plasma Rico em Plaquetas (PRP)",
+            "Medicina Regenerativa Ortopédica",
+            "Resolução CFM 2464 2026 PRP",
             "Infiltração de Joelho e Quadril",
             "Bloqueio de Coluna Guiado por Imagem",
             "Radiofrequência para Dor Facetária",
@@ -85,9 +88,12 @@ export default function SchemaOrganization() {
         "medicalConditionTreated": [
             "Hérnia de Disco",
             "Lombalgia (Dor na Coluna)",
+            "Discopatia Degenerativa Lombar",
             "Cervicalgia",
             "Estenose de Canal Vertebral",
             "Artrose de Joelho e Quadril",
+            "Lesão Meniscal",
+            "Epicondilite Lateral de Cotovelo",
             "Condromalácia Patelar",
             "Dor Ciática",
             "Bursite e Tendinite"
@@ -112,6 +118,11 @@ export default function SchemaOrganization() {
                 "@type": "MedicalProcedure",
                 "name": "Viscossuplementação com Ácido Hialurônico",
                 "description": "Infiltração de Ácido Hialurônico de alta viscosidade para lubrificação e proteção articular na artrose e condromalácia."
+            },
+            {
+                "@type": "MedicalProcedure",
+                "name": "Plasma Rico em Plaquetas (PRP Autólogo)",
+                "description": "Procedimento adjuvante regulamentado pelo CFM (Resolução 2.464/2026) guiado por imagem para artrose de joelho, discopatia lombar, menisco e epicondilite."
             }
         ]
     };

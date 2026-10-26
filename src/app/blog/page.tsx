@@ -5,6 +5,34 @@ import Link from "next/link";
 import BodySelectorBlog from "@/components/BodySelectorBlog";
 
 const posts = [
+    // --- MEDICINA REGENERATIVA & PRP (RESOLUÇÃO CFM 2.464/2026) ---
+    {
+        slug: "resolucao-cfm-2464-prp-plasma-rico-plaquetas",
+        title: "Resolução CFM nº 2.464/2026: O que mudou no PRP no Brasil?",
+        excerpt: "Entenda o marco regulatório do CFM que regulamentou o PRP autólogo na ortopedia e dor. Conheça as 4 indicações oficiais e critérios de segurança.",
+        date: "26 Jul 2026",
+        category: "Medicina Regenerativa",
+        image: "/img/blog/prp-resolucao-cfm.jpg",
+        relatedRegions: ['knee-leg', 'knee-left', 'knee-right', 'lumbar-back', 'arm-elbow']
+    },
+    {
+        slug: "prp-ou-acido-hialuronico-joelho",
+        title: "PRP ou Ácido Hialurônico para o Joelho: Qual a Diferença e Quando Associar?",
+        excerpt: "Descubra as diferenças entre estímulo biológico celular (PRP) e lubrificação mecânica (Ácido Hialurônico) no desgaste e artrose de joelho.",
+        date: "24 Jul 2026",
+        category: "Joelho e Articulações",
+        image: "/img/blog/prp-joelho-acido-hialuronico.jpg",
+        relatedRegions: ['knee-leg', 'knee-left', 'knee-right']
+    },
+    {
+        slug: "prp-coluna-discopatia-lombar",
+        title: "PRP na Coluna Lombar: Como a Medicina Regenerativa Trata a Discopatia",
+        excerpt: "Como os fatores de crescimento plaquetários atuam na dor discogênica e degeneração discal sem cirurgia aberta, com precisão guiada por imagem.",
+        date: "22 Jul 2026",
+        category: "Coluna Vertebral",
+        image: "/img/blog/prp-coluna-discopatia.jpg",
+        relatedRegions: ['lumbar-back']
+    },
     // --- CIÊNCIA E REGENERAÇÃO (MARÇO 2026) ---
     {
         slug: "o-que-sao-peptideos-para-que-servem",
