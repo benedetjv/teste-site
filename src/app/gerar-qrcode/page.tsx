@@ -151,11 +151,11 @@ export default function QrCodePage() {
                         />
                     </div>
 
-                    <span className="fw-bold text-dark" style={{ fontSize: "0.53rem", lineHeight: "1.15", textTransform: "uppercase" }}>
-                        TUDO QUE PRECISA ESTÁ NESSE QR CODE, CASO NÃO CONSIGA ESCANEAR ENTRE NO SITE ABAIXO:
+                    <span className="text-muted fw-medium" style={{ fontSize: "0.62rem", lineHeight: "1.3" }}>
+                        Escaneie com a câmera ou acesse:
                     </span>
 
-                    <span className="fw-bolder mt-1 text-dark" style={{ fontSize: "0.68rem" }}>
+                    <span className="fw-bold mt-1" style={{ fontSize: "0.74rem", color: primaryColor }}>
                         drotto.com.br/cartao
                     </span>
                 </div>
