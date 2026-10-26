@@ -151,18 +151,7 @@ END:VCARD`;
           }}
         >
           {/* BOTÃO COMPARTILHAR COMPACTO */}
-          <div className="d-flex justify-content-between align-items-center mb-2">
-            <span
-              className="badge rounded-pill px-2 py-1 fw-bold"
-              style={{
-                backgroundColor: "rgba(107, 155, 180, 0.35)",
-                color: "#e2eff7",
-                fontSize: "0.68rem",
-                letterSpacing: "0.5px",
-              }}
-            >
-              CARTÃO DIGITAL OFICIAL
-            </span>
+          <div className="d-flex justify-content-end align-items-center mb-2">
             <button
               onClick={handleShare}
               className="btn btn-sm text-white border-0 rounded-pill px-3 py-1 d-flex align-items-center gap-1"
