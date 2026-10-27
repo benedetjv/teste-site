@@ -106,28 +106,44 @@ END:VCARD`;
 
   return (
     <div
-      className="min-vh-100 d-flex flex-column align-items-center py-3 px-2 px-sm-3"
+      className="min-vh-100 d-flex flex-column align-items-center px-2 px-sm-3"
       style={{
         backgroundColor: "#edf2f7",
         fontFamily: "var(--font-nunito), -apple-system, BlinkMacSystemFont, sans-serif",
+        paddingTop: "max(1.25rem, env(safe-area-inset-top, 24px))",
+        paddingBottom: "max(2rem, env(safe-area-inset-bottom, 24px))",
       }}
     >
       <div className="w-100" style={{ maxWidth: "480px" }}>
 
         {/* ======================================================== */}
-        {/* BOTÃO MODO FÁCIL / ACESSIBILIDADE NO TOPO (ALTA VISIBILIDADE) */}
+        {/* BOTÃO MODO FÁCIL / ACESSIBILIDADE FIXO NO TOPO (NUNCA FICA ESCONDIDO) */}
         {/* ======================================================== */}
-        <div className="mb-2">
+        <div
+          className="sticky-top mb-3 w-100"
+          style={{
+            top: 0,
+            zIndex: 1030,
+            backgroundColor: "#edf2f7",
+            paddingTop: "max(0.4rem, env(safe-area-inset-top, 8px))",
+            paddingBottom: "0.4rem",
+          }}
+        >
           <button
             type="button"
-            onClick={() => setModoFacil(!modoFacil)}
-            className="btn w-100 rounded-4 py-3 px-3 fw-bolder shadow d-flex align-items-center justify-content-center gap-2 transition-all border-2"
+            onClick={() => {
+              setModoFacil(!modoFacil);
+              if (typeof window !== "undefined") {
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }}
+            className="btn w-100 rounded-4 py-3 px-3 fw-bolder shadow-sm d-flex align-items-center justify-content-center gap-2 border-2 transition-all"
             style={{
               backgroundColor: modoFacil ? "#2a4156" : "#FFD500",
               color: modoFacil ? "#ffffff" : "#0d1b2a",
               borderColor: modoFacil ? "#6B9BB4" : "#e6bf00",
-              boxShadow: "0 4px 12px rgba(255, 213, 0, 0.35)",
-              fontSize: "1.05rem",
+              boxShadow: "0 4px 14px rgba(0, 0, 0, 0.12)",
+              fontSize: "1rem",
               letterSpacing: "-0.2px",
             }}
           >
