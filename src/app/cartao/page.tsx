@@ -63,7 +63,7 @@ TEL;TYPE=CELL,VOICE,WHATSAPP:+5519999439824
 ADR;TYPE=WORK:;;Av. Andrade Neves\\, 707 - 5 Andar;Campinas;SP;13013-161;Brasil
 URL:https://drotto.com.br
 URL;TYPE=Doctoralia:https://www.doctoralia.com.br/z/QqNAB4
-NOTE:Especialista em Tratamento da Dor\\, Coluna e Articulações.
+NOTE:Ortopedista com foco nos tratamentos de dor na coluna e articulações.
 END:VCARD`;
 
     const blob = new Blob([vcard], { type: "text/vcard;charset=utf-8;" });

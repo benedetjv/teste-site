@@ -155,7 +155,7 @@ export default function PrpCampinasPage() {
                     className="btn btn-success fw-bold px-4 py-3 rounded-pill d-flex align-items-center justify-content-center gap-2 shadow"
                     style={{ fontSize: "1rem" }}
                   >
-                    <i className="bi bi-whatsapp fs-5"></i> Agendar Avaliação com Especialista
+                    <i className="bi bi-whatsapp fs-5"></i> Agendar Avaliação Médica
                   </a>
                   <a
                     href="#indicacoes"
@@ -167,7 +167,7 @@ export default function PrpCampinasPage() {
                 </div>
 
                 <div className="d-flex flex-wrap gap-4 mt-4 pt-3 border-top border-white border-opacity-10 justify-content-center justify-content-lg-start text-white-50 small">
-                  <div><i className="bi bi-shield-check text-warning me-1"></i> 100% Autólogo (Sem Rejeição)</div>
+                  <div><i className="bi bi-shield-check text-warning me-1"></i> 100% Autólogo (Material Biológico Próprio)</div>
                   <div><i className="bi bi-camera-fill text-info me-1"></i> Guiado por Ultrassom</div>
                   <div><i className="bi bi-geo-alt-fill text-danger me-1"></i> Instituto Orthesen • Campinas</div>
                 </div>
@@ -188,7 +188,7 @@ export default function PrpCampinasPage() {
                   <div className="p-3 rounded-3 mb-3" style={{ backgroundColor: "#f4f8fb", borderLeft: "4px solid #6B9BB4" }}>
                     <div className="fw-bold small mb-1" style={{ color: "#2a4156" }}>Dr. Otto Beckedorff</div>
                     <div className="text-muted" style={{ fontSize: "0.8rem" }}>
-                      Ortopedista especialista (RQE 139078 | CRM 226325SP) com foco em Medicina da Dor e procedimentos minimamente invasivos no Instituto Orthesen e Hospital Vera Cruz.
+                      Médico ortopedista (RQE 139078 | CRM 226325SP) com foco nos tratamentos de dor na coluna e articulações e procedimentos minimamente invasivos no Instituto Orthesen e Hospital Vera Cruz.
                     </div>
                   </div>
                   <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="btn btn-outline-primary btn-sm rounded-pill fw-bold w-100 py-2">
@@ -305,7 +305,7 @@ export default function PrpCampinasPage() {
                       <tr>
                         <td className="fw-bold px-4">Risco Alérgico</td>
                         <td className="px-4">Mínimo (praticamente nulo)</td>
-                        <td className="px-4 fw-semibold text-primary">Inexistente (material autólogo do próprio corpo)</td>
+                        <td className="px-4 fw-semibold text-primary">Elevada biocompatibilidade (material autólogo do próprio paciente)</td>
                       </tr>
                       <tr>
                         <td className="fw-bold px-4">Podem ser Combinados?</td>
@@ -432,7 +432,7 @@ export default function PrpCampinasPage() {
           <div className="container py-4">
             <h2 className="display-6 fw-bold mb-3">Avalie se o PRP é Indicado para o Seu Caso</h2>
             <p className="lead text-white-50 mx-auto mb-4" style={{ maxWidth: "680px" }}>
-              Consulte um especialista com formação e atuação dedicada ao tratamento da dor articular e da coluna em Campinas.
+              Consulte um médico ortopedista com atuação focada no tratamento da dor na coluna e articulações em Campinas.
             </p>
             <a
               href={whatsappUrl}
