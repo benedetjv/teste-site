@@ -325,7 +325,7 @@ export default function LPPetrobrasCampinas() {
                                     </p>
                                     
                                     <div className="d-flex flex-column flex-sm-row justify-content-center gap-3">
-                                        <a href="https://maps.google.com/?q=Campinas+SP" target="_blank" className="btn btn-outline-dark fs-5 px-4 py-3 fw-bold rounded-3">
+                                        <a href="https://www.google.com/maps/search/?api=1&query=Av.+Andrade+Neves,+707+-+Centro,+Campinas+-+SP" target="_blank" className="btn btn-outline-dark fs-5 px-4 py-3 fw-bold rounded-3">
                                             <i className="bi bi-map me-2"></i> Abrir localização
                                         </a>
                                         <a href="https://wa.me/5519999439824" target="_blank" className="btn-whatsapp px-4 py-3 shadow-sm d-flex justify-content-center rounded-3" style={{ fontSize: '1.25rem' }}>

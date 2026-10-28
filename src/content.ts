@@ -26,7 +26,8 @@ export const siteContent: SiteContent = {
 
   doctoralia: {
     label: "Agende agora:",
-    url: "https://www.doctoralia.com.br/otto-beckedorff/ortopedista-traumatologista/campinas",
+    url: "https://www.doctoralia.com.br/z/QqNAB4",
+    profileUrl: "https://www.doctoralia.com.br/otto-beckedorff/ortopedista-traumatologista/campinas",
     doctor: "otto-beckedorff",
   },
 

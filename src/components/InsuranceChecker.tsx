@@ -166,7 +166,7 @@ export default function InsuranceChecker() {
                                         </div>
                                         <div>
                                             <a 
-                                                href="https://www.doctoralia.com.br" 
+                                                href="https://www.doctoralia.com.br/z/QqNAB4" 
                                                 target="_blank" 
                                                 rel="noopener noreferrer"
                                                 onClick={() => {

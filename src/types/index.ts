@@ -22,6 +22,7 @@ export interface HeroContent {
 export interface DoctoraliaContent {
   label: string;
   url: string;
+  profileUrl?: string;
   doctor: string;
 }
 

@@ -95,7 +95,7 @@ export default function Testimonials() {
                         </div>
                         <p className="text-muted small">Baseado em avaliações reais de pacientes.</p>
 
-                        <a href="https://g.page/r/CQ3gfOvMQ6SEEAI/review" target="_blank" className="btn btn-primary rounded-pill px-4 fw-bold shadow-sm mt-2">
+                        <a href="https://g.page/r/CQ3gfOvMQ6SEEBM/review" target="_blank" className="btn btn-primary rounded-pill px-4 fw-bold shadow-sm mt-2">
                             Avaliar no Google <i className="bi bi-arrow-right ms-2"></i>
                         </a>
                     </div>
