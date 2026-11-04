@@ -5,7 +5,7 @@ import WhatsAppPreQualifyCard from '@/components/WhatsAppPreQualifyCard';
 import MobileStickyBar from '@/components/MobileStickyBar';
 
 export const metadata = {
-  title: 'Dr. Otto Beckedorff • Ortopedista Especialista em Coluna e Dor em Campinas',
+  title: 'Dr. Otto Beckedorff • Médico Ortopedista com Foco em Coluna e Dor em Campinas',
   description: 'Médico Ortopedista (CRM-SP 226325 | RQE 139078) com foco no tratamento de dor na coluna e articulações. Atendimento Amil no Instituto Orthesen e procedimentos no Hospital Vera Cruz.',
   robots: 'noindex, nofollow'
 };
@@ -52,7 +52,7 @@ export default function LPVeraCruzCampinas() {
                 </div>
 
                 <h1 className="display-6 fw-bold mb-2" style={{ color: 'var(--azul-escuro)', lineHeight: '1.2' }}>
-                  Ortopedista Especialista — Foco no Tratamento de Dor na Coluna e Articulações em Campinas
+                  Médico Ortopedista — Foco no Tratamento de Dor na Coluna e Articulações em Campinas
                 </h1>
 
                 <p className="text-muted small fw-medium mb-3">

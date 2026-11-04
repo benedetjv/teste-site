@@ -11,23 +11,47 @@ interface WhatsAppPreQualifyCardProps {
   subtitle?: string;
 }
 
-export const INSURANCE_OPTIONS = [
-  { value: '', label: 'Selecione seu plano ou convênio...' },
+export const PAIN_AREAS = [
+  { id: 'coluna', label: 'Coluna (Lombar / Cervical)', icon: 'bi-body-text' },
+  { id: 'joelho', label: 'Joelho', icon: 'bi-bullseye' },
+  { id: 'ombro', label: 'Ombro', icon: 'bi-circle' },
+  { id: 'quadril', label: 'Quadril', icon: 'bi-record-circle' },
+  { id: 'outra', label: 'Outras Articulações / Geral', icon: 'bi-grid' }
+];
+
+export const PRIMARY_INSURANCES = [
   { value: 'Amil', label: 'Amil' },
   { value: 'Bradesco Saúde', label: 'Bradesco Saúde' },
-  { value: 'SulAmérica Saúde', label: 'SulAmérica Saúde' },
   { value: 'Omint', label: 'Omint' },
+  { value: 'Petrobras PAE / AMS', label: 'Petrobras' },
+  { value: 'SulAmérica Saúde', label: 'SulAmérica' }
+];
+
+export const MORE_INSURANCES = [
   { value: 'Porto Seguro', label: 'Porto Seguro' },
   { value: 'Saúde Caixa', label: 'Saúde Caixa' },
   { value: 'Care Plus', label: 'Care Plus' },
-  { value: 'Petrobras PAE / AMS', label: 'Petrobras PAE / AMS' },
   { value: 'GAMA Saúde', label: 'GAMA Saúde' },
   { value: 'VIVEST', label: 'VIVEST' },
   { value: 'ASH (Holambra)', label: 'ASH (Holambra)' },
   { value: '2Care', label: '2Care' },
   { value: 'Unimed', label: 'Unimed' },
-  { value: 'Outro convênio', label: 'Outro convênio (não listado acima)' },
+  { value: 'Outro convênio', label: 'Outro convênio (não listado)' }
 ];
+
+export const INSURANCE_OPTIONS = [
+  { value: '', label: 'Selecione seu plano ou convênio...' },
+  ...PRIMARY_INSURANCES,
+  ...MORE_INSURANCES
+];
+
+const ENCOURAGEMENT_TEXTS: Record<string, string> = {
+  coluna: 'Entendi que você busca avaliação para dor na coluna. O Dr. Otto Beckedorff é médico ortopedista com atuação focada no diagnóstico e tratamento de patologias da coluna vertebral e dores persistentes, integrando reabilitação estruturada e procedimentos intervencionistas minimamente invasivos.',
+  joelho: 'Entendi que você busca avaliação para o joelho. O Dr. Otto atua no tratamento de dores e desgastes articulares com foco em alívio da dor, reabilitação e procedimentos guiados como infiltrações de precisão e viscossuplementação.',
+  ombro: 'Entendi que você busca avaliação para o ombro. O Dr. Otto atua no diagnóstico e tratamento de tendinites, bursites e lesões do manguito rotador, com condutas voltadas à recuperação funcional.',
+  quadril: 'Entendi que você busca avaliação para o quadril. O Dr. Otto atua no diagnóstico e manejo de dores no quadril, bursites e impacto articular, com condutas modernas e individualizadas.',
+  outra: 'Entendi que você busca uma avaliação ortopédica. O Dr. Otto realiza investigação criteriosa para identificar a causa da sua dor e traçar um plano terapêutico individualizado.'
+};
 
 function isValidFullName(name: string): boolean {
   if (!name) return false;
@@ -49,9 +73,11 @@ export default function WhatsAppPreQualifyCard({
   title = 'Solicitar Agendamento pelo WhatsApp',
   subtitle = 'Informe seus dados para direcionarmos seu contato com rapidez à nossa equipe em Campinas:'
 }: WhatsAppPreQualifyCardProps) {
+  const [painArea, setPainArea] = useState<string>('coluna');
   const [name, setName] = useState('');
   const [modality, setModality] = useState<'particular' | 'convenio'>(defaultModality);
   const [insuranceName, setInsuranceName] = useState('');
+  const [showMoreInsurances, setShowMoreInsurances] = useState(false);
   const [coverageVeraCruz, setCoverageVeraCruz] = useState<'sim' | 'nao' | 'nao_sei' | null>(null);
   const [unimedConfirmed, setUnimedConfirmed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -76,6 +102,13 @@ export default function WhatsAppPreQualifyCard({
       insuranceName.trim().toLowerCase().includes('outro') ||
       insuranceName.trim().toLowerCase().includes('não listado')
     );
+
+  const handleInsuranceSelect = (val: string) => {
+    setInsuranceName(val);
+    if (val === 'Unimed') {
+      setUnimedConfirmed(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -157,7 +190,7 @@ export default function WhatsAppPreQualifyCard({
         } else if (isAmil) {
           atdDesc = 'Convênio (Amil)';
         } else {
-          atdDesc = `Convênio (${insuranceName.trim()}) - suporte a reembolso`;
+          atdDesc = `Convênio (${insuranceName.trim()})`;
         }
       }
 
@@ -165,9 +198,12 @@ export default function WhatsAppPreQualifyCard({
         coverageVeraCruz === 'sim' ? 'Sim' :
         coverageVeraCruz === 'nao' ? 'Não' : 'Não sei / A verificar';
 
+      const painLabel = PAIN_AREAS.find(p => p.id === painArea)?.label || 'Coluna';
+
       let messageText =
         `Olá! Gostaria de solicitar um agendamento de consulta em Campinas com o Dr. Otto Beckedorff.\n\n` +
         `• Nome: ${trimmedName}\n` +
+        `• Região de interesse: ${painLabel}\n` +
         `• Atendimento: ${atdDesc}\n`;
 
       if (modality === 'convenio') {
@@ -197,6 +233,8 @@ export default function WhatsAppPreQualifyCard({
     }
   };
 
+  const encouragement = ENCOURAGEMENT_TEXTS[painArea] || ENCOURAGEMENT_TEXTS.coluna;
+
   return (
     <div
       id="pre-qualificacao"
@@ -206,7 +244,7 @@ export default function WhatsAppPreQualifyCard({
       {/* Header Accent Bar */}
       <div style={{ height: '5px', backgroundColor: '#25D366' }}></div>
 
-      <div className="card-body p-4 p-md-4">
+      <div className="card-body p-3 p-md-4">
         {/* Card Title & Subtitle */}
         <div className="mb-3 text-start">
           <div className="d-inline-flex align-items-center gap-2 mb-2">
@@ -263,27 +301,44 @@ export default function WhatsAppPreQualifyCard({
             </button>
           </div>
         ) : (
-          /* Short Pre-qualification Form */
+          /* Interactive Pre-qualification Form */
           <form onSubmit={handleSubmit} noValidate className="text-start">
             
-            {/* 1. Nome Completo (Obrigatório) */}
+            {/* ETAPA 1: Onde você sente dor? */}
             <div className="mb-3">
-              <label htmlFor="prequal-name" className="form-label small fw-bold text-muted text-uppercase mb-1" style={{ fontSize: '0.75rem', letterSpacing: '0.5px' }}>
-                1. Nome Completo <span className="text-danger">*</span>
+              <label className="form-label small fw-bold text-muted text-uppercase mb-1" style={{ fontSize: '0.75rem', letterSpacing: '0.5px' }}>
+                1. Onde você sente dor ou desconforto? <span className="text-danger">*</span>
               </label>
-              <input
-                id="prequal-name"
-                type="text"
-                required
-                placeholder="Ex: Carlos Eduardo de Souza"
-                className="form-control rounded-3 py-2 small"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-                autoComplete="name"
-              />
+              <div className="d-flex flex-wrap gap-1 mb-2">
+                {PAIN_AREAS.map((area) => (
+                  <button
+                    key={area.id}
+                    type="button"
+                    onClick={() => setPainArea(area.id)}
+                    className={`btn btn-sm rounded-pill fw-semibold py-1 px-3 transition-all ${
+                      painArea === area.id
+                        ? 'btn-primary text-white shadow-sm'
+                        : 'btn-outline-secondary'
+                    }`}
+                    style={{ fontSize: '0.82rem' }}
+                  >
+                    {area.label}
+                  </button>
+                ))}
+              </div>
+
+              {/* Frase de Acolhimento e Esperança do Dr. Otto (CFM Compliant) */}
+              <div className="p-3 rounded-3" style={{ backgroundColor: '#f0f9ff', border: '1px solid #bae6fd' }}>
+                <div className="d-flex align-items-start gap-2">
+                  <i className="bi bi-heart-pulse-fill text-primary mt-1" style={{ fontSize: '0.95rem' }}></i>
+                  <p className="small text-dark mb-0" style={{ fontSize: '0.79rem', lineHeight: '1.45' }}>
+                    {encouragement}
+                  </p>
+                </div>
+              </div>
             </div>
 
-            {/* 2. Modalidade: Particular ou Convênio */}
+            {/* ETAPA 2: Como deseja ser atendido? */}
             <div className="mb-3">
               <label className="form-label small fw-bold text-muted text-uppercase mb-1" style={{ fontSize: '0.75rem', letterSpacing: '0.5px' }}>
                 2. Como deseja ser atendido? <span className="text-danger">*</span>
@@ -316,19 +371,72 @@ export default function WhatsAppPreQualifyCard({
               </div>
             </div>
 
-            {/* 3. Nome do Convênio (quando modalidade = convenio) */}
+            {/* ETAPA 3: Seleção de Convênio em Pills + Select sincronizado */}
             {modality === 'convenio' && (
               <div className="mb-3 p-3 rounded-3" style={{ backgroundColor: '#f8fafc', border: '1px solid #e2e8f0' }}>
-                <label htmlFor="prequal-insurance" className="form-label small fw-bold text-muted text-uppercase mb-1" style={{ fontSize: '0.75rem' }}>
-                  Qual é o seu plano ou convênio? <span className="text-danger">*</span>
+                <label className="form-label small fw-bold text-muted text-uppercase mb-2" style={{ fontSize: '0.75rem', letterSpacing: '0.5px' }}>
+                  3. Qual é o seu plano ou convênio? <span className="text-danger">*</span>
                 </label>
+
+                {/* Pills principais: Amil, Bradesco, Omint, Petrobras, SulAmérica */}
+                <div className="d-flex flex-wrap gap-2 mb-2">
+                  {PRIMARY_INSURANCES.map((ins) => (
+                    <button
+                      key={ins.value}
+                      type="button"
+                      onClick={() => handleInsuranceSelect(ins.value)}
+                      className={`btn btn-sm rounded-3 fw-bold py-2 px-3 flex-fill text-center transition-all ${
+                        insuranceName === ins.value
+                          ? 'btn-primary text-white shadow-sm'
+                          : 'btn-outline-secondary bg-white'
+                      }`}
+                      style={{ fontSize: '0.82rem' }}
+                    >
+                      {ins.label}
+                    </button>
+                  ))}
+
+                  {/* Botão Ver Mais Convênios */}
+                  <button
+                    type="button"
+                    onClick={() => setShowMoreInsurances(!showMoreInsurances)}
+                    className="btn btn-sm btn-light border text-muted fw-semibold py-2 px-3 rounded-3 flex-fill"
+                    style={{ fontSize: '0.8rem' }}
+                  >
+                    <i className={`bi ${showMoreInsurances ? 'bi-chevron-up' : 'bi-chevron-down'} me-1`}></i>
+                    {showMoreInsurances ? 'Menos opções' : 'Outros convênios (Ver mais)...'}
+                  </button>
+                </div>
+
+                {/* Opções expandidas de convênios */}
+                {showMoreInsurances && (
+                  <div className="d-flex flex-wrap gap-2 pt-2 border-top mt-2">
+                    {MORE_INSURANCES.map((ins) => (
+                      <button
+                        key={ins.value}
+                        type="button"
+                        onClick={() => handleInsuranceSelect(ins.value)}
+                        className={`btn btn-sm rounded-3 fw-medium py-1 px-2 flex-fill text-center ${
+                          insuranceName === ins.value
+                            ? 'btn-primary text-white shadow-sm'
+                            : 'btn-outline-secondary bg-white'
+                        }`}
+                        style={{ fontSize: '0.79rem' }}
+                      >
+                        {ins.label}
+                      </button>
+                    ))}
+                  </div>
+                )}
+
+                {/* Select nativo mantido sincronizado para acessibilidade e testes */}
                 <select
                   id="prequal-insurance"
                   required
-                  className="form-select rounded-3 py-2 small"
+                  className="form-select rounded-3 py-1 small mt-2"
                   value={insuranceName}
-                  onChange={(e) => setInsuranceName(e.target.value)}
-                  style={{ fontSize: '0.85rem' }}
+                  onChange={(e) => handleInsuranceSelect(e.target.value)}
+                  style={{ fontSize: '0.8rem' }}
                 >
                   {INSURANCE_OPTIONS.map((opt) => (
                     <option key={opt.value} value={opt.value} disabled={opt.value === ''}>
@@ -337,21 +445,19 @@ export default function WhatsAppPreQualifyCard({
                   ))}
                 </select>
 
-
-
-                {/* Regra Unimed: discreta, acolhedora, com confirmação explícita obrigatória */}
+                {/* Regra Unimed: confirmação explícita obrigatória */}
                 {isUnimed && (
-                  <div className="p-3 mt-2 rounded-3 text-start" style={{ backgroundColor: '#f8fafc', border: '1px solid #cbd5e1' }}>
+                  <div className="p-3 mt-2 rounded-3 text-start" style={{ backgroundColor: '#fef2f2', border: '1px solid #fecaca' }}>
                     <div className="d-flex align-items-start gap-2 mb-2">
-                      <i className="bi bi-info-circle text-secondary mt-1" style={{ fontSize: '1rem' }}></i>
+                      <i className="bi bi-info-circle text-danger mt-1" style={{ fontSize: '1rem' }}></i>
                       <div>
                         <p className="fw-bold text-dark small mb-1" style={{ fontSize: '0.82rem' }}>Informação sobre Unimed</p>
                         <p className="text-secondary small mb-0" style={{ fontSize: '0.79rem', lineHeight: '1.45' }}>
-                          O Dr. Otto Beckedorff não atende pela rede credenciada da Unimed. Seu agendamento será direcionado como <strong>consulta particular</strong>, com emissão de nota fiscal para você solicitar eventual reembolso ao plano.
+                          O Dr. Otto Beckedorff não atende pela rede credenciada da Unimed. Seu agendamento será direcionado como <strong>consulta particular</strong>.
                         </p>
                       </div>
                     </div>
-                    <div className="form-check mt-3 pt-2 border-top">
+                    <div className="form-check mt-2 pt-2 border-top">
                       <input
                         type="checkbox"
                         id="prequal-unimed-confirm"
@@ -370,7 +476,7 @@ export default function WhatsAppPreQualifyCard({
                   </div>
                 )}
 
-                {/* Regra Outro convênio: transparente, sem prometer cobertura */}
+                {/* Regra Outro convênio */}
                 {isOther && (
                   <div className="p-3 mt-2 rounded-3 text-start" style={{ backgroundColor: '#f8fafc', border: '1px solid #cbd5e1' }}>
                     <div className="d-flex align-items-start gap-2">
@@ -387,11 +493,11 @@ export default function WhatsAppPreQualifyCard({
               </div>
             )}
 
-            {/* 4. Pergunta sobre o nível do plano no Hospital Vera Cruz (para Amil ou outros convênios) */}
+            {/* ETAPA 4: Pergunta sobre o Hospital Vera Cruz (quando convênio) */}
             {modality === 'convenio' && (
               <div className="mb-3">
                 <label className="form-label small fw-bold text-muted text-uppercase mb-1" style={{ fontSize: '0.75rem', letterSpacing: '0.5px' }}>
-                  3. Você sabe se o nível do seu plano atende no Hospital Vera Cruz? <span className="text-danger">*</span>
+                  4. Você sabe se o nível do seu plano atende no Hospital Vera Cruz? <span className="text-danger">*</span>
                 </label>
                 <div className="d-flex gap-2">
                   <button
@@ -412,7 +518,7 @@ export default function WhatsAppPreQualifyCard({
                     }`}
                     style={{ fontSize: '0.82rem' }}
                   >
-                    Não
+                    <i className="bi bi-x-lg me-1"></i> Não
                   </button>
                   <button
                     type="button"
@@ -422,32 +528,48 @@ export default function WhatsAppPreQualifyCard({
                     }`}
                     style={{ fontSize: '0.82rem' }}
                   >
-                    Não sei
+                    <i className="bi bi-question-lg me-1"></i> Não sei
                   </button>
                 </div>
-                <small className="text-muted d-block mt-1" style={{ fontSize: '0.73rem', lineHeight: '1.4' }}>
-                  O Dr. Otto realiza procedimentos e cirurgias no Hospital Vera Cruz. Caso não tenha certeza se a categoria do seu plano cobre no hospital, nossa equipe verifica para você.
-                </small>
               </div>
             )}
 
+            {/* ETAPA 5: Nome Completo (Obrigatório) */}
+            <div className="mb-3">
+              <label htmlFor="prequal-name" className="form-label small fw-bold text-muted text-uppercase mb-1" style={{ fontSize: '0.75rem', letterSpacing: '0.5px' }}>
+                {modality === 'convenio' ? '5.' : '3.'} Seu Nome Completo <span className="text-danger">*</span>
+              </label>
+              <input
+                id="prequal-name"
+                type="text"
+                required
+                placeholder="Ex: Carlos Eduardo de Souza"
+                className="form-control rounded-3 py-2 small"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                autoComplete="name"
+              />
+            </div>
+
+            {/* Feedback de erro */}
             {errorMessage && (
-              <div className="alert alert-danger py-2 px-3 small rounded-3 mb-3" style={{ fontSize: '0.8rem' }}>
-                <i className="bi bi-exclamation-circle-fill me-1"></i> {errorMessage}
+              <div className="alert alert-danger py-2 px-3 small rounded-3 mb-3 d-flex align-items-center gap-2" role="alert">
+                <i className="bi bi-exclamation-triangle-fill flex-shrink-0"></i>
+                <div style={{ fontSize: '0.82rem' }}>{errorMessage}</div>
               </div>
             )}
 
-            {/* 5. Botão "Enviar e falar no WhatsApp" */}
+            {/* Botão de Envio para WhatsApp */}
             <button
               id="prequal-submit"
               type="submit"
               disabled={isSubmitting || (isUnimed && !unimedConfirmed)}
-              className="btn btn-success w-100 rounded-pill py-3 fw-bold shadow-sm d-flex align-items-center justify-content-center transition-all"
+              className="btn btn-success btn-lg w-100 rounded-pill py-3 fw-bold shadow-sm d-flex align-items-center justify-content-center text-center transition-all"
               style={{
-                backgroundColor: '#25D366',
+                backgroundColor: isUnimed && !unimedConfirmed ? '#9ca3af' : '#25D366',
                 border: 'none',
                 fontSize: '1.02rem',
-                opacity: (isUnimed && !unimedConfirmed) ? 0.6 : 1
+                cursor: isUnimed && !unimedConfirmed ? 'not-allowed' : 'pointer'
               }}
             >
               {isSubmitting ? (
@@ -462,17 +584,13 @@ export default function WhatsAppPreQualifyCard({
               )}
             </button>
 
-            <div className="text-center mt-2">
-              <span className="text-muted" style={{ fontSize: '0.72rem' }}>
-                <i className="bi bi-shield-check text-success me-1"></i>
-                Seus dados não são compartilhados com terceiros.
-              </span>
-            </div>
-
+            <p className="text-muted text-center mt-2 mb-0" style={{ fontSize: '0.72rem' }}>
+              <i className="bi bi-shield-lock-fill me-1 text-secondary"></i>
+              Seus dados são protegidos e direcionados exclusivamente para a equipe médica.
+            </p>
           </form>
         )}
       </div>
     </div>
   );
 }
-
