@@ -77,9 +77,6 @@ export default function WhatsAppPreQualifyCard({
       insuranceName.trim().toLowerCase().includes('não listado')
     );
 
-  const isReimbursementKnown =
-    modality === 'convenio' && !isUnimed && !isAmil && !isOther && insuranceName !== '';
-
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
@@ -340,28 +337,7 @@ export default function WhatsAppPreQualifyCard({
                   ))}
                 </select>
 
-                {/* Feedback contextual elegante e sem vermelho */}
-                {isAmil && (
-                  <div className="p-2 mt-2 rounded-3 text-start" style={{ backgroundColor: '#f0fdf4', border: '1px solid #bbf7d0' }}>
-                    <div className="d-flex align-items-center gap-2">
-                      <i className="bi bi-check-circle-fill text-success" style={{ fontSize: '0.95rem' }}></i>
-                      <div className="small text-success fw-medium" style={{ fontSize: '0.79rem', lineHeight: '1.4' }}>
-                        <strong>Amil em Campinas:</strong> Consultas presenciais no Instituto Orthesen (Centro). Procedimentos hospitalares sob verificação de categoria do plano.
-                      </div>
-                    </div>
-                  </div>
-                )}
 
-                {isReimbursementKnown && (
-                  <div className="p-2 mt-2 rounded-3 text-start" style={{ backgroundColor: '#f0f9ff', border: '1px solid #bae6fd' }}>
-                    <div className="d-flex align-items-center gap-2">
-                      <i className="bi bi-file-earmark-medical text-primary" style={{ fontSize: '0.95rem' }}></i>
-                      <div className="small text-primary fw-medium" style={{ fontSize: '0.79rem', lineHeight: '1.4' }}>
-                        Atendimento médico com suporte completo de nota fiscal e laudo detalhado para solicitação de reembolso.
-                      </div>
-                    </div>
-                  </div>
-                )}
 
                 {/* Regra Unimed: discreta, acolhedora, com confirmação explícita obrigatória */}
                 {isUnimed && (

@@ -36,13 +36,7 @@ export default function LPVeraCruzCampinas() {
         </div>
       </header>
 
-      {/* 2. NOTICE BAR: UNIMED & COVERAGE RULES */}
-      <div className="py-2 px-3 text-center small border-bottom" style={{ backgroundColor: '#fef3c7', color: '#92400e', fontWeight: 500, fontSize: '0.82rem' }}>
-        <i className="bi bi-info-circle-fill me-1 text-warning"></i>
-        <span>
-          <strong>Informação importante sobre convênios:</strong> O Dr. Otto Beckedorff <u>não atende Unimed</u>. Atendemos consultas Amil no Instituto Orthesen e fornecemos nota fiscal com relatório médico para solicitação de reembolso nos demais convênios.
-        </span>
-      </div>
+
 
       <main>
         {/* 3. HERO SECTION (WITH TWO PRIMARY CTAS & OPTIONAL SHORT TRIAGE) */}
@@ -78,7 +72,7 @@ export default function LPVeraCruzCampinas() {
                     <i className="bi bi-hospital text-primary me-1"></i> Procedimentos no Vera Cruz
                   </span>
                   <span className="badge bg-white text-dark border px-3 py-2 rounded-pill small fw-semibold shadow-sm">
-                    <i className="bi bi-shield-check text-success me-1"></i> Consultas Amil e Reembolso
+                    <i className="bi bi-shield-check text-success me-1"></i> Atendimento Especializado
                   </span>
                 </div>
 
@@ -103,22 +97,7 @@ export default function LPVeraCruzCampinas() {
                   </div>
                 </div>
 
-                {/* Transparency Note */}
-                <div className="p-3 rounded-3 border bg-white small text-muted">
-                  <div className="fw-bold text-dark mb-1 d-flex align-items-center">
-                    <i className="bi bi-shield-check text-success me-2"></i>
-                    Transparência sobre Convênios e Reembolso:
-                  </div>
-                  <p className="mb-1" style={{ fontSize: '0.82rem' }}>
-                    • <strong>Amil:</strong> Aceita para consultas no Instituto Orthesen (Centro de Campinas). Procedimentos hospitalares no Vera Cruz sob verificação prévia de elegibilidade da operadora.
-                  </p>
-                  <p className="mb-1" style={{ fontSize: '0.82rem' }}>
-                    • <strong>Bradesco, SulAmérica, Omint, Porto Seguro, Caixa:</strong> Atendimento com suporte completo para solicitação de Reembolso Médico.
-                  </p>
-                  <p className="mb-0 text-danger fw-medium" style={{ fontSize: '0.82rem' }}>
-                    • <strong>Unimed:</strong> Não atendemos este convênio. Oferecemos atendimento particular como alternativa.
-                  </p>
-                </div>
+
               </div>
 
               {/* Right Column: Short Pre-Qualification WhatsApp Flow */}
@@ -237,56 +216,7 @@ export default function LPVeraCruzCampinas() {
           </div>
         </section>
 
-        {/* 6. FAQ */}
-        <section className="py-5 bg-white border-top">
-          <div className="container" style={{ maxWidth: '850px' }}>
-            <div className="text-center mb-4">
-              <h2 className="h4 fw-bold text-dark">Perguntas Frequentes sobre Convênios e Atendimento</h2>
-              <p className="text-muted small">Informações transparentes sobre a consulta</p>
-            </div>
 
-            <div className="accordion accordion-flush" id="faqConvenios">
-              <div className="accordion-item border-bottom mb-2">
-                <h3 className="accordion-header" id="headingOne">
-                  <button className="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseOne" aria-expanded="false" aria-controls="collapseOne">
-                    Como funciona o atendimento pelo convênio Amil?
-                  </button>
-                </h3>
-                <div id="collapseOne" className="accordion-collapse collapse" aria-labelledby="headingOne" data-bs-parent="#faqConvenios">
-                  <div className="accordion-body small text-secondary" style={{ lineHeight: '1.7' }}>
-                    O atendimento ambulatorial para pacientes Amil é realizado no Instituto Orthesen em Campinas. Para procedimentos intervencionistas ou cirúrgicos no Hospital Vera Cruz, a elegibilidade depende da categoria do plano e da autorização prévia da operadora.
-                  </div>
-                </div>
-              </div>
-
-              <div className="accordion-item border-bottom mb-2">
-                <h3 className="accordion-header" id="headingTwo">
-                  <button className="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                    O Dr. Otto Beckedorff atende Unimed?
-                  </button>
-                </h3>
-                <div id="collapseTwo" className="accordion-collapse collapse" aria-labelledby="headingTwo" data-bs-parent="#faqConvenios">
-                  <div className="accordion-body small text-secondary" style={{ lineHeight: '1.7' }}>
-                    Não. O Dr. Otto não faz parte da rede credenciada da Unimed. Pacientes que possuem Unimed e desejam ser avaliados podem agendar na modalidade particular, recebendo nota fiscal com dados completos para eventual pedido de reembolso junto à operadora.
-                  </div>
-                </div>
-              </div>
-
-              <div className="accordion-item border-bottom mb-2">
-                <h3 className="accordion-header" id="headingThree">
-                  <button className="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                    Como funciona o reembolso para Bradesco, SulAmérica, Omint e outros planos?
-                  </button>
-                </h3>
-                <div id="collapseThree" className="accordion-collapse collapse" aria-labelledby="headingThree" data-bs-parent="#faqConvenios">
-                  <div className="accordion-body small text-secondary" style={{ lineHeight: '1.7' }}>
-                    A consulta é realizada de forma particular e nossa equipe fornece nota fiscal detalhada com o relatório médico necessário para que você dê entrada no aplicativo do seu convênio e solicite o reembolso previsto no seu contrato.
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
       </main>
 
       {/* 7. MINIMALIST ADS FOOTER */}

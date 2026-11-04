@@ -89,13 +89,7 @@ export default function PageOrtopedistaCampinas() {
         </div>
       </header>
 
-      {/* 2. NOTICE BAR: UNIMED & CONVÊNIOS */}
-      <div className="py-2 px-3 text-center small border-bottom" style={{ backgroundColor: '#fef3c7', color: '#92400e', fontWeight: 500, fontSize: '0.82rem' }}>
-        <i className="bi bi-info-circle-fill me-1 text-warning"></i>
-        <span>
-          <strong>Informação importante sobre convênios:</strong> O Dr. Otto Beckedorff <u>não atende Unimed</u>. Atendemos consultas Amil no Instituto Orthesen e emitimos nota fiscal com relatório médico para reembolso nos demais convênios.
-        </span>
-      </div>
+
 
       <main id="topo">
         {/* 3. HERO & VALUE PROPOSITION */}
@@ -162,22 +156,7 @@ export default function PageOrtopedistaCampinas() {
                   </div>
                 </div>
 
-                {/* Transparency Note */}
-                <div className="p-3 rounded-3 border bg-white small text-muted">
-                  <div className="fw-bold text-dark mb-1 d-flex align-items-center">
-                    <i className="bi bi-shield-check text-success me-2"></i>
-                    Transparência sobre Convênios e Reembolso:
-                  </div>
-                  <p className="mb-1" style={{ fontSize: '0.82rem' }}>
-                    • <strong>Amil:</strong> Aceita para consultas no Instituto Orthesen (Centro de Campinas). Procedimentos hospitalares no Vera Cruz sob verificação prévia de elegibilidade da operadora.
-                  </p>
-                  <p className="mb-1" style={{ fontSize: '0.82rem' }}>
-                    • <strong>Bradesco, SulAmérica, Omint, Porto Seguro, Caixa:</strong> Atendimento com suporte completo para solicitação de Reembolso Médico.
-                  </p>
-                  <p className="mb-0 text-danger fw-medium" style={{ fontSize: '0.82rem' }}>
-                    • <strong>Unimed:</strong> Não atendemos este convênio. Oferecemos atendimento particular como alternativa.
-                  </p>
-                </div>
+
               </div>
 
               {/* Right Column: Short Pre-Qualification WhatsApp Flow */}
@@ -426,18 +405,7 @@ export default function PageOrtopedistaCampinas() {
                 </div>
               </div>
 
-              <div className="accordion-item border-bottom mb-2">
-                <h3 className="accordion-header" id="headingC3">
-                  <button className="accordion-button collapsed fw-bold text-dark" type="button" data-bs-toggle="collapse" data-bs-target="#collapseC3" aria-expanded="false" aria-controls="collapseC3">
-                    O Dr. Otto aceita o meu convênio?
-                  </button>
-                </h3>
-                <div id="collapseC3" className="accordion-collapse collapse" aria-labelledby="headingC3" data-bs-parent="#faqCampinas">
-                  <div className="accordion-body small text-secondary" style={{ lineHeight: '1.7' }}>
-                    Atendemos pela operadora Amil em consultas no Instituto Orthesen. Para operadoras como Bradesco Saúde, SulAmérica, Omint, Porto Seguro e Caixa, a consulta é realizada na modalidade particular com fornecimento de nota fiscal e relatório para pedido de reembolso médico. Não atendemos Unimed.
-                  </div>
-                </div>
-              </div>
+
             </div>
           </div>
         </section>
