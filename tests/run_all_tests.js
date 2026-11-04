@@ -601,12 +601,12 @@ async function testHeadlessBrowserAndSingleEvent() {
     });
     assert('DataLayer has ZERO patient name, ZERO phone, and ZERO clinical symptoms', !leakedPatientPII);
 
-    // 4. Mobile Sticky Bar Navigation
+    // 4. Mobile Viewport Cleanliness (Floating button intentionally removed per user directive)
     const stickyExists = await testPage.evaluate(() => {
       const sticky = document.querySelector('a[data-cta-location="mobile_sticky_bar"]');
       return Boolean(sticky);
     });
-    assert('Mobile sticky bar exists with link navigating to pre-qualification flow', stickyExists);
+    assert('Mobile floating button removed to ensure clean viewport with quiz directly at top', !stickyExists);
 
     // 5. Admin Panel Session Search & Conversion Verification (Item 4 & 5)
     if (generatedRefCode) {

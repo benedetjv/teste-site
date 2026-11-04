@@ -2,7 +2,6 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import WhatsAppPreQualifyCard from '@/components/WhatsAppPreQualifyCard';
-import MobileStickyBar from '@/components/MobileStickyBar';
 
 export const metadata = {
   title: 'Dr. Otto Beckedorff • Médico Ortopedista com Foco em Coluna e Dor em Campinas',
@@ -61,31 +60,23 @@ const campinasFaqSchema = {
 
 export default function PageOrtopedistaCampinas() {
   return (
-    <div className="d-flex flex-column min-vh-100 bg-light pb-5 pb-md-0">
+    <div className="d-flex flex-column min-vh-100 bg-light">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(campinasFaqSchema) }}
       />
 
-      {/* 1. COMPACT MOBILE-FIRST ADS NAVBAR */}
+      {/* 1. ULTRA COMPACT BRANDING HEADER */}
       <header className="navbar px-3 py-2 bg-white shadow-sm sticky-top border-bottom" style={{ zIndex: 1020 }}>
         <div className="container d-flex flex-row justify-content-between align-items-center">
           <div className="d-flex flex-column text-start">
             <span className="fw-bold text-dark lh-1" style={{ fontSize: '1.05rem' }}>Dr. Otto Beckedorff</span>
             <span className="text-muted" style={{ fontSize: '0.72rem' }}>Ortopedia • CRM-SP 226325 | RQE 139078</span>
           </div>
-          <div className="d-flex align-items-center gap-3">
-            <span className="small text-muted d-none d-lg-inline" style={{ fontSize: '0.8rem' }}>
+          <div className="d-flex align-items-center">
+            <span className="small text-muted d-none d-sm-inline" style={{ fontSize: '0.8rem' }}>
               <i className="bi bi-geo-alt-fill text-danger me-1"></i> Vera Cruz & Instituto Orthesen (Campinas)
             </span>
-            <a
-              href="#pre-qualificacao"
-              data-cta-location="header_whatsapp"
-              className="btn btn-success rounded-pill px-3 py-1 fw-bold shadow-sm d-inline-flex align-items-center"
-              style={{ backgroundColor: "#25D366", border: "none", fontSize: '0.85rem' }}
-            >
-              <i className="bi bi-whatsapp me-1"></i> Agende Agora
-            </a>
           </div>
         </div>
       </header>
@@ -465,8 +456,7 @@ export default function PageOrtopedistaCampinas() {
         </div>
       </footer>
 
-      {/* 11. MOBILE STICKY CTA BAR (Discreet WhatsApp direct action) */}
-      <MobileStickyBar campaignType="campinas_ortopedista_coluna" />
+
     </div>
   );
 }
