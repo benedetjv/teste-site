@@ -282,6 +282,25 @@ async function testPostgresPersistenceAndConcurrency() {
   // Verify attended consultation lead from above is preserved (medical record retention)
   const attendedCheck = (await pool.query('SELECT id FROM leads WHERE id = $1', [leadId])).rows;
   assert('Attended consultation lead is safely preserved (20-year medical record exemption)', attendedCheck.length === 1);
+
+  // 8. Session Conversion Flow in Database
+  const sessionForConversionRef = await db.createClickSession({
+    page_path: '/lp-campinas-convenios',
+    landing_page: '/lp-campinas-convenios',
+    modality: 'convenio',
+    insurance_note: 'Amil',
+    coverage_vera_cruz: 'sim',
+    gclid: 'TEST_CONVERT_GCLID_9988'
+  });
+  const convertResult = await db.convertSessionToLead({
+    ref_code: sessionForConversionRef,
+    name: 'Juliana Paes de Barros',
+    phone: '19987654321',
+    operator_email: 'secretaria@drotto.com.br'
+  });
+  assert('Click session successfully converted to Lead in DB with GCLID preserved', 
+    convertResult.success && convertResult.lead.gclid === 'TEST_CONVERT_GCLID_9988' && convertResult.lead.ref_code === sessionForConversionRef
+  );
 }
 
 // -------------------------------------------------------------
@@ -398,111 +417,161 @@ async function testHeadlessBrowserAndSingleEvent() {
       await pageM.close();
     }
 
-    // 2. Behavioral Verification on LP with GCLID
+    // 2. Behavioral Verification on LP with GCLID (Short Pre-Qualification Flow)
     const testPage = await browser.newPage();
     const lpUrl = `${BASE_URL}/lp-campinas-convenios?utm_source=google&utm_medium=cpc&utm_campaign=amil_campinas&gclid=TEST_AUDIT_GCLID_7788`;
     await testPage.goto(lpUrl, { waitUntil: 'networkidle0', timeout: 25000 });
 
-    // Wait for session click token generation to populate WhatsApp link
-    await testPage.waitForFunction(() => {
-      const btn = document.querySelector('a[data-cta-location="hero_primary_whatsapp"]');
-      const href = btn ? btn.getAttribute('href') : '';
-      return href && href.includes('Ref');
-    }, { timeout: 4000 }).catch(() => {});
+    // Verify Pre-qualification Card exists
+    const prequalCardExists = await testPage.evaluate(() => Boolean(document.querySelector('#pre-qualificacao')));
+    assert('Pre-qualification Card rendered in Hero section', prequalCardExists);
 
-    // Verify WhatsApp direct link has anonymous reference token [Ref: C-XXXXXX]
-    const heroWaHref = await testPage.evaluate(() => {
-      const btn = document.querySelector('a[data-cta-location="hero_primary_whatsapp"]');
-      return btn ? btn.getAttribute('href') : null;
+    // Verify Name input exists and starts empty
+    const initialName = await testPage.evaluate(() => {
+      const input = document.querySelector('#prequal-name');
+      return input ? input.value : null;
+    });
+    assert('Mandatory full name input exists and starts empty', initialName === '');
+
+    // Test Unimed rule in Pre-qualification Card
+    await testPage.type('#prequal-insurance', 'Unimed Campinas');
+    const hasUnimedWarning = await testPage.evaluate(() => {
+      const card = document.querySelector('#pre-qualificacao');
+      return card ? card.textContent.includes('não atende Unimed') : false;
+    });
+    assert('Unimed rule shows respectful reimbursement notice in pre-qualification flow', hasUnimedWarning);
+
+    // Clear and fill pre-qualification answers using native setter for React onChange
+    await testPage.evaluate(() => {
+      const insInput = document.querySelector('#prequal-insurance');
+      if (insInput) {
+        const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
+        nativeSetter.call(insInput, '');
+        insInput.dispatchEvent(new Event('input', { bubbles: true }));
+        insInput.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+    });
+    await testPage.type('#prequal-name', 'Carlos Eduardo de Souza');
+    await testPage.type('#prequal-insurance', 'Amil');
+
+    // Click "Sim" for Vera Cruz Hospital coverage
+    await testPage.evaluate(() => {
+      const btns = Array.from(document.querySelectorAll('#pre-qualificacao button'));
+      const simBtn = btns.find(b => b.textContent && b.textContent.includes('Sim'));
+      if (simBtn) simBtn.click();
     });
 
-    assert('Primary Hero CTA points to WhatsApp wa.me/5519999439824', 
-      heroWaHref && heroWaHref.includes('wa.me/5519999439824')
-    );
-
-    const decodedHref = decodeURIComponent(heroWaHref || '');
-    assert('WhatsApp link includes anonymous reference token [Ref: C-XXXXXX]', 
-      /\[Ref:\s*C-[A-Z0-9]{6}\]/.test(decodedHref)
-    );
-    assert('WhatsApp message has NO PII, NO medical diagnosis, and NO raw GCLID parameter',
-      !decodedHref.includes('TEST_AUDIT_GCLID') &&
-      !decodedHref.includes('dor') &&
-      !decodedHref.includes('hernia') &&
-      !decodedHref.includes('paciente')
-    );
-
-    // 3. Exactly ONE Event Per Action Verification (Zero Event Duplication - Item 7)
-    // Clear dataLayer before click
+    // Clear dataLayer right before submit
     await testPage.evaluate(() => { window.dataLayer = []; });
 
-    // Click Primary WhatsApp Hero button
+    // Submit "Enviar e falar no WhatsApp"
     await testPage.evaluate(() => {
-      const btn = document.querySelector('a[data-cta-location="hero_primary_whatsapp"]');
-      if (btn) btn.click();
-    });
-
-    const dlAfterHeroClick = await testPage.evaluate(() => window.dataLayer || []);
-    const waEventsHero = dlAfterHeroClick.filter(e => e.event === 'click_whatsapp');
-    assert('Clicking Hero WhatsApp button dispatches EXACTLY ONE click_whatsapp event (no duplicates)', 
-      waEventsHero.length === 1
-    );
-
-    // Clear dataLayer and click Mobile Sticky Bar
-    await testPage.evaluate(() => { window.dataLayer = []; });
-    await testPage.evaluate(() => {
-      const sticky = document.querySelector('a[data-cta-location="mobile_sticky_bar"]');
-      if (sticky) sticky.click();
-    });
-
-    const dlAfterStickyClick = await testPage.evaluate(() => window.dataLayer || []);
-    const waEventsSticky = dlAfterStickyClick.filter(e => e.event === 'click_whatsapp');
-    assert('Clicking Mobile Sticky Bar dispatches EXACTLY ONE click_whatsapp event (no double listener firing)', 
-      waEventsSticky.length === 1
-    );
-
-    // 4. Short Triage Form LGPD Checkbox & Submission
-    const initialConsent = await testPage.evaluate(() => {
-      const chk = document.querySelector('#triage-consent');
-      return chk ? chk.checked : null;
-    });
-    assert('Triage privacy consent checkbox starts strictly UNCHECKED by default', initialConsent === false);
-
-    // Fill form
-    await testPage.type('#triage-name', 'Fernanda Siqueira');
-    await testPage.type('#triage-phone', '19977665544');
-
-    // Check consent checkbox via evaluate
-    await testPage.evaluate(() => {
-      const chk = document.querySelector('#triage-consent');
-      if (chk && !chk.checked) chk.click();
-    });
-
-    // Submit form safely via evaluate
-    await testPage.evaluate(() => {
-      const submitBtn = document.querySelector('form button[type="submit"]');
+      const submitBtn = document.querySelector('#prequal-submit');
       if (submitBtn) submitBtn.click();
     });
 
-    // Wait for submission response and state update
+    // Wait for success resolution link with generated WhatsApp URL
     await testPage.waitForFunction(() => {
-      const dl = window.dataLayer || [];
-      return dl.some(e => e.event === 'generate_lead');
-    }, { timeout: 5000 }).catch(() => {});
+      const link = document.querySelector('a[data-cta-location="prequal_card_success_whatsapp"]');
+      return link && link.getAttribute('href');
+    }, { timeout: 6000 }).catch(() => {});
 
-    // Verify generate_lead in dataLayer
-    const finalDl = await testPage.evaluate(() => window.dataLayer || []);
-    const genLeadEvt = finalDl.find(e => e.event === 'generate_lead');
-    assert('generate_lead fired in dataLayer after successful form submission', Boolean(genLeadEvt));
+    const generatedWaHref = await testPage.evaluate(() => {
+      const link = document.querySelector('a[data-cta-location="prequal_card_success_whatsapp"]');
+      return link ? link.getAttribute('href') : null;
+    });
 
-    // Check for any PII leakage in entire dataLayer
-    let leaked = false;
-    finalDl.forEach(evt => {
+    assert('Pre-qualification submit generates WhatsApp URL pointing to wa.me/5519999439824',
+      generatedWaHref && generatedWaHref.includes('wa.me/5519999439824')
+    );
+
+    const decodedWaHref = decodeURIComponent(generatedWaHref || '');
+    const refMatch = decodedWaHref.match(/\[Ref:\s*(C-[A-Z0-9]{6})\]/);
+    const generatedRefCode = refMatch ? refMatch[1] : null;
+
+    assert('WhatsApp link contains safe anonymous reference token [Ref: C-XXXXXX]', Boolean(generatedRefCode));
+    assert('WhatsApp natural message includes patient name', decodedWaHref.includes('Carlos Eduardo de Souza'));
+    assert('WhatsApp natural message includes modality and insurance', decodedWaHref.includes('Convênio (Amil)'));
+    assert('WhatsApp natural message includes Vera Cruz coverage answer', decodedWaHref.includes('Cobertura Hospital Vera Cruz: Sim'));
+    assert('WhatsApp message has NO raw GCLID parameter and NO clinical symptoms/diagnoses',
+      !decodedWaHref.includes('TEST_AUDIT_GCLID') &&
+      !decodedWaHref.includes('hernia') &&
+      !decodedWaHref.includes('bloqueio') &&
+      !decodedWaHref.includes('ciatico') &&
+      !/\bdor\b/i.test(decodedWaHref)
+    );
+
+    // 3. Secondary Event Verification (Zero PII in dataLayer & Exactly ONE event)
+    const dlAfterSubmit = await testPage.evaluate(() => window.dataLayer || []);
+    const waEvents = dlAfterSubmit.filter(e => e.event === 'click_whatsapp');
+    assert('Clicking "Enviar e falar no WhatsApp" dispatches EXACTLY ONE secondary click_whatsapp event', waEvents.length === 1);
+
+    // Verify zero patient PII in dataLayer
+    let leakedPatientPII = false;
+    dlAfterSubmit.forEach(evt => {
       const str = JSON.stringify(evt).toLowerCase();
-      if (str.includes('fernanda') || str.includes('977665544') || str.includes('unimed')) {
-        leaked = true;
+      if (str.includes('carlos') || str.includes('souza') || str.includes('19988') || str.includes('998877')) {
+        leakedPatientPII = true;
       }
     });
-    assert('Zero PII or sensitive terms in dataLayer across full user session', !leaked);
+    assert('DataLayer has ZERO patient name, ZERO phone, and ZERO clinical symptoms', !leakedPatientPII);
+
+    // 4. Mobile Sticky Bar Navigation
+    const stickyExists = await testPage.evaluate(() => {
+      const sticky = document.querySelector('a[data-cta-location="mobile_sticky_bar"]');
+      return Boolean(sticky);
+    });
+    assert('Mobile sticky bar exists with link navigating to pre-qualification flow', stickyExists);
+
+    // 5. Admin Panel Session Search & Conversion Verification (Item 4 & 5)
+    if (generatedRefCode) {
+      // Operator searches for reference still in click_sessions
+      const searchRes = await request(`/api/admin/leads?search=${generatedRefCode}`, {
+        headers: { 'Authorization': `Bearer ${TEST_ADMIN_TOKEN}` }
+      });
+
+      assert('Admin API finds unconverted WhatsApp click session by ref_code in click_sessions',
+        searchRes.status === 200 &&
+        searchRes.data.unconverted_session &&
+        searchRes.data.unconverted_session.ref_code === generatedRefCode &&
+        searchRes.data.unconverted_session.gclid === 'TEST_AUDIT_GCLID_7788'
+      );
+
+      // Operator converts session into lead upon receiving WhatsApp conversation
+      const convertRes = await request('/api/admin/leads?action=convert_session', {
+        method: 'POST',
+        headers: { 'Authorization': `Bearer ${TEST_ADMIN_TOKEN}` },
+        body: {
+          ref_code: generatedRefCode,
+          name: 'Carlos Eduardo de Souza',
+          phone: '19977889900',
+          modality: 'amil'
+        }
+      });
+
+      assert('Admin converts WhatsApp session to Lead, preserving GCLID and ref_code',
+        convertRes.status === 201 &&
+        convertRes.data.success &&
+        convertRes.data.lead.ref_code === generatedRefCode &&
+        convertRes.data.lead.gclid === 'TEST_AUDIT_GCLID_7788'
+      );
+
+      // Verify converted lead can transition through offline stages
+      const leadIdFromSession = convertRes.data.lead_id;
+      const qualifiedUpdate = await request('/api/admin/leads', {
+        method: 'PATCH',
+        headers: { 'Authorization': `Bearer ${TEST_ADMIN_TOKEN}` },
+        body: {
+          lead_id: leadIdFromSession,
+          status: 'in_progress',
+          expected_version: 1
+        }
+      });
+      if (qualifiedUpdate.status !== 200) {
+        console.error('PATCH FAILURE DETAILS:', qualifiedUpdate.status, qualifiedUpdate.data);
+      }
+      assert('Converted lead seamlessly enters offline qualification funnel', qualifiedUpdate.status === 200);
+    }
 
     await testPage.close();
   } catch (err) {

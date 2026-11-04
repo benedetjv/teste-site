@@ -25,8 +25,18 @@ CREATE TABLE IF NOT EXISTS click_sessions (
   gclid VARCHAR(150),
   gbraid VARCHAR(150),
   wbraid VARCHAR(150),
+  modality VARCHAR(32),
+  insurance_note VARCHAR(150),
+  coverage_vera_cruz VARCHAR(32),
+  is_unimed BOOLEAN DEFAULT FALSE,
   status VARCHAR(32) DEFAULT 'active'
 );
+
+-- Ensure columns exist if table was already created
+ALTER TABLE click_sessions ADD COLUMN IF NOT EXISTS modality VARCHAR(32);
+ALTER TABLE click_sessions ADD COLUMN IF NOT EXISTS insurance_note VARCHAR(150);
+ALTER TABLE click_sessions ADD COLUMN IF NOT EXISTS coverage_vera_cruz VARCHAR(32);
+ALTER TABLE click_sessions ADD COLUMN IF NOT EXISTS is_unimed BOOLEAN DEFAULT FALSE;
 
 CREATE TABLE IF NOT EXISTS leads (
   id VARCHAR(64) PRIMARY KEY,

@@ -1,9 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import LeadTriageForm from '@/components/LeadTriageForm';
+import WhatsAppPreQualifyCard from '@/components/WhatsAppPreQualifyCard';
 import MobileStickyBar from '@/components/MobileStickyBar';
-import WhatsAppDirectButton from '@/components/WhatsAppDirectButton';
 
 export const metadata = {
   title: 'Dr. Otto Beckedorff • Ortopedista Especialista em Coluna e Dor em Campinas',
@@ -70,23 +69,17 @@ export default function LPVeraCruzCampinas() {
                   Avaliação detalhada e procedimentos de precisão minimamente invasivos para dor na coluna lombar, cervical, nervo ciático e articulações. Abordagem individualizada e sem promessas milagrosas.
                 </p>
 
-                {/* TWO MAIN CTAS (HERO) */}
-                <div className="d-flex flex-column flex-sm-row gap-3 mb-4">
-                  {/* Primary CTA: WhatsApp Direct with Anonymous Ref */}
-                  <WhatsAppDirectButton
-                    location="hero_primary_whatsapp"
-                    campaignType="campinas_convenios"
-                  />
-
-                  {/* Secondary CTA: Jump to Short Triage */}
-                  <a
-                    href="#triagem-card"
-                    data-cta-location="hero_secondary_triage"
-                    className="btn btn-outline-primary btn-lg rounded-pill px-4 py-3 fw-bold d-inline-flex align-items-center justify-content-center text-center"
-                    style={{ fontSize: '1rem' }}
-                  >
-                    <i className="bi bi-clipboard2-check me-2"></i> Verificar meu Convênio
-                  </a>
+                {/* Quick Trust Badges */}
+                <div className="d-flex flex-wrap gap-2 mb-4">
+                  <span className="badge bg-white text-dark border px-3 py-2 rounded-pill small fw-semibold shadow-sm">
+                    <i className="bi bi-geo-alt-fill text-danger me-1"></i> Instituto Orthesen (Centro)
+                  </span>
+                  <span className="badge bg-white text-dark border px-3 py-2 rounded-pill small fw-semibold shadow-sm">
+                    <i className="bi bi-hospital text-primary me-1"></i> Procedimentos no Vera Cruz
+                  </span>
+                  <span className="badge bg-white text-dark border px-3 py-2 rounded-pill small fw-semibold shadow-sm">
+                    <i className="bi bi-shield-check text-success me-1"></i> Consultas Amil e Reembolso
+                  </span>
                 </div>
 
                 {/* Scope of Care */}
@@ -128,13 +121,13 @@ export default function LPVeraCruzCampinas() {
                 </div>
               </div>
 
-              {/* Right Column: Short & Optional Triage Card */}
+              {/* Right Column: Short Pre-Qualification WhatsApp Flow */}
               <div className="col-lg-6">
-                <LeadTriageForm
+                <WhatsAppPreQualifyCard
                   campaignType="campinas_convenios"
-                  title="Verificar Atendimento e Convênios"
-                  subtitle="Se preferir que nossa equipe entre em contato para alinhar os detalhes antes, preencha o formulário rápido abaixo:"
-                  defaultModality="amil"
+                  defaultModality="convenio"
+                  title="Solicitar Consulta pelo WhatsApp"
+                  subtitle="Informe seus dados para direcionarmos seu contato com agilidade à equipe do Dr. Otto Beckedorff:"
                 />
               </div>
 

@@ -7,10 +7,18 @@ interface MobileStickyBarProps {
   refCode?: string;
 }
 
-export default function MobileStickyBar({ campaignType = 'campinas', refCode }: MobileStickyBarProps) {
-  const refSuffix = refCode ? ` [Ref: ${refCode}]` : '';
-  const messageText = `Olá! Vim pelo Google e gostaria de solicitar uma consulta em Campinas.${refSuffix}`;
-  const whatsappUrl = `https://wa.me/5519999439824?text=${encodeURIComponent(messageText)}`;
+export default function MobileStickyBar({ campaignType = 'campinas' }: MobileStickyBarProps) {
+  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>) => {
+    const card = document.getElementById('pre-qualificacao');
+    if (card) {
+      e.preventDefault();
+      card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      const nameInput = document.getElementById('prequal-name') as HTMLInputElement;
+      if (nameInput) {
+        setTimeout(() => nameInput.focus(), 350);
+      }
+    }
+  };
 
   return (
     <div
@@ -25,9 +33,8 @@ export default function MobileStickyBar({ campaignType = 'campinas', refCode }: 
     >
       <div className="container-fluid px-2">
         <a
-          href={whatsappUrl}
-          target="_blank"
-          rel="noopener noreferrer"
+          href="#pre-qualificacao"
+          onClick={handleClick}
           data-cta-location="mobile_sticky_bar"
           data-campaign-type={campaignType}
           className="btn btn-success w-100 py-2 fw-bold rounded-pill d-flex align-items-center justify-content-center shadow-sm"

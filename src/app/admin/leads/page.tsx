@@ -66,6 +66,15 @@ export default function AdminLeadsPage() {
   const [attendingLead, setAttendingLead] = useState<LeadItem | null>(null);
   const [revenueInput, setRevenueInput] = useState<string>('450.00');
 
+  // Session search and conversion states (from WhatsApp messages)
+  const [unconvertedSession, setUnconvertedSession] = useState<any | null>(null);
+  const [convertingSession, setConvertingSession] = useState<any | null>(null);
+  const [convertName, setConvertName] = useState('');
+  const [convertPhone, setConvertPhone] = useState('');
+  const [convertModality, setConvertModality] = useState('particular');
+  const [convertInsurance, setConvertInsurance] = useState('');
+  const [convertIsSubmitting, setConvertIsSubmitting] = useState(false);
+
   useEffect(() => {
     checkCurrentSession();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -158,11 +167,15 @@ export default function AdminLeadsPage() {
     setLeads([]);
   };
 
-  const fetchLeads = async () => {
+  const fetchLeads = async (searchOverride?: string) => {
     setLoadingLeads(true);
     setActionMessage(null);
     try {
-      const res = await fetch('/api/admin/leads');
+      const termToSearch = typeof searchOverride === 'string' ? searchOverride : searchTerm;
+      const url = termToSearch.trim()
+        ? `/api/admin/leads?search=${encodeURIComponent(termToSearch.trim())}`
+        : '/api/admin/leads';
+      const res = await fetch(url);
       if (!res.ok) {
         if (res.status === 401) {
           setOperator(null);
@@ -172,10 +185,44 @@ export default function AdminLeadsPage() {
       }
       const data = await res.json();
       setLeads(data.leads || []);
+      setUnconvertedSession(data.unconverted_session || null);
     } catch (err: any) {
       setActionMessage(`Erro: ${err.message}`);
     } finally {
       setLoadingLeads(false);
+    }
+  };
+
+  const handleConvertSessionSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!convertingSession) return;
+    setConvertIsSubmitting(true);
+    setActionMessage(null);
+    try {
+      const res = await fetch('/api/admin/leads?action=convert_session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          ref_code: convertingSession.ref_code,
+          name: convertName,
+          phone: convertPhone,
+          modality: convertModality,
+          insurance_note: convertInsurance,
+          is_unimed: convertingSession.is_unimed
+        })
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        throw new Error(data.error || 'Falha ao converter sessão em lead.');
+      }
+      setConvertingSession(null);
+      setUnconvertedSession(null);
+      setActionMessage(`Sucesso: Sessão ${convertingSession.ref_code} convertida em lead com atribuição Google Ads preservada!`);
+      fetchLeads();
+    } catch (err: any) {
+      setActionMessage(`Erro na conversão: ${err.message}`);
+    } finally {
+      setConvertIsSubmitting(false);
     }
   };
 
@@ -462,7 +509,19 @@ export default function AdminLeadsPage() {
                   placeholder="Buscar por Nome, Telefone ou [Ref: C-XXXXXX]..."
                   className="form-control border-start-0"
                   value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    setSearchTerm(val);
+                    if (val.trim().toUpperCase().startsWith('C-') || val === '') {
+                      fetchLeads(val);
+                    }
+                  }}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter') {
+                      e.preventDefault();
+                      fetchLeads();
+                    }
+                  }}
                 />
               </div>
             </div>
@@ -481,15 +540,137 @@ export default function AdminLeadsPage() {
             </div>
             <div className="col-md-2 text-md-end">
               <button
-                onClick={fetchLeads}
+                onClick={() => fetchLeads()}
                 disabled={loadingLeads}
                 className="btn btn-sm btn-outline-primary rounded-pill px-3"
               >
-                <i className="bi bi-arrow-clockwise me-1"></i> Atualizar
+                <i className="bi bi-arrow-clockwise me-1"></i> Buscar / Atualizar
               </button>
             </div>
           </div>
         </div>
+
+        {/* Unconverted WhatsApp Click Session Banner */}
+        {unconvertedSession && (
+          <div className="alert alert-warning border-warning p-4 rounded-4 shadow-sm mb-4">
+            <div className="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+              <div>
+                <div className="d-flex align-items-center gap-2 mb-1">
+                  <span className="badge bg-warning text-dark fw-bold">Sessão WhatsApp Localizada</span>
+                  <span className="fw-bold font-monospace fs-6 text-dark">{unconvertedSession.ref_code}</span>
+                  {unconvertedSession.gclid && (
+                    <span className="badge bg-success ms-1">
+                      <i className="bi bi-google me-1"></i>GCLID Detectado
+                    </span>
+                  )}
+                  {unconvertedSession.is_unimed && (
+                    <span className="badge bg-danger ms-1">Unimed (Reembolso)</span>
+                  )}
+                </div>
+                <p className="small text-dark mb-1">
+                  Clique gerado em {new Date(unconvertedSession.created_at).toLocaleString('pt-BR')} • Origem: <strong>{unconvertedSession.page_path}</strong>
+                </p>
+                <p className="small text-muted mb-0">
+                  Modalidade informada: <strong>{unconvertedSession.modality || 'Não especificada'}</strong>
+                  {unconvertedSession.insurance_note ? ` (${unconvertedSession.insurance_note})` : ''} • Cobertura Vera Cruz: <strong>{unconvertedSession.coverage_vera_cruz || 'Não informada'}</strong>
+                </p>
+              </div>
+              <div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setConvertingSession(unconvertedSession);
+                    setConvertName('');
+                    setConvertPhone('');
+                    setConvertModality(unconvertedSession.modality === 'convenio' ? 'outro_convenio' : 'particular');
+                    setConvertInsurance(unconvertedSession.insurance_note || '');
+                  }}
+                  className="btn btn-primary fw-bold rounded-pill px-4 py-2 shadow-sm d-inline-flex align-items-center"
+                >
+                  <i className="bi bi-person-plus-fill me-2"></i> Converter em Lead
+                </button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Convert Session Modal */}
+        {convertingSession && (
+          <div className="modal show d-block" style={{ backgroundColor: 'rgba(0,0,0,0.5)', zIndex: 1060 }}>
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content rounded-4 border-0 shadow-lg">
+                <div className="modal-header border-bottom">
+                  <h5 className="modal-title fw-bold">Converter Sessão em Lead</h5>
+                  <button type="button" className="btn-close" onClick={() => setConvertingSession(null)}></button>
+                </div>
+                <form onSubmit={handleConvertSessionSubmit}>
+                  <div className="modal-body p-4">
+                    <div className="alert alert-light border small mb-3">
+                      <strong>Referência:</strong> <span className="font-monospace text-primary">{convertingSession.ref_code}</span><br />
+                      <strong>Atribuição Google Ads:</strong> {convertingSession.gclid ? `GCLID: ${convertingSession.gclid.slice(0, 20)}...` : 'Tráfego sem GCLID'}
+                    </div>
+                    
+                    <div className="mb-3">
+                      <label className="form-label small fw-bold">Nome do Paciente (extraído da mensagem)</label>
+                      <input
+                        type="text"
+                        required
+                        placeholder="Ex: Carlos Eduardo"
+                        className="form-control rounded-3"
+                        value={convertName}
+                        onChange={(e) => setConvertName(e.target.value)}
+                      />
+                    </div>
+
+                    <div className="mb-3">
+                      <label className="form-label small fw-bold">Telefone / WhatsApp</label>
+                      <input
+                        type="tel"
+                        required
+                        placeholder="19999999999"
+                        className="form-control rounded-3"
+                        value={convertPhone}
+                        onChange={(e) => setConvertPhone(e.target.value)}
+                      />
+                    </div>
+
+                    <div className="mb-3">
+                      <label className="form-label small fw-bold">Modalidade</label>
+                      <select
+                        className="form-select rounded-3"
+                        value={convertModality}
+                        onChange={(e) => setConvertModality(e.target.value)}
+                      >
+                        <option value="particular">Particular</option>
+                        <option value="amil">Amil</option>
+                        <option value="outro_convenio">Outro Convênio</option>
+                      </select>
+                    </div>
+
+                    {convertModality === 'outro_convenio' && (
+                      <div className="mb-3">
+                        <label className="form-label small fw-bold">Nome do Convênio</label>
+                        <input
+                          type="text"
+                          placeholder="Ex: Bradesco, SulAmérica..."
+                          className="form-control rounded-3"
+                          value={convertInsurance}
+                          onChange={(e) => setConvertInsurance(e.target.value)}
+                        />
+                      </div>
+                    )}
+                  </div>
+                  <div className="modal-footer border-top">
+                    <button type="button" className="btn btn-light rounded-pill px-3" onClick={() => setConvertingSession(null)}>Cancelar</button>
+                    <button type="submit" disabled={convertIsSubmitting} className="btn btn-primary rounded-pill px-4 fw-bold">
+                      {convertIsSubmitting ? 'Salvando...' : 'Salvar e Vincular ao Google Ads'}
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Leads Table */}
         <div className="bg-white rounded-4 shadow-sm border overflow-hidden">

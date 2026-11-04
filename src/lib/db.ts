@@ -183,6 +183,10 @@ export interface ClickSession {
   gclid?: string;
   gbraid?: string;
   wbraid?: string;
+  modality?: string;
+  insurance_note?: string;
+  coverage_vera_cruz?: string;
+  is_unimed?: boolean;
   status: 'active' | 'converted' | 'expired';
 }
 
@@ -246,6 +250,10 @@ export async function createClickSession(params: {
   gclid?: string;
   gbraid?: string;
   wbraid?: string;
+  modality?: string;
+  insurance_note?: string;
+  coverage_vera_cruz?: string;
+  is_unimed?: boolean;
 }): Promise<string> {
   const pool = getDatabasePool();
   // Generate random 6-character alphanumeric reference token: C-XXXXXX
@@ -256,8 +264,9 @@ export async function createClickSession(params: {
   await pool.query(
     `INSERT INTO click_sessions (
       ref_code, created_at, expires_at, page_path, landing_page,
-      utm_source, utm_medium, utm_campaign, gclid, gbraid, wbraid
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11)`,
+      utm_source, utm_medium, utm_campaign, gclid, gbraid, wbraid,
+      modality, insurance_note, coverage_vera_cruz, is_unimed
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`,
     [
       refCode,
       now.toISOString(),
@@ -269,7 +278,11 @@ export async function createClickSession(params: {
       params.utm_campaign?.slice(0, 100),
       params.gclid?.slice(0, 150),
       params.gbraid?.slice(0, 150),
-      params.wbraid?.slice(0, 150)
+      params.wbraid?.slice(0, 150),
+      params.modality?.slice(0, 32) || null,
+      params.insurance_note?.slice(0, 150) || null,
+      params.coverage_vera_cruz?.slice(0, 32) || null,
+      Boolean(params.is_unimed)
     ]
   );
 
@@ -283,6 +296,99 @@ export async function getClickSession(refCode: string): Promise<ClickSession | n
     [refCode]
   );
   return res.rows[0] || null;
+}
+
+export async function convertSessionToLead(params: {
+  ref_code: string;
+  name: string;
+  phone: string;
+  modality?: 'amil' | 'outro_convenio' | 'particular';
+  insurance_note?: string;
+  is_unimed?: boolean;
+  operator_email: string;
+}): Promise<{ success: boolean; lead_id: string; lead: LeadDecryptedRecord }> {
+  const pool = getDatabasePool();
+  const session = await getClickSession(params.ref_code);
+  if (!session) {
+    throw new Error('SESSION_NOT_FOUND: Sessão de clique não encontrada para o código ' + params.ref_code);
+  }
+
+  // Check if lead already created for this session
+  const existingLeadRes = await pool.query('SELECT id FROM leads WHERE ref_code = $1', [params.ref_code]);
+  if (existingLeadRes.rows.length > 0) {
+    const existing = await getLeadById(existingLeadRes.rows[0].id);
+    if (existing) {
+      return { success: true, lead_id: existing.id, lead: existing };
+    }
+  }
+
+  const cleanPhone = params.phone.replace(/\D/g, '');
+  if (cleanPhone.length < 10) {
+    throw new Error('VALIDATION_ERROR: Telefone inválido (mínimo 10 dígitos com DDD)');
+  }
+  if (!params.name || params.name.trim().length < 2) {
+    throw new Error('VALIDATION_ERROR: Nome completo é obrigatório');
+  }
+
+  const leadId = 'LEAD_' + Date.now() + '_' + crypto.randomBytes(4).toString('hex').toUpperCase();
+  const now = new Date();
+
+  // Normalize modality
+  let finalModality: 'amil' | 'outro_convenio' | 'particular' = 'particular';
+  const rawMod = (params.modality || session.modality || '').toLowerCase();
+  if (rawMod.includes('amil')) {
+    finalModality = 'amil';
+  } else if (rawMod.includes('convenio') || rawMod.includes('outro')) {
+    finalModality = 'outro_convenio';
+  } else {
+    finalModality = 'particular';
+  }
+
+  const isUnimed = params.is_unimed !== undefined ? Boolean(params.is_unimed) : Boolean(session.is_unimed);
+  const insuranceNote = params.insurance_note || session.insurance_note || undefined;
+
+  const insertRes = await insertLead({
+    lead_id: leadId,
+    ref_code: session.ref_code,
+    name: params.name.trim(),
+    phone: cleanPhone,
+    modality: finalModality,
+    insurance_note: insuranceNote,
+    is_unimed: isUnimed,
+    privacy_consent: true,
+    page_path: session.page_path,
+    landing_page: session.landing_page,
+    utm_source: session.utm_source,
+    utm_medium: session.utm_medium,
+    utm_campaign: session.utm_campaign,
+    gclid: session.gclid,
+    gbraid: session.gbraid,
+    wbraid: session.wbraid
+  });
+
+  const finalLeadId = insertRes.lead_id;
+
+  // Mark session converted
+  await pool.query("UPDATE click_sessions SET status = 'converted' WHERE ref_code = $1", [session.ref_code]);
+
+  // Record audit log for conversion
+  await pool.query(
+    `INSERT INTO lead_audit_log (
+      lead_id, timestamp, previous_status, new_status, operator_id, operator_email, reason
+    ) VALUES ($1, $2, $3, $4, $5, $6, $7)`,
+    [
+      finalLeadId,
+      now.toISOString(),
+      'session_clicked',
+      'new',
+      params.operator_email,
+      params.operator_email,
+      `Convertido no painel a partir de mensagem do WhatsApp [Ref: ${session.ref_code}]`
+    ]
+  );
+
+  const decrypted = await getLeadById(finalLeadId);
+  return { success: true, lead_id: finalLeadId, lead: decrypted! };
 }
 
 // -------------------------------------------------------------
@@ -553,6 +659,18 @@ export async function updateLeadStatus(params: {
 // -------------------------------------------------------------
 // RETRIEVAL & DECRYPTION
 // -------------------------------------------------------------
+export async function getLeadById(leadId: string): Promise<LeadDecryptedRecord | null> {
+  const pool = getDatabasePool();
+  const res = await pool.query('SELECT * FROM leads WHERE id = $1', [leadId]);
+  if (res.rows.length === 0) return null;
+  const row = res.rows[0];
+  return {
+    ...row,
+    name: decryptPII(row.name_encrypted),
+    phone: decryptPII(row.phone_encrypted)
+  };
+}
+
 export async function getAllLeadsDecrypted(): Promise<LeadDecryptedRecord[]> {
   const pool = getDatabasePool();
   const res = await pool.query('SELECT * FROM leads ORDER BY created_at DESC');

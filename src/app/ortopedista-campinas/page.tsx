@@ -1,9 +1,8 @@
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import LeadTriageForm from '@/components/LeadTriageForm';
+import WhatsAppPreQualifyCard from '@/components/WhatsAppPreQualifyCard';
 import MobileStickyBar from '@/components/MobileStickyBar';
-import WhatsAppDirectButton from '@/components/WhatsAppDirectButton';
 
 export const metadata = {
   title: 'Dr. Otto Beckedorff • Ortopedista Especialista em Coluna e Dor em Campinas',
@@ -123,23 +122,17 @@ export default function PageOrtopedistaCampinas() {
                   Avaliação aprofundada para dores persistentes na coluna lombar, cervical, ciático, joelhos e articulações. Abordagem moderna e procedimentos de precisão minimamente invasivos.
                 </p>
 
-                {/* TWO MAIN CTAS (HERO) */}
-                <div className="d-flex flex-column flex-sm-row gap-3 mb-4">
-                  {/* Primary CTA: WhatsApp Direct with Anonymous Ref */}
-                  <WhatsAppDirectButton
-                    location="hero_primary_whatsapp"
-                    campaignType="campinas_ortopedista_coluna"
-                  />
-
-                  {/* Secondary CTA: Jump to Short Triage */}
-                  <a
-                    href="#triagem-card"
-                    data-cta-location="hero_secondary_triage"
-                    className="btn btn-outline-primary btn-lg rounded-pill px-4 py-3 fw-bold d-inline-flex align-items-center justify-content-center text-center"
-                    style={{ fontSize: '1rem' }}
-                  >
-                    <i className="bi bi-clipboard2-check me-2"></i> Verificar Atendimento
-                  </a>
+                {/* Quick Trust Badges */}
+                <div className="d-flex flex-wrap gap-2 mb-4">
+                  <span className="badge bg-white text-dark border px-3 py-2 rounded-pill small fw-semibold shadow-sm">
+                    <i className="bi bi-hospital text-primary me-1"></i> Procedimentos no Vera Cruz
+                  </span>
+                  <span className="badge bg-white text-dark border px-3 py-2 rounded-pill small fw-semibold shadow-sm">
+                    <i className="bi bi-building text-primary me-1"></i> Instituto Orthesen (Centro)
+                  </span>
+                  <span className="badge bg-white text-dark border px-3 py-2 rounded-pill small fw-semibold shadow-sm">
+                    <i className="bi bi-file-medical text-success me-1"></i> RQE 139078 • CRM-SP 226325
+                  </span>
                 </div>
 
                 {/* Conditions Grid */}
@@ -169,27 +162,31 @@ export default function PageOrtopedistaCampinas() {
                   </div>
                 </div>
 
-                {/* Quick Trust Badges */}
-                <div className="d-flex flex-wrap gap-2 small text-muted">
-                  <span className="badge bg-light text-dark border px-3 py-2 rounded-pill">
-                    <i className="bi bi-hospital me-1 text-primary"></i> Hospital Vera Cruz
-                  </span>
-                  <span className="badge bg-light text-dark border px-3 py-2 rounded-pill">
-                    <i className="bi bi-building me-1 text-primary"></i> Instituto Orthesen
-                  </span>
-                  <span className="badge bg-light text-dark border px-3 py-2 rounded-pill">
-                    <i className="bi bi-file-medical me-1 text-primary"></i> RQE 139078 • CRM-SP 226325
-                  </span>
+                {/* Transparency Note */}
+                <div className="p-3 rounded-3 border bg-white small text-muted">
+                  <div className="fw-bold text-dark mb-1 d-flex align-items-center">
+                    <i className="bi bi-shield-check text-success me-2"></i>
+                    Transparência sobre Convênios e Reembolso:
+                  </div>
+                  <p className="mb-1" style={{ fontSize: '0.82rem' }}>
+                    • <strong>Amil:</strong> Aceita para consultas no Instituto Orthesen (Centro de Campinas). Procedimentos hospitalares no Vera Cruz sob verificação prévia de elegibilidade da operadora.
+                  </p>
+                  <p className="mb-1" style={{ fontSize: '0.82rem' }}>
+                    • <strong>Bradesco, SulAmérica, Omint, Porto Seguro, Caixa:</strong> Atendimento com suporte completo para solicitação de Reembolso Médico.
+                  </p>
+                  <p className="mb-0 text-danger fw-medium" style={{ fontSize: '0.82rem' }}>
+                    • <strong>Unimed:</strong> Não atendemos este convênio. Oferecemos atendimento particular como alternativa.
+                  </p>
                 </div>
               </div>
 
-              {/* Right Column: Short Lead Triage Form */}
+              {/* Right Column: Short Pre-Qualification WhatsApp Flow */}
               <div className="col-lg-6">
-                <LeadTriageForm
+                <WhatsAppPreQualifyCard
                   campaignType="campinas_ortopedista_coluna"
-                  title="Verificar Atendimento e Horários"
-                  subtitle="Se preferir que nossa equipe entre em contato para alinhar os detalhes antes, preencha o formulário rápido abaixo:"
                   defaultModality="particular"
+                  title="Solicitar Consulta pelo WhatsApp"
+                  subtitle="Informe seus dados para direcionarmos seu contato com rapidez à equipe do Dr. Otto Beckedorff em Campinas:"
                 />
               </div>
 
@@ -445,22 +442,27 @@ export default function PageOrtopedistaCampinas() {
           </div>
         </section>
 
-        {/* 9. FINAL CTA SECTION (Dual Option) */}
+        {/* 9. FINAL CTA SECTION */}
         <section className="py-5 bg-light border-top text-center">
           <div className="container py-3">
             <h2 className="h3 fw-bold text-dark mb-2">Deseja uma Avaliação da sua Dor em Campinas?</h2>
-            <p className="text-secondary small mb-4">Escolha como prefere solicitar o seu agendamento:</p>
+            <p className="text-secondary small mb-4">Inicie seu pré-atendimento rápido e fale diretamente com nossa equipe no WhatsApp:</p>
             <div className="d-flex flex-column flex-sm-row justify-content-center gap-3">
-              <WhatsAppDirectButton
-                location="final_section_whatsapp"
-                campaignType="campinas_ortopedista_coluna"
-              />
               <a
-                href="#triagem-card"
-                data-cta-location="final_section_triage"
-                className="btn btn-outline-primary btn-lg rounded-pill px-4 py-3 fw-bold d-inline-flex align-items-center justify-content-center"
+                href="#pre-qualificacao"
+                data-cta-location="final_section_prequal"
+                className="btn btn-success btn-lg rounded-pill px-4 py-3 fw-bold shadow-sm d-inline-flex align-items-center justify-content-center text-center"
+                style={{ backgroundColor: '#25D366', border: 'none', fontSize: '1.05rem' }}
               >
-                <i className="bi bi-clipboard2-check me-2"></i> Iniciar Triagem Curta
+                <i className="bi bi-whatsapp fs-5 me-2"></i> Solicitar Consulta no WhatsApp
+              </a>
+              <a
+                href="tel:19999439824"
+                data-cta-location="final_section_phone"
+                className="btn btn-outline-primary btn-lg rounded-pill px-4 py-3 fw-bold d-inline-flex align-items-center justify-content-center text-center"
+                style={{ fontSize: '1rem' }}
+              >
+                <i className="bi bi-telephone-fill me-2"></i> Ligar: (19) 99943-9824
               </a>
             </div>
           </div>

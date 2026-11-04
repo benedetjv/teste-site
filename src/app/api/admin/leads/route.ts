@@ -6,6 +6,8 @@ import {
   deleteLead, 
   purgeExpiredLeads,
   createEncryptedBackup,
+  getClickSession,
+  convertSessionToLead,
   verifySessionToken,
   sanitizeCsvField,
   LeadStatus,
@@ -171,10 +173,21 @@ export async function GET(request: Request) {
       });
     }
 
+    const searchRef = searchParams.get('ref_code') || searchParams.get('search');
+    let unconvertedSession = null;
+    if (searchRef && /^C-[A-Z0-9]{6}$/i.test(searchRef.trim())) {
+      const cleanRef = searchRef.trim().toUpperCase();
+      const hasLead = leads.some(l => l.ref_code === cleanRef);
+      if (!hasLead) {
+        unconvertedSession = await getClickSession(cleanRef);
+      }
+    }
+
     return NextResponse.json({
       total: leads.length,
       operator: { email: operator.email, role: operator.role },
-      leads
+      leads,
+      unconverted_session: unconvertedSession
     });
   } catch (err: any) {
     console.error('[Admin Leads GET Error]', err);
@@ -200,6 +213,28 @@ export async function POST(request: Request) {
         purged_count: purgedCount,
         message: `Rotina de expurgo concluída: ${purgedCount} registros não convertidos expirados foram removidos.`
       });
+    }
+
+    // Convert Click Session to Lead (from incoming WhatsApp message)
+    if (action === 'convert_session') {
+      const body = await request.json().catch(() => null);
+      if (!body || !body.ref_code || !body.name || !body.phone) {
+        return NextResponse.json({
+          error: 'Dados insuficientes. Informe ref_code, name e phone.'
+        }, { status: 400 });
+      }
+
+      const convertRes = await convertSessionToLead({
+        ref_code: String(body.ref_code).trim().toUpperCase(),
+        name: String(body.name).trim(),
+        phone: String(body.phone).trim(),
+        modality: body.modality,
+        insurance_note: body.insurance_note,
+        is_unimed: body.is_unimed,
+        operator_email: operator.email
+      });
+
+      return NextResponse.json(convertRes, { status: 201 });
     }
 
     return NextResponse.json({ error: 'Ação não reconhecida.' }, { status: 400 });

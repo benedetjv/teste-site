@@ -19,7 +19,12 @@ export async function POST(request: Request) {
       utm_campaign,
       gclid,
       gbraid,
-      wbraid
+      wbraid,
+      modality,
+      insurance_name,
+      insurance_note,
+      coverage_vera_cruz,
+      is_unimed
     } = body;
 
     const refCode = await createClickSession({
@@ -30,7 +35,11 @@ export async function POST(request: Request) {
       utm_campaign: utm_campaign ? String(utm_campaign).slice(0, 100) : undefined,
       gclid: gclid ? String(gclid).slice(0, 150) : undefined,
       gbraid: gbraid ? String(gbraid).slice(0, 150) : undefined,
-      wbraid: wbraid ? String(wbraid).slice(0, 150) : undefined
+      wbraid: wbraid ? String(wbraid).slice(0, 150) : undefined,
+      modality: modality ? String(modality).slice(0, 32) : undefined,
+      insurance_note: (insurance_name || insurance_note) ? String(insurance_name || insurance_note).slice(0, 150) : undefined,
+      coverage_vera_cruz: coverage_vera_cruz ? String(coverage_vera_cruz).slice(0, 32) : undefined,
+      is_unimed: Boolean(is_unimed)
     });
 
     return NextResponse.json({
