@@ -445,7 +445,10 @@ async function testHeadlessBrowserAndSingleEvent() {
     // Step 1: Advance from Pain Area (Step 1) to Atendimento (Step 2)
     await testPage.click('#btn-step1-next');
 
-    // Test Point 4: Unimed explicit confirmation checkbox on Step 2
+    // Step 2: Advance from Atendimento (Step 2) to Convênio Pills (Step 3)
+    await testPage.click('#btn-step2-next');
+
+    // Test Point 4: Unimed explicit confirmation checkbox on Step 3
     await testPage.select('#prequal-insurance', 'Unimed');
     const hasUnimedCheckbox = await testPage.evaluate(() => {
       const cb = document.querySelector('#prequal-unimed-confirm');
@@ -455,7 +458,7 @@ async function testHeadlessBrowserAndSingleEvent() {
 
     // Verify advancing to next step is blocked until Unimed confirmation is checked
     await testPage.evaluate(() => {
-      const nextBtn = document.querySelector('#btn-step2-next');
+      const nextBtn = document.querySelector('#btn-step3-next');
       if (nextBtn) nextBtn.click();
     });
     const isUnimedBlocked = await testPage.evaluate(() => {
@@ -492,7 +495,7 @@ async function testHeadlessBrowserAndSingleEvent() {
 
     // Submitting/Advancing without answering Vera Cruz displays required validation error
     await testPage.evaluate(() => {
-      const nextBtn = document.querySelector('#btn-step2-next');
+      const nextBtn = document.querySelector('#btn-step3-next');
       if (nextBtn) nextBtn.click();
     });
     const hasVeraCruzError = await testPage.evaluate(() => {
@@ -508,8 +511,8 @@ async function testHeadlessBrowserAndSingleEvent() {
       if (simBtn) simBtn.click();
     });
 
-    // Advance to Step 3 (Nome Completo)
-    await testPage.click('#btn-step2-next');
+    // Advance to Step 4 (Nome Completo)
+    await testPage.click('#btn-step3-next');
 
     // Verify Name input exists and starts empty
     const initialName = await testPage.evaluate(() => {

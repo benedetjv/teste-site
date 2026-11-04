@@ -67,24 +67,24 @@ export default function PageOrtopedistaCampinas() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(campinasFaqSchema) }}
       />
 
-      {/* 1. FOCUSED ADS HEADER (Zero distraction links) */}
-      <header className="navbar navbar-expand-lg px-3 py-3 bg-white shadow-sm sticky-top border-bottom" style={{ zIndex: 1020 }}>
-        <div className="container d-flex flex-column flex-md-row justify-content-between align-items-center">
-          <div className="d-flex align-items-center mb-2 mb-md-0">
-            <span className="fw-bold fs-5 text-dark">Dr. Otto Beckedorff</span>
-            <span className="badge bg-light text-secondary border ms-2 small fw-normal">CRM-SP 226325 • RQE 139078</span>
+      {/* 1. COMPACT MOBILE-FIRST ADS NAVBAR */}
+      <header className="navbar px-3 py-2 bg-white shadow-sm sticky-top border-bottom" style={{ zIndex: 1020 }}>
+        <div className="container d-flex flex-row justify-content-between align-items-center">
+          <div className="d-flex flex-column text-start">
+            <span className="fw-bold text-dark lh-1" style={{ fontSize: '1.05rem' }}>Dr. Otto Beckedorff</span>
+            <span className="text-muted" style={{ fontSize: '0.72rem' }}>Ortopedia • CRM-SP 226325 | RQE 139078</span>
           </div>
           <div className="d-flex align-items-center gap-3">
-            <span className="small text-muted d-none d-sm-inline">
-              <i className="bi bi-geo-alt-fill text-danger me-1"></i> Instituto Orthesen & Vera Cruz (Campinas)
+            <span className="small text-muted d-none d-lg-inline" style={{ fontSize: '0.8rem' }}>
+              <i className="bi bi-geo-alt-fill text-danger me-1"></i> Vera Cruz & Instituto Orthesen (Campinas)
             </span>
             <a
               href="#pre-qualificacao"
               data-cta-location="header_whatsapp"
-              className="btn btn-sm btn-success rounded-pill px-3 fw-bold shadow-sm d-inline-flex align-items-center"
-              style={{ backgroundColor: "#25D366", border: "none" }}
+              className="btn btn-success rounded-pill px-3 py-1 fw-bold shadow-sm d-inline-flex align-items-center"
+              style={{ backgroundColor: "#25D366", border: "none", fontSize: '0.85rem' }}
             >
-              <i className="bi bi-whatsapp me-1"></i> Agendar no WhatsApp
+              <i className="bi bi-whatsapp me-1"></i> Agende Agora
             </a>
           </div>
         </div>
@@ -93,27 +93,52 @@ export default function PageOrtopedistaCampinas() {
 
 
       <main id="topo">
-        {/* 3. HERO & VALUE PROPOSITION */}
-        <section className="py-5 position-relative" style={{ backgroundColor: '#f8fbfe', overflow: 'hidden' }}>
+        {/* 3. HERO SECTION (QUIZ AT TOP ON MOBILE, BALANCED ON DESKTOP) */}
+        <section className="py-3 py-lg-5 position-relative" style={{ backgroundColor: '#f8fbfe', overflow: 'hidden' }}>
           <div className="container position-relative" style={{ zIndex: 1 }}>
-            <div className="row g-5 align-items-start justify-content-between">
+            
+            {/* Mobile Header Banner: Directly above the quiz */}
+            <div className="d-block d-lg-none text-center mb-3">
+              <div className="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-2 shadow-sm border border-primary border-opacity-25" style={{ backgroundColor: 'rgba(14, 115, 219, 0.08)' }}>
+                <i className="bi bi-award text-primary"></i>
+                <span className="small fw-bold text-primary" style={{ fontSize: '0.75rem' }}>Hospital Vera Cruz • Instituto Orthesen</span>
+              </div>
+              <h1 className="h5 fw-bold mb-1" style={{ color: 'var(--azul-escuro)', lineHeight: '1.3' }}>
+                Médico Ortopedista — Foco no Tratamento de Dor em Campinas
+              </h1>
+              <p className="text-muted small mb-0" style={{ fontSize: '0.8rem' }}>
+                Triagem rápida para agendamento direto no WhatsApp:
+              </p>
+            </div>
+
+            <div className="row g-4 align-items-start justify-content-between">
               
-              {/* Left Column: Context, Credentials & Direct CTA */}
-              <div className="col-lg-6 pt-2">
-                <div className="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3 shadow-sm border border-primary border-opacity-25" style={{ backgroundColor: 'rgba(14, 115, 219, 0.08)' }}>
+              {/* Quiz Column: FIRST ON MOBILE (order-1), Right on Desktop (order-lg-2) */}
+              <div className="col-lg-6 order-1 order-lg-2 mb-3 mb-lg-0">
+                <WhatsAppPreQualifyCard
+                  campaignType="campinas_ortopedista_coluna"
+                  defaultModality="particular"
+                  title="Agendar Consulta pelo WhatsApp"
+                  subtitle="Responda rápido para direcionarmos seu contato à equipe médica:"
+                />
+              </div>
+
+              {/* Left Column: SECOND ON MOBILE (order-2), Left on Desktop (order-lg-1) */}
+              <div className="col-lg-6 order-2 order-lg-1 pt-2">
+                <div className="d-none d-lg-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3 shadow-sm border border-primary border-opacity-25" style={{ backgroundColor: 'rgba(14, 115, 219, 0.08)' }}>
                   <i className="bi bi-award text-primary"></i>
                   <span className="small fw-bold text-primary">Ortopedia & Tratamento da Dor em Campinas</span>
                 </div>
 
-                <h1 className="display-6 fw-bold mb-2" style={{ color: 'var(--azul-escuro)', lineHeight: '1.2' }}>
+                <h1 className="display-6 fw-bold mb-2 d-none d-lg-block" style={{ color: 'var(--azul-escuro)', lineHeight: '1.2' }}>
                   Médico Ortopedista — Foco no Tratamento de Dor na Coluna e Articulações em Campinas
                 </h1>
 
-                <p className="text-muted small fw-medium mb-3">
+                <p className="text-muted small fw-medium mb-3 d-none d-lg-block">
                   Dr. Otto Beckedorff • Médico Ortopedista e Traumatologista (CRM-SP 226325 | RQE 139078)
                 </p>
 
-                <p className="lead text-secondary mb-4" style={{ fontSize: '1.1rem', lineHeight: '1.7' }}>
+                <p className="lead text-secondary mb-4" style={{ fontSize: '1.05rem', lineHeight: '1.7' }}>
                   Avaliação aprofundada para dores persistentes na coluna lombar, cervical, ciático, joelhos e articulações. Abordagem moderna e procedimentos de precisão minimamente invasivos.
                 </p>
 
@@ -157,17 +182,6 @@ export default function PageOrtopedistaCampinas() {
                   </div>
                 </div>
 
-
-              </div>
-
-              {/* Right Column: Short Pre-Qualification WhatsApp Flow */}
-              <div className="col-lg-6">
-                <WhatsAppPreQualifyCard
-                  campaignType="campinas_ortopedista_coluna"
-                  defaultModality="particular"
-                  title="Solicitar Consulta pelo WhatsApp"
-                  subtitle="Informe seus dados para direcionarmos seu contato com rapidez à equipe do Dr. Otto Beckedorff em Campinas:"
-                />
               </div>
 
             </div>

@@ -21,28 +21,35 @@ export default function MobileStickyBar({ campaignType = 'campinas' }: MobileSti
   };
 
   return (
-    <div
-      className="d-block d-md-none position-fixed bottom-0 start-0 w-100 p-2 shadow-lg border-top"
+    <aside
+      aria-label="Atendimento rápido no WhatsApp"
+      className="position-fixed"
       style={{
-        backgroundColor: 'rgba(255, 255, 255, 0.96)',
-        backdropFilter: 'blur(8px)',
-        WebkitBackdropFilter: 'blur(8px)',
-        zIndex: 1040,
-        paddingBottom: 'calc(0.5rem + env(safe-area-inset-bottom, 0px))'
+        bottom: '22px',
+        right: '18px',
+        zIndex: 1050
       }}
     >
-      <div className="container-fluid px-2">
-        <a
-          href="#pre-qualificacao"
-          onClick={handleClick}
-          data-cta-location="mobile_sticky_bar"
-          data-campaign-type={campaignType}
-          className="btn btn-success w-100 py-2 fw-bold rounded-pill d-flex align-items-center justify-content-center shadow-sm"
-          style={{ backgroundColor: '#25D366', border: 'none', fontSize: '0.95rem' }}
-        >
-          <i className="bi bi-whatsapp fs-5 me-2"></i> Solicitar Consulta no WhatsApp
-        </a>
-      </div>
-    </div>
+      <a
+        href="#pre-qualificacao"
+        onClick={handleClick}
+        data-cta-location="mobile_sticky_bar"
+        data-campaign-type={campaignType}
+        className="btn btn-success rounded-circle shadow-lg d-flex align-items-center justify-content-center text-white text-decoration-none"
+        style={{
+          width: '58px',
+          height: '58px',
+          backgroundColor: '#25D366',
+          border: '2px solid #ffffff',
+          boxShadow: '0 4px 16px rgba(0, 0, 0, 0.25)',
+          transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+          cursor: 'pointer'
+        }}
+        aria-label="Solicitar Consulta no WhatsApp"
+        title="Falar no WhatsApp com a equipe"
+      >
+        <i className="bi bi-whatsapp" style={{ fontSize: '1.9rem', lineHeight: 1 }}></i>
+      </a>
+    </aside>
   );
 }
