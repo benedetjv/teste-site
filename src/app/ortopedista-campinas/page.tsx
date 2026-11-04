@@ -79,11 +79,12 @@ export default function PageOrtopedistaCampinas() {
               <i className="bi bi-geo-alt-fill text-danger me-1"></i> Instituto Orthesen & Vera Cruz (Campinas)
             </span>
             <a
-              href="tel:19999439824"
-              data-cta-location="header_phone"
-              className="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold"
+              href="#pre-qualificacao"
+              data-cta-location="header_whatsapp"
+              className="btn btn-sm btn-success rounded-pill px-3 fw-bold shadow-sm d-inline-flex align-items-center"
+              style={{ backgroundColor: "#25D366", border: "none" }}
             >
-              <i className="bi bi-telephone-fill me-1"></i> (19) 99943-9824
+              <i className="bi bi-whatsapp me-1"></i> Agendar no WhatsApp
             </a>
           </div>
         </div>
@@ -424,14 +425,7 @@ export default function PageOrtopedistaCampinas() {
               >
                 <i className="bi bi-whatsapp fs-5 me-2"></i> Solicitar Consulta no WhatsApp
               </a>
-              <a
-                href="tel:19999439824"
-                data-cta-location="final_section_phone"
-                className="btn btn-outline-primary btn-lg rounded-pill px-4 py-3 fw-bold d-inline-flex align-items-center justify-content-center text-center"
-                style={{ fontSize: '1rem' }}
-              >
-                <i className="bi bi-telephone-fill me-2"></i> Ligar: (19) 99943-9824
-              </a>
+
             </div>
           </div>
         </section>

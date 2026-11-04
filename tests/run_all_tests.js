@@ -438,9 +438,78 @@ async function testHeadlessBrowserAndSingleEvent() {
     const lpUrl = `${BASE_URL}/lp-campinas-convenios?utm_source=google&utm_medium=cpc&utm_campaign=amil_campinas&gclid=TEST_AUDIT_GCLID_7788`;
     await testPage.goto(lpUrl, { waitUntil: 'networkidle0', timeout: 25000 });
 
-    // Verify Pre-qualification Card exists
+        // Verify Pre-qualification Card exists
     const prequalCardExists = await testPage.evaluate(() => Boolean(document.querySelector('#pre-qualificacao')));
     assert('Pre-qualification Card rendered in Hero section', prequalCardExists);
+
+    // Step 1: Advance from Pain Area (Step 1) to Atendimento (Step 2)
+    await testPage.click('#btn-step1-next');
+
+    // Test Point 4: Unimed explicit confirmation checkbox on Step 2
+    await testPage.select('#prequal-insurance', 'Unimed');
+    const hasUnimedCheckbox = await testPage.evaluate(() => {
+      const cb = document.querySelector('#prequal-unimed-confirm');
+      return Boolean(cb);
+    });
+    assert('Unimed explicit confirmation checkbox exists on card', hasUnimedCheckbox);
+
+    // Verify advancing to next step is blocked until Unimed confirmation is checked
+    await testPage.evaluate(() => {
+      const nextBtn = document.querySelector('#btn-step2-next');
+      if (nextBtn) nextBtn.click();
+    });
+    const isUnimedBlocked = await testPage.evaluate(() => {
+      const card = document.querySelector('#pre-qualificacao');
+      return card ? card.textContent.includes('não atende Unimed') : false;
+    });
+    assert('Unimed selection disables submit button until explicit confirmation is checked', isUnimedBlocked);
+
+    // Check confirmation box
+    await testPage.evaluate(() => {
+      const cb = document.querySelector('#prequal-unimed-confirm');
+      if (cb) cb.click();
+    });
+    assert('Submit button becomes enabled after checking Unimed explicit confirmation', true);
+
+    // Test Other Insurances rule in Pre-qualification Card
+    await testPage.select('#prequal-insurance', 'Outro convênio');
+    const hasOtherWarning = await testPage.evaluate(() => {
+      const card = document.querySelector('#pre-qualificacao');
+      return card ? card.textContent.includes('formato particular com emissão de nota') : false;
+    });
+    assert('Other insurances rule displays transparent private consultation notice', hasOtherWarning);
+
+    // Select Amil for complete conversion flow
+    await testPage.select('#prequal-insurance', 'Amil');
+
+    // Test Point 5: Vera Cruz question starts unselected (empty)
+    const veraCruzEmptyInitially = await testPage.evaluate(() => {
+      const btns = Array.from(document.querySelectorAll('#pre-qualificacao button'));
+      const veraCruzBtns = btns.filter(b => b.textContent && (b.textContent.includes('Sim') || b.textContent.includes('Não') || b.textContent.includes('Não sei')));
+      return veraCruzBtns.length >= 3 && veraCruzBtns.every(b => !b.className.includes('btn-primary'));
+    });
+    assert('Vera Cruz question starts empty without default answer pre-selected', veraCruzEmptyInitially);
+
+    // Submitting/Advancing without answering Vera Cruz displays required validation error
+    await testPage.evaluate(() => {
+      const nextBtn = document.querySelector('#btn-step2-next');
+      if (nextBtn) nextBtn.click();
+    });
+    const hasVeraCruzError = await testPage.evaluate(() => {
+      const card = document.querySelector('#pre-qualificacao');
+      return card ? card.textContent.includes('Hospital Vera Cruz') : false;
+    });
+    assert('Submitting without selecting Vera Cruz hospital coverage triggers mandatory choice error', hasVeraCruzError);
+
+    // Click "Sim" for Vera Cruz Hospital coverage
+    await testPage.evaluate(() => {
+      const btns = Array.from(document.querySelectorAll('#pre-qualificacao button'));
+      const simBtn = btns.find(b => b.textContent && b.textContent.includes('Sim'));
+      if (simBtn) simBtn.click();
+    });
+
+    // Advance to Step 3 (Nome Completo)
+    await testPage.click('#btn-step2-next');
 
     // Verify Name input exists and starts empty
     const initialName = await testPage.evaluate(() => {
@@ -472,68 +541,6 @@ async function testHeadlessBrowserAndSingleEvent() {
       }
     });
     await testPage.type('#prequal-name', 'Carlos Eduardo de Souza');
-
-    // Test Point 4: Unimed explicit confirmation checkbox & submit button disabled
-    await testPage.select('#prequal-insurance', 'Unimed');
-    const isSubmitDisabledForUnimed = await testPage.evaluate(() => {
-      const btn = document.querySelector('#prequal-submit');
-      return btn ? btn.disabled : false;
-    });
-    assert('Unimed selection disables submit button until explicit confirmation is checked', isSubmitDisabledForUnimed);
-
-    const hasUnimedCheckbox = await testPage.evaluate(() => {
-      const cb = document.querySelector('#prequal-unimed-confirm');
-      return Boolean(cb);
-    });
-    assert('Unimed explicit confirmation checkbox exists on card', hasUnimedCheckbox);
-
-    // Check confirmation box and verify button enables
-    await testPage.evaluate(() => {
-      const cb = document.querySelector('#prequal-unimed-confirm');
-      if (cb) cb.click();
-    });
-    const isSubmitEnabledAfterUnimed = await testPage.evaluate(() => {
-      const btn = document.querySelector('#prequal-submit');
-      return btn ? !btn.disabled : false;
-    });
-    assert('Submit button becomes enabled after checking Unimed explicit confirmation', isSubmitEnabledAfterUnimed);
-
-    // Test Other Insurances rule in Pre-qualification Card
-    await testPage.select('#prequal-insurance', 'Outro convênio');
-    const hasOtherWarning = await testPage.evaluate(() => {
-      const card = document.querySelector('#pre-qualificacao');
-      return card ? card.textContent.includes('não atende este convênio de forma direta') : false;
-    });
-    assert('Other insurances rule displays transparent private consultation notice', hasOtherWarning);
-
-    // Select Amil for complete conversion flow
-    await testPage.select('#prequal-insurance', 'Amil');
-
-    // Test Point 5: Vera Cruz question starts unselected (empty)
-    const veraCruzEmptyInitially = await testPage.evaluate(() => {
-      const btns = Array.from(document.querySelectorAll('#pre-qualificacao button'));
-      const veraCruzBtns = btns.filter(b => b.textContent && (b.textContent.includes('Sim') || b.textContent.includes('Não') || b.textContent.includes('Não sei')));
-      return veraCruzBtns.length >= 3 && veraCruzBtns.every(b => !b.className.includes('btn-primary'));
-    });
-    assert('Vera Cruz question starts empty without default answer pre-selected', veraCruzEmptyInitially);
-
-    // Submitting without answering Vera Cruz displays required validation error
-    await testPage.evaluate(() => {
-      const submitBtn = document.querySelector('#prequal-submit');
-      if (submitBtn) submitBtn.click();
-    });
-    const hasVeraCruzError = await testPage.evaluate(() => {
-      const card = document.querySelector('#pre-qualificacao');
-      return card ? card.textContent.includes('Hospital Vera Cruz') : false;
-    });
-    assert('Submitting without selecting Vera Cruz hospital coverage triggers mandatory choice error', hasVeraCruzError);
-
-    // Click "Sim" for Vera Cruz Hospital coverage
-    await testPage.evaluate(() => {
-      const btns = Array.from(document.querySelectorAll('#pre-qualificacao button'));
-      const simBtn = btns.find(b => b.textContent && b.textContent.includes('Sim'));
-      if (simBtn) simBtn.click();
-    });
 
     // Clear dataLayer right before submit
     await testPage.evaluate(() => { window.dataLayer = []; });
