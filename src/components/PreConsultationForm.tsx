@@ -117,6 +117,14 @@ export default function PreConsultationForm() {
 
     const handleWhatsAppSend = () => {
         const report = generateReport();
+        if (typeof window !== 'undefined' && typeof (window as any).gtag === 'function') {
+            (window as any).gtag('event', 'conversion', {
+                'send_to': 'AW-18020943185/NOStCM78h4ocENGKh5FD',
+                'value': 1.0,
+                'currency': 'BRL',
+                'transport_type': 'beacon'
+            });
+        }
         window.open(`https://wa.me/5519999439824?text=${encodeURIComponent(report)}`, '_blank');
     };
 

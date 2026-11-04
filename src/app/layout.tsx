@@ -62,6 +62,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           {`
             window.dataLayer = window.dataLayer || [];
             function gtag(){dataLayer.push(arguments);}
+            window.gtag = gtag;
             gtag('js', new Date());
 
             gtag('config', 'AW-18020943185');
@@ -84,6 +85,26 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {children}
         <BootstrapClient />
+
+        {/* Conversão de clique no WhatsApp via delegação global */}
+        <Script id="whatsapp-conversion-listener" strategy="afterInteractive">
+          {`
+            document.addEventListener('click', function(e) {
+              var el = e.target && (e.target.nodeType === 1 ? e.target : e.target.parentElement);
+              var waLink = el && el.closest ? el.closest('a[href*="wa.me"], a[href*="api.whatsapp.com"], a[href*="whatsapp.com"], a[href^="whatsapp://"]') : null;
+              if (waLink) {
+                if (typeof gtag === 'function') {
+                  gtag('event', 'conversion', {
+                    'send_to': 'AW-18020943185/NOStCM78h4ocENGKh5FD',
+                    'value': 1.0,
+                    'currency': 'BRL',
+                    'transport_type': 'beacon'
+                  });
+                }
+              }
+            });
+          `}
+        </Script>
       </body>
     </html>
   );
