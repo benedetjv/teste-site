@@ -117,6 +117,15 @@ export default function PreConsultationForm() {
 
     const handleWhatsAppSend = () => {
         const report = generateReport();
+        if (typeof window !== 'undefined') {
+            (window as any).dataLayer = (window as any).dataLayer || [];
+            (window as any).dataLayer.push({
+                event: 'click_whatsapp',
+                cta_name: 'preconsultation_whatsapp',
+                cta_location: 'preconsultation_form',
+                timestamp: new Date().toISOString()
+            });
+        }
         window.open(`https://wa.me/5519999439824?text=${encodeURIComponent(report)}`, '_blank');
     };
 

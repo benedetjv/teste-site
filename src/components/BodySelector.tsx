@@ -81,6 +81,15 @@ export default function BodySelector({
         const selectedLabels = regions.filter(r => selectedIds.includes(r.id)).map(r => r.label).join(', ');
         const message = `Olá Dr. Otto! Meu nome é ${formData.name}. Gostaria de uma avaliação sobre dores que sinto em: ${selectedLabels}.`;
         const encodedMessage = encodeURIComponent(message);
+        if (typeof window !== 'undefined') {
+            (window as any).dataLayer = (window as any).dataLayer || [];
+            (window as any).dataLayer.push({
+                event: 'click_whatsapp',
+                cta_name: 'body_selector_whatsapp',
+                cta_location: 'body_selector',
+                timestamp: new Date().toISOString()
+            });
+        }
         window.open(`https://wa.me/5519999439824?text=${encodedMessage}`, '_blank');
         setShowForm(false);
     };
