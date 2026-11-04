@@ -45,3 +45,7 @@ legacy_backup/
 
 # Leads & local sensitive storage
 /data/
+
+# Encrypted Database Vault
+.leads_vault.enc
+*.enc

@@ -1,209 +1,114 @@
 import { NextResponse } from 'next/server';
-import fs from 'fs';
-import path from 'path';
+import { createLead, checkRateLimit } from '@/lib/db';
+import crypto from 'crypto';
 
-interface LeadRecord {
-  lead_id: string;
-  created_at: string;
-  name: string;
-  phone: string;
-  modality: 'particular' | 'convenio' | string;
-  insurance: string;
-  region: string;
-  reason: string;
-  contact_preference: 'whatsapp' | 'phone' | string;
-  privacy_accepted: boolean;
-  page_path: string;
-  landing_page: string;
-  utm_source?: string;
-  utm_medium?: string;
-  utm_campaign?: string;
-  utm_term?: string;
-  utm_content?: string;
-  gclid?: string;
-  gbraid?: string;
-  wbraid?: string;
-  status: 'new' | 'in_progress' | 'qualified' | 'disqualified_unimed' | 'disqualified_other' | 'appointment_scheduled' | 'consultation_attended' | 'lost';
-  disqualification_reason?: string;
-  notes?: string;
-}
-
-const DATA_DIR = path.join(process.cwd(), 'data');
-const LEADS_FILE = path.join(DATA_DIR, 'leads.json');
-
-function ensureDataFile() {
-  if (!fs.existsSync(DATA_DIR)) {
-    fs.mkdirSync(DATA_DIR, { recursive: true });
-  }
-  if (!fs.existsSync(LEADS_FILE)) {
-    fs.writeFileSync(LEADS_FILE, JSON.stringify([], null, 2), 'utf-8');
-  }
-}
-
-function readLeads(): LeadRecord[] {
-  ensureDataFile();
-  try {
-    const raw = fs.readFileSync(LEADS_FILE, 'utf-8');
-    return JSON.parse(raw);
-  } catch {
-    return [];
-  }
-}
-
-function saveLeads(leads: LeadRecord[]) {
-  ensureDataFile();
-  fs.writeFileSync(LEADS_FILE, JSON.stringify(leads, null, 2), 'utf-8');
+// Only POST is permitted. GET is explicitly blocked to protect all patient data.
+export async function GET() {
+  return NextResponse.json(
+    { error: 'Método não permitido. O acesso a registros de triagem é restrito e autenticado.' },
+    { status: 405 }
+  );
 }
 
 export async function POST(request: Request) {
   try {
-    const body = await request.json();
+    // 1. IP extraction & Rate limiting
+    const forwardedFor = request.headers.get('x-forwarded-for');
+    const ip = forwardedFor ? forwardedFor.split(',')[0].trim() : '127.0.0.1';
+    
+    if (!checkRateLimit(ip)) {
+      return NextResponse.json(
+        { error: 'Muitas solicitações em curto intervalo. Aguarde alguns minutos antes de tentar novamente.' },
+        { status: 429 }
+      );
+    }
+
+    // 2. Body parsing and schema validation
+    const body = await request.json().catch(() => null);
+    if (!body || typeof body !== 'object') {
+      return NextResponse.json({ error: 'Formato de requisição inválido.' }, { status: 400 });
+    }
+
     const {
-      lead_id,
       name,
       phone,
       modality,
-      insurance,
-      region,
-      reason,
-      contact_preference,
-      privacy_accepted,
+      insurance_note,
+      privacy_consent,
       page_path,
       landing_page,
+      ref_code,
       utm_source,
       utm_medium,
       utm_campaign,
-      utm_term,
-      utm_content,
       gclid,
       gbraid,
       wbraid
     } = body;
 
-    // Basic validation
-    if (!name || !phone || !privacy_accepted) {
+    // Strict validation
+    if (!name || typeof name !== 'string' || name.trim().length < 2 || name.trim().length > 100) {
+      return NextResponse.json({ error: 'Por favor, informe seu nome completo (entre 2 e 100 caracteres).' }, { status: 400 });
+    }
+
+    const cleanPhoneDigits = String(phone || '').replace(/\D/g, '');
+    if (cleanPhoneDigits.length < 10 || cleanPhoneDigits.length > 13) {
+      return NextResponse.json({ error: 'Por favor, informe um número de telefone com DDD válido.' }, { status: 400 });
+    }
+
+    if (privacy_consent !== true) {
       return NextResponse.json(
-        { error: 'Campos obrigatórios incompletos ou consentimento não informado.' },
+        { error: 'É necessário concordar com a Política de Privacidade para prosseguir com a triagem.' },
         { status: 400 }
       );
     }
 
-    const currentLeads = readLeads();
+    // Validate modality
+    const validModalities = ['amil', 'outro_convenio', 'particular'];
+    const chosenModality = validModalities.includes(modality) ? modality : 'particular';
 
-    // Prevent duplicate re-submission
-    const existing = currentLeads.find((l) => l.lead_id === lead_id);
-    if (existing) {
-      return NextResponse.json({
-        success: true,
-        lead_id: existing.lead_id,
-        status: existing.status,
-        already_registered: true
-      });
-    }
+    // Unimed detection
+    const noteText = String(insurance_note || '').toLowerCase();
+    const isUnimed = noteText.includes('unimed');
 
-    const isUnimed = (insurance || '').toLowerCase().includes('unimed');
+    // Generate secure server-validated lead_id
+    const serverLeadId = `LEAD_${Date.now()}_${crypto.randomBytes(4).toString('hex').toUpperCase()}`;
 
-    const status: LeadRecord['status'] = isUnimed ? 'disqualified_unimed' : 'new';
-    const disqualification_reason = isUnimed ? 'unimed' : undefined;
+    // 3. Persist encrypted in PostgreSQL database layer
+    const result = await createLead({
+      lead_id: serverLeadId,
+      ref_code: ref_code ? String(ref_code).trim().slice(0, 32) : undefined,
+      name: name.replace(/<[^>]*>?/gm, '').trim(),
+      phone: cleanPhoneDigits,
+      modality: chosenModality as any,
+      insurance_note: isUnimed ? 'Unimed informada' : String(insurance_note || '').replace(/<[^>]*>?/gm, '').slice(0, 150),
+      is_unimed: isUnimed,
+      privacy_consent: true,
+      page_path: String(page_path || '/').slice(0, 200),
+      landing_page: String(landing_page || '/').slice(0, 200),
+      utm_source: utm_source ? String(utm_source).slice(0, 80) : undefined,
+      utm_medium: utm_medium ? String(utm_medium).slice(0, 80) : undefined,
+      utm_campaign: utm_campaign ? String(utm_campaign).slice(0, 80) : undefined,
+      gclid: gclid ? String(gclid).slice(0, 120) : undefined,
+      gbraid: gbraid ? String(gbraid).slice(0, 120) : undefined,
+      wbraid: wbraid ? String(wbraid).slice(0, 120) : undefined
+    });
 
-    const newRecord: LeadRecord = {
-      lead_id: lead_id || `LEAD_${Date.now()}`,
-      created_at: new Date().toISOString(),
-      name: String(name).trim().slice(0, 100),
-      phone: String(phone).trim().slice(0, 30),
-      modality: modality || 'particular',
-      insurance: insurance || 'Particular',
-      region: region || 'Campinas',
-      reason: reason || 'Coluna',
-      contact_preference: contact_preference || 'whatsapp',
-      privacy_accepted: Boolean(privacy_accepted),
-      page_path: page_path || '/',
-      landing_page: landing_page || '/',
-      utm_source: utm_source || undefined,
-      utm_medium: utm_medium || undefined,
-      utm_campaign: utm_campaign || undefined,
-      utm_term: utm_term || undefined,
-      utm_content: utm_content || undefined,
-      gclid: gclid || undefined,
-      gbraid: gbraid || undefined,
-      wbraid: wbraid || undefined,
-      status,
-      disqualification_reason
-    };
-
-    currentLeads.push(newRecord);
-    saveLeads(currentLeads);
-
-    // Clean, non-sensitive WhatsApp URL
+    // 4. Return clean response with safe WhatsApp URL (NO personal or clinical data in URL)
+    const refSuffix = ref_code ? ` [Ref: ${ref_code}]` : '';
     const cleanWhatsappUrl = `https://wa.me/5519999439824?text=${encodeURIComponent(
-      'Olá! Vim pelo site e gostaria de verificar informações sobre atendimento em Campinas.'
+      `Olá! Vim pelo Google e gostaria de solicitar uma consulta em Campinas.${refSuffix}`
     )}`;
 
     return NextResponse.json({
       success: true,
-      lead_id: newRecord.lead_id,
-      status: newRecord.status,
-      disqualified: isUnimed,
-      disqualification_reason,
+      lead_id: result.lead_id,
+      is_duplicate: result.isDuplicate || false,
+      is_unimed: isUnimed,
       whatsapp_url: cleanWhatsappUrl
     });
   } catch (err: any) {
-    console.error('Error in /api/leads:', err);
-    return NextResponse.json({ error: 'Erro interno ao processar lead.' }, { status: 500 });
-  }
-}
-
-export async function GET(request: Request) {
-  try {
-    const { searchParams } = new URL(request.url);
-    const format = searchParams.get('format');
-    const leads = readLeads();
-
-    if (format === 'google_ads_csv') {
-      // Format according to Google Ads Offline Conversions Template
-      // Required headers: Google Click ID,Conversion Name,Conversion Time,Conversion Value,Conversion Currency
-      let csv = 'Google Click ID,Conversion Name,Conversion Time,Conversion Value,Conversion Currency\n';
-      
-      leads
-        .filter((l) => l.gclid && (l.status === 'qualified' || l.status === 'appointment_scheduled' || l.status === 'consultation_attended'))
-        .forEach((l) => {
-          const conversionName = l.status === 'consultation_attended' 
-            ? 'consultation_attended' 
-            : l.status === 'appointment_scheduled' 
-            ? 'appointment_scheduled' 
-            : 'qualify_lead';
-            
-          const conversionTime = new Date(l.created_at)
-            .toISOString()
-            .replace('T', ' ')
-            .replace(/\..+/, ' -0300'); // Brazilian timezone approx
-          csv += `${l.gclid},${conversionName},${conversionTime},1.0,BRL\n`;
-        });
-
-      return new NextResponse(csv, {
-        status: 200,
-        headers: {
-          'Content-Type': 'text/csv',
-          'Content-Disposition': 'attachment; filename="google_ads_offline_conversions.csv"'
-        }
-      });
-    }
-
-    return NextResponse.json({
-      total: leads.length,
-      leads: leads.map(l => ({
-        lead_id: l.lead_id,
-        created_at: l.created_at,
-        modality: l.modality,
-        insurance: l.insurance,
-        region: l.region,
-        status: l.status,
-        gclid: l.gclid ? 'Present' : 'None',
-        utm_source: l.utm_source,
-        utm_campaign: l.utm_campaign
-      }))
-    });
-  } catch (err: any) {
-    return NextResponse.json({ error: err.message }, { status: 500 });
+    console.error('[API Leads Error]', err);
+    return NextResponse.json({ error: 'Não foi possível processar a solicitação no momento.' }, { status: 500 });
   }
 }

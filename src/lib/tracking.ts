@@ -1,59 +1,85 @@
 /**
- * Centralized Tracking Library for Google Tag Manager (GTM), GA4, and Google Ads
+ * Centralized Google Tag Manager (GTM) and GA4 DataLayer Tracking
  * 
- * Rules:
- * - Pushes non-sensitive data to window.dataLayer
- * - Never pushes PII (name, phone, email) or sensitive health details (symptoms, diagnoses)
- * - Persists and captures UTMs and Click IDs (gclid, gbraid, wbraid) throughout the session
+ * Strict Compliance:
+ * - Exactly one event per user action (no double firing between components and listeners)
+ * - Zero PII or sensitive health data:
+ *   * Strips name, phone, email, CPF, address, lead_id
+ *   * Strips utm_term (search keywords often contain health symptoms)
+ *   * Strips insurance, unimed, plan category
+ *   * Strips clinical terms (pain, symptoms, diagnosis, anatomy, conditions)
+ * - Micro-events (click_whatsapp, click_phone, click_doctoralia, form_start) are secondary analytics events
+ * - generate_lead fires ONLY after confirmed 200 HTTP response from server
  */
 
 export interface TrackingParams {
-  lead_id?: string;
   page_path?: string;
   landing_page?: string;
   cta_name?: string;
   cta_location?: string;
   campaign_type?: string;
-  plan_category?: string;
-  region?: string;
-  contact_preference?: string;
-  disqualification_reason?: string;
-  phone_number?: string;
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
-  utm_term?: string;
-  utm_content?: string;
-  gclid?: string;
-  gbraid?: string;
-  wbraid?: string;
   timestamp?: string;
   [key: string]: any;
 }
 
-const PII_KEYS = [
+// Strictly blocked keys (PII, sensitive health, lead_id, specific plan or search queries)
+const FORBIDDEN_KEYS = new Set([
   'name', 'nome',
   'phone', 'telefone', 'whatsapp', 'celular',
   'email',
-  'symptom', 'symptoms', 'sintomas',
-  'diagnosis', 'diagnostico', 'laudo', 'exames',
-  'cpf', 'rg', 'address', 'endereco'
-];
+  'insurance', 'convenio', 'unimed', 'plan_category', 'plano', 'operadora',
+  'reason', 'motivo', 'symptom', 'symptoms', 'sintoma', 'sintomas',
+  'diagnosis', 'diagnostico', 'laudo', 'exames', 'regiao_anatomica',
+  'city', 'cidade', 'region', 'bairro',
+  'lead_id', 'id',
+  'cpf', 'rg', 'address', 'endereco',
+  // utm_term is explicitly blocked because user search keywords may contain sensitive medical terms
+  'utm_term', 'term', 'keyword', 'query'
+]);
+
+// Clinical and anatomical terms that must NEVER appear in dataLayer values (supports snake_case, kebab-case, spaces)
+const SENSITIVE_CLINICAL_REGEX = /(^|[_ \-\/])(dor|dores|coluna|hernia|ciatico|ciatalgia|joelho|ombro|quadril|artrose|artrite|bursite|tendinite|infiltracao|bloqueio|radiofrequencia|rizotomia|cirurgia|medicamento|remedio|cid|diagnostico|laudo|unimed)(?=[_ \-\/]|$)/gi;
 
 /**
- * Strips PII and sensitive health information from event payloads before sending to dataLayer/GA4
+ * Strips all sensitive, clinical, search query, or identifying fields before pushing to dataLayer
  */
-function sanitizeParams(params: Record<string, any>): Record<string, any> {
+export function sanitizeForDataLayer(params: Record<string, any>): Record<string, any> {
   const clean: Record<string, any> = {};
+
   for (const [key, value] of Object.entries(params)) {
     const lowerKey = key.toLowerCase();
-    if (PII_KEYS.includes(lowerKey)) {
-      continue; // Skip any sensitive field
+
+    // 1. Check if key is strictly forbidden
+    if (FORBIDDEN_KEYS.has(lowerKey)) {
+      continue;
     }
-    if (value !== undefined && value !== null && value !== '') {
+
+    // 2. Block phone numbers, emails, or numeric identifiers
+    if (typeof value === 'string') {
+      const trimmed = value.trim();
+      if (trimmed.includes('@') || /^\+?[0-9]{8,}/.test(trimmed.replace(/\s/g, ''))) {
+        continue;
+      }
+
+      // 3. Sanitize sensitive clinical strings in values (e.g. in utm_campaign)
+      if (SENSITIVE_CLINICAL_REGEX.test(trimmed)) {
+        // Redact clinical terms to preserve privacy
+        const sanitizedVal = trimmed.replace(SENSITIVE_CLINICAL_REGEX, '$1health_general');
+        clean[key] = sanitizedVal;
+        continue;
+      }
+
+      if (trimmed !== '') {
+        clean[key] = trimmed;
+      }
+    } else if (value !== undefined && value !== null) {
       clean[key] = value;
     }
   }
+
   return clean;
 }
 
@@ -65,7 +91,7 @@ export function initUtmCapture(): Record<string, string> {
 
   try {
     const urlParams = new URLSearchParams(window.location.search);
-    const utmKeys = [
+    const trackingKeys = [
       'utm_source',
       'utm_medium',
       'utm_campaign',
@@ -76,22 +102,22 @@ export function initUtmCapture(): Record<string, string> {
       'wbraid'
     ];
 
-    const currentUtms: Record<string, string> = {};
+    const currentParams: Record<string, string> = {};
 
-    utmKeys.forEach((key) => {
+    trackingKeys.forEach((key) => {
       const val = urlParams.get(key);
       if (val) {
-        currentUtms[key] = val;
+        currentParams[key] = val;
         sessionStorage.setItem(`drotto_${key}`, val);
       } else {
         const stored = sessionStorage.getItem(`drotto_${key}`);
         if (stored) {
-          currentUtms[key] = stored;
+          currentParams[key] = stored;
         }
       }
     });
 
-    return currentUtms;
+    return currentParams;
   } catch {
     return {};
   }
@@ -108,7 +134,6 @@ export function getStoredUtms(): Record<string, string> {
       'utm_source',
       'utm_medium',
       'utm_campaign',
-      'utm_term',
       'utm_content',
       'gclid',
       'gbraid',
@@ -128,50 +153,40 @@ export function getStoredUtms(): Record<string, string> {
 }
 
 /**
- * Generates an immutable, unique lead_id for the session
- */
-export function generateLeadId(): string {
-  const now = new Date();
-  const dateStr = now.toISOString().replace(/[-:T.]/g, '').slice(0, 14);
-  const randomStr = Math.random().toString(36).substring(2, 8).toUpperCase();
-  return `LEAD_${dateStr}_${randomStr}`;
-}
-
-/**
- * Central event dispatcher to Google Tag Manager dataLayer and gtag
+ * Central event dispatcher to Google Tag Manager dataLayer
+ * Only pushes to window.dataLayer (prevents double firing via gtag)
+ * Strictly sanitizes all data before pushing
  */
 export function pushDataLayer(eventName: string, params: TrackingParams = {}) {
   if (typeof window === 'undefined') return;
 
   try {
     const utms = getStoredUtms();
+    // Exclude gclid/gbraid/wbraid from frontend dataLayer to minimize fingerprinting
+    const safeUtms: Record<string, string> = {};
+    if (utms.utm_source) safeUtms.utm_source = utms.utm_source;
+    if (utms.utm_medium) safeUtms.utm_medium = utms.utm_medium;
+    if (utms.utm_campaign) safeUtms.utm_campaign = utms.utm_campaign;
+
     const payload: TrackingParams = {
       event: eventName,
       page_path: window.location.pathname,
       landing_page: window.location.pathname,
       timestamp: new Date().toISOString(),
-      ...utms,
+      ...safeUtms,
       ...params
     };
 
-    const sanitized = sanitizeParams(payload);
+    const sanitized = sanitizeForDataLayer(payload);
 
-    // Push to Google Tag Manager dataLayer
+    // Push to Google Tag Manager dataLayer only
     (window as any).dataLayer = (window as any).dataLayer || [];
     (window as any).dataLayer.push(sanitized);
 
-    // Also mirror to gtag if present
-    if (typeof (window as any).gtag === 'function') {
-      (window as any).gtag('event', eventName, {
-        ...sanitized,
-        transport_type: 'beacon'
-      });
-    }
-
     if (process.env.NODE_ENV === 'development') {
-      console.log(`[Tracking] Event: ${eventName}`, sanitized);
+      console.log(`[DataLayer Push] ${eventName}:`, sanitized);
     }
   } catch (err) {
-    console.error('[Tracking Error]', err);
+    console.error('[DataLayer Error]', err);
   }
 }

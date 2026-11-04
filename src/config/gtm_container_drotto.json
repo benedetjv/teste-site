@@ -1,0 +1,137 @@
+{
+  "exportFormatVersion": 2,
+  "exportTime": "2026-11-04 15:00:00",
+  "containerVersion": {
+    "path": "accounts/6000000000/containers/GTM-DROTTO/versions/0",
+    "accountId": "6000000000",
+    "containerId": "GTM-DROTTO",
+    "container": {
+      "name": "Dr. Otto Beckedorff - Google Ads & GA4 Tracking",
+      "publicId": "GTM-DROTTO",
+      "usageContext": ["WEB"]
+    },
+    "tag": [
+      {
+        "name": "GA4 - Event - click_whatsapp",
+        "type": "gaawe",
+        "parameter": [
+          { "type": "TEMPLATE", "key": "eventName", "value": "click_whatsapp" },
+          {
+            "type": "LIST",
+            "key": "eventParameters",
+            "list": [
+              { "type": "MAP", "map": [{ "type": "TEMPLATE", "key": "name", "value": "cta_location" }, { "type": "TEMPLATE", "key": "value", "value": "{{dlv_cta_location}}" }] },
+              { "type": "MAP", "map": [{ "type": "TEMPLATE", "key": "name", "value": "page_path" }, { "type": "TEMPLATE", "key": "value", "value": "{{dlv_page_path}}" }] }
+            ]
+          }
+        ],
+        "firingTriggerId": ["trig_click_whatsapp"]
+      },
+      {
+        "name": "GA4 - Event - generate_lead",
+        "type": "gaawe",
+        "parameter": [
+          { "type": "TEMPLATE", "key": "eventName", "value": "generate_lead" },
+          {
+            "type": "LIST",
+            "key": "eventParameters",
+            "list": [
+              { "type": "MAP", "map": [{ "type": "TEMPLATE", "key": "name", "value": "campaign_type" }, { "type": "TEMPLATE", "key": "value", "value": "{{dlv_campaign_type}}" }] },
+              { "type": "MAP", "map": [{ "type": "TEMPLATE", "key": "name", "value": "cta_name" }, { "type": "TEMPLATE", "key": "value", "value": "{{dlv_cta_name}}" }] },
+              { "type": "MAP", "map": [{ "type": "TEMPLATE", "key": "name", "value": "page_path" }, { "type": "TEMPLATE", "key": "value", "value": "{{dlv_page_path}}" }] }
+            ]
+          }
+        ],
+        "firingTriggerId": ["trig_generate_lead"]
+      },
+      {
+        "name": "Google Ads - Conversion - generate_lead",
+        "type": "awct",
+        "parameter": [
+          { "type": "TEMPLATE", "key": "conversionId", "value": "AW-18020943185" },
+          { "type": "TEMPLATE", "key": "conversionLabel", "value": "NOStCM78h4ocENGKh5FD" }
+        ],
+        "firingTriggerId": ["trig_generate_lead"]
+      }
+    ],
+    "trigger": [
+      {
+        "triggerId": "trig_click_whatsapp",
+        "name": "Custom Event - click_whatsapp",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              { "type": "TEMPLATE", "key": "arg0", "value": "{{_event}}" },
+              { "type": "TEMPLATE", "key": "arg1", "value": "click_whatsapp" }
+            ]
+          }
+        ]
+      },
+      {
+        "triggerId": "trig_generate_lead",
+        "name": "Custom Event - generate_lead",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              { "type": "TEMPLATE", "key": "arg0", "value": "{{_event}}" },
+              { "type": "TEMPLATE", "key": "arg1", "value": "generate_lead" }
+            ]
+          }
+        ]
+      },
+      {
+        "triggerId": "trig_form_start",
+        "name": "Custom Event - form_start",
+        "type": "CUSTOM_EVENT",
+        "customEventFilter": [
+          {
+            "type": "EQUALS",
+            "parameter": [
+              { "type": "TEMPLATE", "key": "arg0", "value": "{{_event}}" },
+              { "type": "TEMPLATE", "key": "arg1", "value": "form_start" }
+            ]
+          }
+        ]
+      }
+    ],
+    "variable": [
+      {
+        "name": "dlv_cta_location",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "TEMPLATE", "key": "name", "value": "cta_location" }
+        ]
+      },
+      {
+        "name": "dlv_cta_name",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "TEMPLATE", "key": "name", "value": "cta_name" }
+        ]
+      },
+      {
+        "name": "dlv_campaign_type",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "TEMPLATE", "key": "name", "value": "campaign_type" }
+        ]
+      },
+      {
+        "name": "dlv_page_path",
+        "type": "v",
+        "parameter": [
+          { "type": "INTEGER", "key": "dataLayerVersion", "value": "2" },
+          { "type": "TEMPLATE", "key": "name", "value": "page_path" }
+        ]
+      }
+    ]
+  }
+}
+

@@ -2,9 +2,11 @@ import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
 import LeadTriageForm from '@/components/LeadTriageForm';
+import MobileStickyBar from '@/components/MobileStickyBar';
+import WhatsAppDirectButton from '@/components/WhatsAppDirectButton';
 
 export const metadata = {
-  title: 'Ortopedista em Campinas - Dor na Coluna, Hérnia & Articulações | Dr. Otto Beckedorff',
+  title: 'Dr. Otto Beckedorff • Ortopedista Especialista em Coluna e Dor em Campinas',
   description: 'Médico Ortopedista (CRM-SP 226325 | RQE 139078). Diagnóstico e tratamento de dores na coluna, hérnia de disco e articulações. Consultas no Instituto Orthesen e procedimentos no Vera Cruz.',
   keywords: [
     'Ortopedista em Campinas',
@@ -16,7 +18,7 @@ export const metadata = {
   alternates: {
     canonical: 'https://drotto.com.br/ortopedista-campinas',
   },
-  robots: 'noindex, follow' // Resguarda a experiência de conversão de anúncios
+  robots: 'noindex, follow'
 };
 
 const campinasFaqSchema = {
@@ -60,7 +62,7 @@ const campinasFaqSchema = {
 
 export default function PageOrtopedistaCampinas() {
   return (
-    <div className="d-flex flex-column min-vh-100 bg-light">
+    <div className="d-flex flex-column min-vh-100 bg-light pb-5 pb-md-0">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(campinasFaqSchema) }}
@@ -75,10 +77,11 @@ export default function PageOrtopedistaCampinas() {
           </div>
           <div className="d-flex align-items-center gap-3">
             <span className="small text-muted d-none d-sm-inline">
-              <i className="bi bi-geo-alt-fill text-danger me-1"></i> Instituto Orthesen / Vera Cruz (Campinas)
+              <i className="bi bi-geo-alt-fill text-danger me-1"></i> Instituto Orthesen & Vera Cruz (Campinas)
             </span>
             <a
               href="tel:19999439824"
+              data-cta-location="header_phone"
               className="btn btn-sm btn-outline-primary rounded-pill px-3 fw-bold"
             >
               <i className="bi bi-telephone-fill me-1"></i> (19) 99943-9824
@@ -88,10 +91,10 @@ export default function PageOrtopedistaCampinas() {
       </header>
 
       {/* 2. NOTICE BAR: UNIMED & CONVÊNIOS */}
-      <div className="py-2 px-3 text-center small border-bottom" style={{ backgroundColor: '#fef3c7', color: '#92400e', fontWeight: 500 }}>
+      <div className="py-2 px-3 text-center small border-bottom" style={{ backgroundColor: '#fef3c7', color: '#92400e', fontWeight: 500, fontSize: '0.82rem' }}>
         <i className="bi bi-info-circle-fill me-1 text-warning"></i>
         <span>
-          <strong>Aviso de atendimento:</strong> O Dr. Otto Beckedorff <u>não atende Unimed</u>. Atendemos consultas Amil no Instituto Orthesen e emitimos nota fiscal para reembolso médico em Bradesco, SulAmérica, Omint e outros.
+          <strong>Informação importante sobre convênios:</strong> O Dr. Otto Beckedorff <u>não atende Unimed</u>. Atendemos consultas Amil no Instituto Orthesen e emitimos nota fiscal com relatório médico para reembolso nos demais convênios.
         </span>
       </div>
 
@@ -101,20 +104,43 @@ export default function PageOrtopedistaCampinas() {
           <div className="container position-relative" style={{ zIndex: 1 }}>
             <div className="row g-5 align-items-start justify-content-between">
               
-              {/* Left Column: Context, Credentials & Conditions */}
+              {/* Left Column: Context, Credentials & Direct CTA */}
               <div className="col-lg-6 pt-2">
                 <div className="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill mb-3 shadow-sm border border-primary border-opacity-25" style={{ backgroundColor: 'rgba(14, 115, 219, 0.08)' }}>
                   <i className="bi bi-award text-primary"></i>
                   <span className="small fw-bold text-primary">Ortopedia & Tratamento da Dor em Campinas</span>
                 </div>
 
-                <h1 className="display-5 fw-bold mb-3" style={{ color: 'var(--azul-escuro)', lineHeight: '1.2' }}>
-                  Médico Ortopedista em Campinas com Foco em <span style={{ color: 'var(--azul-principal)' }}>Coluna e Dor.</span>
+                <h1 className="display-6 fw-bold mb-2" style={{ color: 'var(--azul-escuro)', lineHeight: '1.2' }}>
+                  Ortopedista Especialista — Foco no Tratamento de Dor na Coluna e Articulações em Campinas
                 </h1>
 
-                <p className="lead text-secondary mb-4" style={{ fontSize: '1.15rem', lineHeight: '1.7' }}>
-                  Avaliação aprofundada para dores persistentes na coluna, ciático, joelhos e articulações. Abordagem moderna e procedimentos de precisão minimamente invasivos.
+                <p className="text-muted small fw-medium mb-3">
+                  Dr. Otto Beckedorff • Médico Ortopedista e Traumatologista (CRM-SP 226325 | RQE 139078)
                 </p>
+
+                <p className="lead text-secondary mb-4" style={{ fontSize: '1.1rem', lineHeight: '1.7' }}>
+                  Avaliação aprofundada para dores persistentes na coluna lombar, cervical, ciático, joelhos e articulações. Abordagem moderna e procedimentos de precisão minimamente invasivos.
+                </p>
+
+                {/* TWO MAIN CTAS (HERO) */}
+                <div className="d-flex flex-column flex-sm-row gap-3 mb-4">
+                  {/* Primary CTA: WhatsApp Direct with Anonymous Ref */}
+                  <WhatsAppDirectButton
+                    location="hero_primary_whatsapp"
+                    campaignType="campinas_ortopedista_coluna"
+                  />
+
+                  {/* Secondary CTA: Jump to Short Triage */}
+                  <a
+                    href="#triagem-card"
+                    data-cta-location="hero_secondary_triage"
+                    className="btn btn-outline-primary btn-lg rounded-pill px-4 py-3 fw-bold d-inline-flex align-items-center justify-content-center text-center"
+                    style={{ fontSize: '1rem' }}
+                  >
+                    <i className="bi bi-clipboard2-check me-2"></i> Verificar Atendimento
+                  </a>
+                </div>
 
                 {/* Conditions Grid */}
                 <div className="bg-white p-4 rounded-4 shadow-sm border mb-4">
@@ -157,12 +183,12 @@ export default function PageOrtopedistaCampinas() {
                 </div>
               </div>
 
-              {/* Right Column: Lead Triage Form */}
+              {/* Right Column: Short Lead Triage Form */}
               <div className="col-lg-6">
                 <LeadTriageForm
                   campaignType="campinas_ortopedista_coluna"
-                  title="Triagem e Agendamento de Consulta"
-                  subtitle="Preencha o formulário para verificar a disponibilidade de horários e a modalidade de atendimento mais adequada para o seu caso."
+                  title="Verificar Atendimento e Horários"
+                  subtitle="Se preferir que nossa equipe entre em contato para alinhar os detalhes antes, preencha o formulário rápido abaixo:"
                   defaultModality="particular"
                 />
               </div>
@@ -419,24 +445,30 @@ export default function PageOrtopedistaCampinas() {
           </div>
         </section>
 
-        {/* 9. FINAL CTA SECTION */}
+        {/* 9. FINAL CTA SECTION (Dual Option) */}
         <section className="py-5 bg-light border-top text-center">
           <div className="container py-3">
-            <h2 className="h3 fw-bold text-dark mb-2">Deseja uma Avaliação da sua Dor?</h2>
-            <p className="text-secondary small mb-4">Inicie a triagem rápida para receber orientações da nossa equipe em Campinas</p>
-            <a
-              href="#triagem-form"
-              className="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-bold shadow-sm"
-              style={{ backgroundColor: 'var(--azul-principal)', border: 'none' }}
-            >
-              <i className="bi bi-clipboard2-check me-2"></i> Iniciar Triagem de Atendimento
-            </a>
+            <h2 className="h3 fw-bold text-dark mb-2">Deseja uma Avaliação da sua Dor em Campinas?</h2>
+            <p className="text-secondary small mb-4">Escolha como prefere solicitar o seu agendamento:</p>
+            <div className="d-flex flex-column flex-sm-row justify-content-center gap-3">
+              <WhatsAppDirectButton
+                location="final_section_whatsapp"
+                campaignType="campinas_ortopedista_coluna"
+              />
+              <a
+                href="#triagem-card"
+                data-cta-location="final_section_triage"
+                className="btn btn-outline-primary btn-lg rounded-pill px-4 py-3 fw-bold d-inline-flex align-items-center justify-content-center"
+              >
+                <i className="bi bi-clipboard2-check me-2"></i> Iniciar Triagem Curta
+              </a>
+            </div>
           </div>
         </section>
       </main>
 
       {/* 10. MINIMALIST ADS FOOTER */}
-      <footer className="py-4 bg-white border-top text-center text-muted small">
+      <footer className="py-4 bg-white border-top text-center text-muted small mt-auto">
         <div className="container">
           <p className="mb-1 text-dark fw-bold">Dr. Otto Beckedorff • Médico Ortopedista e Traumatologista</p>
           <p className="mb-2">CRM-SP 226325 | RQE 139078 • Campinas / SP</p>
@@ -444,16 +476,19 @@ export default function PageOrtopedistaCampinas() {
             As informações disponibilizadas neste site têm propósito exclusivamente informativo e de educação em saúde, em estrita observância à Resolução CFM 2.336/2023.
           </p>
           <div className="d-flex justify-content-center gap-3 mt-2">
-            <Link href="/privacidade" className="text-secondary text-decoration-none hover-primary">
+            <Link href="/privacidade" className="text-secondary text-decoration-none">
               Política de Privacidade
             </Link>
             <span>•</span>
-            <a href="#triagem-form" className="text-secondary text-decoration-none hover-primary">
-              Voltar ao Início da Triagem
+            <a href="#topo" className="text-secondary text-decoration-none">
+              Voltar ao Início
             </a>
           </div>
         </div>
       </footer>
+
+      {/* 11. MOBILE STICKY CTA BAR (Discreet WhatsApp direct action) */}
+      <MobileStickyBar campaignType="campinas_ortopedista_coluna" />
     </div>
   );
 }

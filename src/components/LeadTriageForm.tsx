@@ -1,75 +1,83 @@
 'use client';
 
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { pushDataLayer, generateLeadId, initUtmCapture, getStoredUtms } from '@/lib/tracking';
+import { pushDataLayer, initUtmCapture, getStoredUtms } from '@/lib/tracking';
 
 interface LeadTriageFormProps {
   campaignType?: string;
   title?: string;
   subtitle?: string;
-  defaultModality?: 'convenio' | 'particular';
+  defaultModality?: 'amil' | 'outro_convenio' | 'particular';
 }
-
-const INSURANCES = [
-  { id: 'amil', label: 'Amil (Consultas no Instituto Orthesen)' },
-  { id: 'bradesco', label: 'Bradesco Saúde (Reembolso / Procedimentos no Vera Cruz)' },
-  { id: 'sulamerica', label: 'SulAmérica (Reembolso / Procedimentos no Vera Cruz)' },
-  { id: 'omint', label: 'Omint (Reembolso / Procedimentos no Vera Cruz)' },
-  { id: 'porto', label: 'Porto Seguro Saúde (Reembolso / Vera Cruz)' },
-  { id: 'caixa', label: 'Saúde Caixa (Reembolso / Vera Cruz)' },
-  { id: 'outro', label: 'Outro Convênio com Reembolso Médico' },
-  { id: 'unimed', label: 'Unimed (⚠️ Não Atendemos)' }
-];
-
-const REASONS = [
-  'Coluna / Hérnia de Disco / Nervo Ciático',
-  'Dor Lombar ou Cervical Crônica',
-  'Joelho (Artrose, Infiltração, Condromalácia)',
-  'Ombro (Tendinite, Manguito Rotador)',
-  'Quadril (Bursite, Artrose)',
-  'Outra Dor Articular ou Muscular'
-];
 
 export default function LeadTriageForm({
   campaignType = 'campinas_geral',
-  title = 'Verifique a Disponibilidade de Atendimento',
-  subtitle = 'Preencha a triagem rápida para receber as orientações da nossa equipe sobre convênios e agendamento.',
-  defaultModality = 'convenio'
+  title = 'Verificar Atendimento e Convênios',
+  subtitle = 'Informe seus dados de contato para que nossa secretária consulte a disponibilidade de horários e a cobertura para o seu caso.',
+  defaultModality = 'amil'
 }: LeadTriageFormProps) {
-  const [leadId, setLeadId] = useState<string>('');
   const [formStarted, setFormStarted] = useState(false);
+  const [refCode, setRefCode] = useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      try {
+        return sessionStorage.getItem('drotto_ref_code') || '';
+      } catch {
+        return '';
+      }
+    }
+    return '';
+  });
 
-  // Form Fields
+  // Form Fields (Minimalist & Optional Flow)
+  const [modality, setModality] = useState<'amil' | 'outro_convenio' | 'particular'>(defaultModality);
+  const [otherInsuranceName, setOtherInsuranceName] = useState('');
   const [name, setName] = useState('');
   const [phone, setPhone] = useState('');
-  const [modality, setModality] = useState<'convenio' | 'particular'>(defaultModality);
-  const [insurance, setInsurance] = useState('Amil (Consultas no Instituto Orthesen)');
-  const [region, setRegion] = useState('Campinas - SP');
-  const [reason, setReason] = useState(REASONS[0]);
-  const [contactPreference, setContactPreference] = useState<'whatsapp' | 'phone'>('whatsapp');
-  const [privacyAccepted, setPrivacyAccepted] = useState(true);
+  
+  // Consent starts strictly unchecked per LGPD guidelines
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
 
-  // UI state
+  // UI status
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [submittedLead, setSubmittedLead] = useState<{
     lead_id: string;
-    status: string;
-    disqualified: boolean;
+    is_unimed: boolean;
     whatsapp_url: string;
   } | null>(null);
 
   useEffect(() => {
     initUtmCapture();
-    setLeadId(generateLeadId());
-  }, []);
+    if (!refCode) {
+      const utms = getStoredUtms();
+      fetch('/api/session/click', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          page_path: window.location.pathname,
+          landing_page: window.location.pathname,
+          ...utms
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.ref_code) {
+          try {
+            sessionStorage.setItem('drotto_ref_code', data.ref_code);
+          } catch {}
+          setRefCode(data.ref_code);
+        }
+      })
+      .catch(() => {});
+    }
+  }, [refCode]);
 
   const handleFirstInteraction = () => {
     if (!formStarted) {
       setFormStarted(true);
       pushDataLayer('form_start', {
-        cta_name: 'iniciar_triagem',
+        cta_name: 'iniciar_triagem_curta',
         cta_location: 'triage_card',
         campaign_type: campaignType
       });
@@ -84,23 +92,25 @@ export default function LeadTriageForm({
     return `(${digits.slice(0, 2)}) ${digits.slice(2, 7)}-${digits.slice(7)}`;
   };
 
-  const isUnimedSelected = modality === 'convenio' && insurance.toLowerCase().includes('unimed');
+  const isUnimedMentioned = 
+    modality === 'outro_convenio' && 
+    otherInsuranceName.toLowerCase().includes('unimed');
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setErrorMessage(null);
 
     const cleanPhone = phone.replace(/\D/g, '');
-    if (name.trim().length < 3) {
-      setErrorMessage('Por favor, informe seu nome completo.');
+    if (name.trim().length < 2) {
+      setErrorMessage('Por favor, informe seu nome.');
       return;
     }
     if (cleanPhone.length < 10) {
-      setErrorMessage('Por favor, informe um número de telefone com DDD válido (mínimo 10 dígitos).');
+      setErrorMessage('Por favor, informe um número de telefone celular com DDD.');
       return;
     }
     if (!privacyAccepted) {
-      setErrorMessage('É necessário aceitar os termos de privacidade para continuar.');
+      setErrorMessage('Para enviar o formulário, é necessário assinalar o consentimento de contato.');
       return;
     }
 
@@ -109,18 +119,14 @@ export default function LeadTriageForm({
     try {
       const storedUtms = getStoredUtms();
       const payload = {
-        lead_id: leadId,
         name: name.trim(),
-        phone: phone.trim(),
+        phone: cleanPhone,
         modality,
-        insurance: modality === 'particular' ? 'Atendimento Particular' : insurance,
-        region,
-        reason,
-        contact_preference: contactPreference,
-        privacy_accepted: privacyAccepted,
+        insurance_note: modality === 'outro_convenio' ? otherInsuranceName.trim() : undefined,
+        privacy_consent: true,
+        ref_code: refCode || undefined,
         page_path: typeof window !== 'undefined' ? window.location.pathname : '',
         landing_page: typeof window !== 'undefined' ? window.location.pathname : '',
-        campaign_type: campaignType,
         ...storedUtms
       };
 
@@ -138,236 +144,202 @@ export default function LeadTriageForm({
 
       setSubmittedLead(data);
 
-      if (data.disqualified) {
-        // Track disqualification event
-        pushDataLayer('disqualify_lead', {
-          lead_id: data.lead_id,
-          disqualification_reason: 'unimed',
-          plan_category: 'unimed',
-          cta_location: 'triage_form',
-          campaign_type: campaignType
-        });
-      } else {
-        // Track qualified generate_lead event with non-sensitive data
-        pushDataLayer('generate_lead', {
-          lead_id: data.lead_id,
-          plan_category: modality === 'particular' ? 'particular' : insurance.split(' ')[0].toLowerCase(),
-          region,
-          contact_preference: contactPreference,
-          cta_location: 'triage_form',
-          campaign_type: campaignType
-        });
-      }
+      // Only operational non-sensitive data in dataLayer (NO name, phone, email, unimed, insurance, symptoms)
+      pushDataLayer('generate_lead', {
+        cta_name: 'enviar_triagem_curta',
+        cta_location: 'triage_form',
+        campaign_type: campaignType
+      });
     } catch (err: any) {
-      setErrorMessage(err.message || 'Ocorreu um erro no envio. Por favor, tente novamente.');
+      setErrorMessage(err.message || 'Ocorreu um erro ao enviar. Por favor, tente novamente ou use o WhatsApp direto.');
     } finally {
       setIsSubmitting(false);
     }
   };
 
-  const handleWhatsAppClick = () => {
-    pushDataLayer('click_whatsapp', {
-      cta_name: 'continuar_whatsapp_triagem',
-      cta_location: 'triage_success',
-      lead_id: submittedLead?.lead_id || leadId,
-      campaign_type: campaignType
-    });
-  };
-
-  const handlePhoneClick = () => {
-    pushDataLayer('click_phone', {
-      cta_name: 'ligar_telefone',
-      cta_location: 'triage_form',
-      phone_number: '19999439824',
-      campaign_type: campaignType
-    });
-  };
-
-  const handleDoctoraliaClick = () => {
-    pushDataLayer('click_doctoralia', {
-      cta_name: 'agendar_doctoralia',
-      cta_location: 'triage_form',
-      campaign_type: campaignType
-    });
-  };
-
   return (
-    <div className="bg-white p-4 p-md-5 rounded-4 shadow-sm border position-relative" id="triagem-form" style={{ borderColor: '#e2e8f0' }}>
+    <div className="bg-white p-4 p-md-5 rounded-4 shadow-sm border position-relative" id="triagem-card" style={{ borderColor: '#e2e8f0' }}>
       
       {/* Header */}
       <div className="text-center mb-4">
-        <span className="badge rounded-pill px-3 py-2 fw-bold mb-2 shadow-sm" style={{ backgroundColor: 'rgba(14, 115, 219, 0.1)', color: 'var(--azul-principal)', letterSpacing: '0.5px' }}>
-          <i className="bi bi-clipboard2-check me-1"></i> TRIAGEM DE ATENDIMENTO
+        <span className="badge rounded-pill px-3 py-1 fw-bold mb-2 shadow-sm text-uppercase" style={{ backgroundColor: 'rgba(14, 115, 219, 0.08)', color: 'var(--azul-principal)', letterSpacing: '0.5px', fontSize: '0.78rem' }}>
+          <i className="bi bi-shield-check me-1"></i> Triagem Rápida & Opcional
         </span>
-        <h3 className="h4 fw-bold mb-2" style={{ color: 'var(--azul-escuro)' }}>{title}</h3>
-        <p className="text-muted small mb-0">{subtitle}</p>
+        <h3 className="h5 fw-bold mb-1" style={{ color: 'var(--azul-escuro)' }}>{title}</h3>
+        <p className="text-muted small mb-0" style={{ fontSize: '0.85rem' }}>{subtitle}</p>
       </div>
 
-      {/* Success View */}
       {submittedLead ? (
-        <div className="text-center py-4 animate__animated animate__fadeIn">
-          {submittedLead.disqualified ? (
-            <div className="p-4 rounded-4 mb-4" style={{ backgroundColor: '#fffbeb', border: '1px solid #fde68a' }}>
-              <div className="fs-1 text-warning mb-2"><i className="bi bi-info-circle-fill"></i></div>
-              <h4 className="fw-bold mb-2 text-dark">Informação Importante sobre a Unimed</h4>
-              <p className="text-secondary small mb-3" style={{ lineHeight: '1.7' }}>
-                O <strong>Dr. Otto Beckedorff não atende pelo convênio Unimed</strong> (nem para consultas ambulatoriais, nem para cirurgias ou procedimentos no Vera Cruz).
-              </p>
-              <div className="bg-white p-3 rounded-3 border text-start small text-muted mb-3">
-                <p className="mb-1 fw-bold text-dark"><i className="bi bi-arrow-right-circle text-primary me-2"></i>Opções para seu atendimento:</p>
-                <ul className="mb-0 ps-3">
-                  <li>Atendimento <strong>particular</strong> com emissão de nota fiscal médica e relatório detalhado para eventual pedido de reembolso junto à sua operadora.</li>
-                  <li>Consulta direta ao guia médico da Unimed para localização de ortopedistas credenciados na rede própria.</li>
-                </ul>
+        /* Success Screen */
+        <div className="text-center py-3 animate__animated animate__fadeIn">
+          {submittedLead.is_unimed ? (
+            <div className="p-4 rounded-4 mb-3 text-start" style={{ backgroundColor: '#fffbeb', border: '1px solid #fde68a' }}>
+              <div className="d-flex align-items-center gap-2 mb-2">
+                <i className="bi bi-info-circle-fill text-warning fs-5"></i>
+                <h4 className="h6 fw-bold mb-0 text-dark">Informação sobre Atendimento Unimed</h4>
               </div>
-              <p className="small text-muted mb-3">Protocolo de registro: <code>{submittedLead.lead_id}</code></p>
-              <a
-                href={submittedLead.whatsapp_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={handleWhatsAppClick}
-                className="btn btn-outline-dark rounded-pill px-4 py-2 fw-bold small"
-              >
-                <i className="bi bi-whatsapp me-2 text-success"></i> Desejo saber valores do particular no WhatsApp
-              </a>
-            </div>
-          ) : (
-            <div className="p-4 rounded-4 mb-4" style={{ backgroundColor: '#f0fdf4', border: '1px solid #bbf7d0' }}>
-              <div className="fs-1 text-success mb-2"><i className="bi bi-check-circle-fill"></i></div>
-              <h4 className="fw-bold text-success mb-2">Triagem Registrada com Sucesso!</h4>
-              <p className="text-secondary mb-3" style={{ lineHeight: '1.7' }}>
-                Olá, <strong>{name}</strong>! Seus dados foram recebidos com segurança e sua solicitação já está na fila de atendimento da nossa secretária em Campinas.
+              <p className="text-secondary small mb-3" style={{ lineHeight: '1.6' }}>
+                O Dr. Otto Beckedorff <strong>não faz parte da rede credenciada da Unimed</strong> (nem para consultas, nem para procedimentos no Vera Cruz).
               </p>
-              <p className="small text-muted mb-4">Protocolo de atendimento: <span className="badge bg-light text-dark border px-2 py-1">{submittedLead.lead_id}</span></p>
-
-              <div className="d-flex flex-column gap-3 justify-content-center align-items-center">
+              <p className="text-secondary small mb-3" style={{ lineHeight: '1.6' }}>
+                Caso deseje, o atendimento pode ser realizado de forma <strong>particular</strong>, com fornecimento de nota fiscal e relatório médico detalhado para eventual solicitação de reembolso junto à sua operadora.
+              </p>
+              <div className="d-flex flex-column gap-2">
                 <a
                   href={submittedLead.whatsapp_url}
                   target="_blank"
                   rel="noopener noreferrer"
-                  onClick={handleWhatsAppClick}
-                  className="btn btn-lg text-white fw-bold px-5 py-3 rounded-pill shadow-sm d-inline-flex align-items-center justify-content-center w-100"
-                  style={{ backgroundColor: '#25D366', maxWidth: '380px' }}
+                  data-cta-location="triage_unimed_whatsapp"
+                  className="btn btn-sm btn-outline-dark rounded-pill py-2 fw-bold text-center"
                 >
-                  <i className="bi bi-whatsapp fs-5 me-2"></i> Abrir WhatsApp da Secretária
+                  <i className="bi bi-whatsapp me-2 text-success"></i> Consultar valores do atendimento particular no WhatsApp
                 </a>
-                <span className="text-muted small">
-                  <i className="bi bi-shield-check text-success me-1"></i> Mensagem direta e segura, sem exposição de dados de saúde.
-                </span>
               </div>
+            </div>
+          ) : (
+            <div className="p-4 rounded-4 mb-3" style={{ backgroundColor: '#f0fdf4', border: '1px solid #bbf7d0' }}>
+              <div className="fs-1 text-success mb-2"><i className="bi bi-check-circle-fill"></i></div>
+              <h4 className="h6 fw-bold text-success mb-2">Dados Recebidos com Sucesso!</h4>
+              <p className="text-secondary small mb-3" style={{ lineHeight: '1.6' }}>
+                Obrigado, <strong>{name}</strong>. Nossa equipe entrará em contato para verificar os horários disponíveis e confirmar a cobertura.
+              </p>
+              <a
+                href={submittedLead.whatsapp_url}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-cta-location="triage_success_whatsapp"
+                className="btn btn-success rounded-pill px-4 py-2 fw-bold d-inline-flex align-items-center justify-content-center w-100"
+                style={{ backgroundColor: '#25D366', border: 'none' }}
+              >
+                <i className="bi bi-whatsapp me-2 fs-5"></i> Continuar no WhatsApp Agora
+              </a>
             </div>
           )}
 
-          <div className="mt-3">
-            <button
-              onClick={() => {
-                setSubmittedLead(null);
-                setName('');
-                setPhone('');
-                setLeadId(generateLeadId());
-              }}
-              className="btn btn-link btn-sm text-muted text-decoration-none"
-            >
-              <i className="bi bi-arrow-counterclockwise me-1"></i> Iniciar nova triagem
-            </button>
-          </div>
+          <button
+            onClick={() => {
+              setSubmittedLead(null);
+              setName('');
+              setPhone('');
+              setOtherInsuranceName('');
+              setPrivacyAccepted(false);
+            }}
+            className="btn btn-link btn-sm text-muted text-decoration-none mt-2"
+          >
+            <i className="bi bi-arrow-counterclockwise me-1"></i> Nova consulta
+          </button>
         </div>
       ) : (
-        /* Form View */
+        /* Short & Non-Intrusive Form */
         <form onSubmit={handleSubmit} onFocus={handleFirstInteraction} className="needs-validation">
           
-          {/* Modalidade */}
+          {/* 1. Modalidade */}
           <div className="mb-3">
-            <label className="form-label small fw-bold text-uppercase" style={{ color: 'var(--azul-escuro)' }}>
-              1. Modalidade Desejada
+            <label className="form-label small fw-bold text-muted text-uppercase mb-2" style={{ fontSize: '0.78rem' }}>
+              1. Modalidade de Atendimento Desejada
             </label>
-            <div className="d-flex gap-2">
-              <button
-                type="button"
-                onClick={() => {
-                  setModality('convenio');
-                  handleFirstInteraction();
-                }}
-                className={`btn flex-fill py-2 fw-bold rounded-3 transition-all ${
-                  modality === 'convenio' ? 'btn-primary text-white shadow-sm' : 'btn-outline-secondary'
-                }`}
-                style={{ fontSize: '0.9rem' }}
-              >
-                <i className="bi bi-hospital me-1"></i> Convênio Médico
-              </button>
-              <button
-                type="button"
-                onClick={() => {
-                  setModality('particular');
-                  handleFirstInteraction();
-                }}
-                className={`btn flex-fill py-2 fw-bold rounded-3 transition-all ${
-                  modality === 'particular' ? 'btn-primary text-white shadow-sm' : 'btn-outline-secondary'
-                }`}
-                style={{ fontSize: '0.9rem' }}
-              >
-                <i className="bi bi-person-check me-1"></i> Atendimento Particular
-              </button>
+            <div className="row g-2">
+              <div className="col-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setModality('amil');
+                    handleFirstInteraction();
+                  }}
+                  className={`btn w-100 py-2 rounded-3 fw-bold small transition-all ${
+                    modality === 'amil' ? 'btn-primary text-white shadow-sm' : 'btn-outline-secondary'
+                  }`}
+                  style={{ fontSize: '0.82rem' }}
+                >
+                  Amil
+                </button>
+              </div>
+              <div className="col-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setModality('outro_convenio');
+                    handleFirstInteraction();
+                  }}
+                  className={`btn w-100 py-2 rounded-3 fw-bold small transition-all ${
+                    modality === 'outro_convenio' ? 'btn-primary text-white shadow-sm' : 'btn-outline-secondary'
+                  }`}
+                  style={{ fontSize: '0.82rem' }}
+                >
+                  Outro Plano
+                </button>
+              </div>
+              <div className="col-4">
+                <button
+                  type="button"
+                  onClick={() => {
+                    setModality('particular');
+                    handleFirstInteraction();
+                  }}
+                  className={`btn w-100 py-2 rounded-3 fw-bold small transition-all ${
+                    modality === 'particular' ? 'btn-primary text-white shadow-sm' : 'btn-outline-secondary'
+                  }`}
+                  style={{ fontSize: '0.82rem' }}
+                >
+                  Particular
+                </button>
+              </div>
             </div>
           </div>
 
-          {/* Convênio Picker */}
-          {modality === 'convenio' && (
-            <div className="mb-3 animate__animated animate__fadeIn">
-              <label htmlFor="triage-insurance" className="form-label small fw-bold text-uppercase" style={{ color: 'var(--azul-escuro)' }}>
-                2. Selecione a Operadora do seu Plano
-              </label>
-              <select
-                id="triage-insurance"
-                className="form-select rounded-3 py-2"
-                value={insurance}
-                onChange={(e) => setInsurance(e.target.value)}
-              >
-                {INSURANCES.map((item) => (
-                  <option key={item.id} value={item.label}>
-                    {item.label}
-                  </option>
-                ))}
-              </select>
+          {/* Conditional Guidance based on Modality */}
+          {modality === 'amil' && (
+            <div className="alert alert-info py-2 px-3 mb-3 small rounded-3 bg-light border-info" style={{ fontSize: '0.82rem' }}>
+              <i className="bi bi-info-circle-fill text-primary me-2"></i>
+              <strong>Amil em Campinas:</strong> Atendimento de consultas no Instituto Orthesen. Procedimentos e cirurgias no Hospital Vera Cruz estão sujeitos à categoria do plano e autorização da operadora.
+            </div>
+          )}
 
-              {/* Informative Guidance Alerts */}
-              {isUnimedSelected ? (
-                <div className="alert alert-warning py-2 px-3 mt-2 mb-0 small rounded-3 d-flex align-items-start border-warning">
-                  <i className="bi bi-exclamation-triangle-fill text-warning me-2 mt-1 fs-6"></i>
-                  <div>
-                    <strong>Aviso importante:</strong> O Dr. Otto Beckedorff <strong>não aceita Unimed</strong> (nem consultas nem procedimentos). O atendimento para pacientes Unimed pode ser realizado exclusivamente na modalidade particular com recibo para reembolso.
-                  </div>
-                </div>
-              ) : insurance.includes('Amil') ? (
-                <div className="alert alert-info py-2 px-3 mt-2 mb-0 small rounded-3 d-flex align-items-start border-info bg-light">
-                  <i className="bi bi-info-circle-fill text-primary me-2 mt-1"></i>
-                  <div>
-                    <strong>Amil em Campinas:</strong> Atendimento de consultas no Instituto Orthesen. Procedimentos e cirurgias no Hospital Vera Cruz estão sujeitos à categoria do plano e autorização prévia da operadora.
-                  </div>
+          {modality === 'outro_convenio' && (
+            <div className="mb-3 animate__animated animate__fadeIn">
+              <label htmlFor="triage-other-insurance" className="form-label small fw-bold text-muted text-uppercase mb-1" style={{ fontSize: '0.78rem' }}>
+                Qual é a operadora do seu plano? (Opcional)
+              </label>
+              <input
+                id="triage-other-insurance"
+                type="text"
+                placeholder="Ex: Bradesco, SulAmérica, Omint, Porto Seguro..."
+                className="form-control rounded-3 py-2 small"
+                value={otherInsuranceName}
+                onChange={(e) => setOtherInsuranceName(e.target.value)}
+              />
+              {isUnimedMentioned ? (
+                <div className="alert alert-warning py-2 px-3 mt-2 mb-0 small rounded-3 border-warning" style={{ fontSize: '0.8rem' }}>
+                  <i className="bi bi-exclamation-triangle-fill text-warning me-1"></i>
+                  <strong>Aviso:</strong> Não atendemos Unimed. Oferecemos atendimento particular com nota fiscal para eventual pedido de reembolso.
                 </div>
               ) : (
-                <div className="alert alert-light py-2 px-3 mt-2 mb-0 small rounded-3 border d-flex align-items-start">
-                  <i className="bi bi-shield-check text-success me-2 mt-1"></i>
-                  <div>
-                    <strong>Reembolso Médico Facilitado:</strong> Consulta particular com fornecimento de nota fiscal e relatório médico para solicitação de reembolso. Procedimentos hospitalares no Vera Cruz podem ser cobertos dependendo da sua categoria.
-                  </div>
-                </div>
+                <small className="text-muted d-block mt-1" style={{ fontSize: '0.78rem' }}>
+                  <i className="bi bi-shield-check text-success me-1"></i> Atendemos consultas no modelo particular com recibo/relatório para reembolso. Procedimentos hospitalares no Vera Cruz sob verificação.
+                </small>
               )}
             </div>
           )}
 
-          {/* Nome e Telefone */}
+          {modality === 'particular' && (
+            <div className="alert alert-light py-2 px-3 mb-3 small rounded-3 border" style={{ fontSize: '0.82rem' }}>
+              <i className="bi bi-person-check-fill text-primary me-2"></i>
+              <strong>Atendimento Particular:</strong> Tempo dedicado, avaliação aprofundada e emissão de documentação para reembolso ou declaração de IRPF.
+            </div>
+          )}
+
+          {/* 2. Nome e Telefone */}
           <div className="row g-2 mb-3">
             <div className="col-12 col-md-6">
-              <label htmlFor="triage-name" className="form-label small fw-bold text-uppercase" style={{ color: 'var(--azul-escuro)' }}>
-                {modality === 'convenio' ? '3.' : '2.'} Seu Nome Completo
+              <label htmlFor="triage-name" className="form-label small fw-bold text-muted text-uppercase mb-1" style={{ fontSize: '0.78rem' }}>
+                Seu Nome Completo
               </label>
               <input
                 id="triage-name"
                 type="text"
                 required
-                placeholder="Ex: Maria da Silva"
-                className="form-control rounded-3 py-2"
+                placeholder="Ex: João Silva"
+                className="form-control rounded-3 py-2 small"
                 value={name}
                 onChange={(e) => {
                   setName(e.target.value);
@@ -376,15 +348,15 @@ export default function LeadTriageForm({
               />
             </div>
             <div className="col-12 col-md-6">
-              <label htmlFor="triage-phone" className="form-label small fw-bold text-uppercase" style={{ color: 'var(--azul-escuro)' }}>
-                WhatsApp / Celular com DDD
+              <label htmlFor="triage-phone" className="form-label small fw-bold text-muted text-uppercase mb-1" style={{ fontSize: '0.78rem' }}>
+                WhatsApp / Celular (com DDD)
               </label>
               <input
                 id="triage-phone"
                 type="tel"
                 required
                 placeholder="(19) 99999-9999"
-                className="form-control rounded-3 py-2"
+                className="form-control rounded-3 py-2 small"
                 value={phone}
                 onChange={(e) => {
                   setPhone(maskPhone(e.target.value));
@@ -394,153 +366,47 @@ export default function LeadTriageForm({
             </div>
           </div>
 
-          {/* Região e Motivo Geral */}
-          <div className="row g-2 mb-3">
-            <div className="col-12 col-md-6">
-              <label htmlFor="triage-region" className="form-label small fw-bold text-uppercase" style={{ color: 'var(--azul-escuro)' }}>
-                Cidade / Região
-              </label>
-              <select
-                id="triage-region"
-                className="form-select rounded-3 py-2"
-                value={region}
-                onChange={(e) => setRegion(e.target.value)}
-              >
-                <option value="Campinas - SP">Campinas - SP</option>
-                <option value="Região Metropolitana de Campinas (RMC)">Região de Campinas (RMC)</option>
-                <option value="Jacutinga / Sul de Minas">Jacutinga / Sul de Minas</option>
-                <option value="Outra Cidade / Telemedicina">Outra Cidade / Teleconsulta</option>
-              </select>
-            </div>
-            <div className="col-12 col-md-6">
-              <label htmlFor="triage-reason" className="form-label small fw-bold text-uppercase" style={{ color: 'var(--azul-escuro)' }}>
-                Motivo Geral do Contato
-              </label>
-              <select
-                id="triage-reason"
-                className="form-select rounded-3 py-2"
-                value={reason}
-                onChange={(e) => setReason(e.target.value)}
-              >
-                {REASONS.map((r) => (
-                  <option key={r} value={r}>
-                    {r}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-
-          {/* Preferência de Contato */}
+          {/* 3. Consentimento LGPD (Starts Unchecked by Default) */}
           <div className="mb-3">
-            <label className="form-label small fw-bold text-uppercase" style={{ color: 'var(--azul-escuro)' }}>
-              Como prefere receber as informações?
-            </label>
-            <div className="d-flex gap-3">
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="prefContact"
-                  id="prefWhatsapp"
-                  value="whatsapp"
-                  checked={contactPreference === 'whatsapp'}
-                  onChange={() => setContactPreference('whatsapp')}
-                />
-                <label className="form-check-label small" htmlFor="prefWhatsapp">
-                  <i className="bi bi-whatsapp text-success me-1"></i> Mensagem no WhatsApp
-                </label>
-              </div>
-              <div className="form-check">
-                <input
-                  className="form-check-input"
-                  type="radio"
-                  name="prefContact"
-                  id="prefPhone"
-                  value="phone"
-                  checked={contactPreference === 'phone'}
-                  onChange={() => setContactPreference('phone')}
-                />
-                <label className="form-check-label small" htmlFor="prefPhone">
-                  <i className="bi bi-telephone text-primary me-1"></i> Ligação telefônica
-                </label>
-              </div>
-            </div>
-          </div>
-
-          {/* LGPD Consent Checkbox */}
-          <div className="mb-4">
             <div className="form-check d-flex align-items-start">
               <input
                 className="form-check-input me-2 mt-1"
                 type="checkbox"
-                id="triage-privacy"
+                id="triage-consent"
                 required
                 checked={privacyAccepted}
                 onChange={(e) => setPrivacyAccepted(e.target.checked)}
               />
-              <label className="form-check-label text-muted small" htmlFor="triage-privacy" style={{ fontSize: '0.82rem', lineHeight: '1.4' }}>
-                Concordo com a <Link href="/privacidade" target="_blank" className="text-decoration-underline text-primary">Política de Privacidade</Link> e autorizo o contato exclusivo da equipe do Dr. Otto Beckedorff para orientações sobre consulta médica. Seus dados estão seguros e não são compartilhados com terceiros.
+              <label className="form-check-label text-muted" htmlFor="triage-consent" style={{ fontSize: '0.8rem', lineHeight: '1.4' }}>
+                Autorizo o uso do meu nome e telefone exclusivamente pela equipe do Dr. Otto Beckedorff para contato sobre agendamento de consulta. Estou ciente de que posso revogar ou solicitar a exclusão de meus dados conforme a <Link href="/privacidade" target="_blank" className="text-decoration-underline text-primary">Política de Privacidade</Link>.
               </label>
             </div>
           </div>
 
-          {/* Error Message */}
           {errorMessage && (
-            <div className="alert alert-danger py-2 px-3 small rounded-3 mb-3 d-flex align-items-center">
-              <i className="bi bi-exclamation-circle-fill me-2 fs-6"></i>
-              <div>{errorMessage}</div>
+            <div className="alert alert-danger py-2 px-3 small rounded-3 mb-3">
+              <i className="bi bi-exclamation-circle-fill me-1"></i> {errorMessage}
             </div>
           )}
 
-          {/* Submit CTA */}
+          {/* Submit Button */}
           <button
             type="submit"
             disabled={isSubmitting}
-            className="btn btn-lg w-100 text-white fw-bold rounded-pill py-3 shadow-sm d-flex align-items-center justify-content-center transition-all"
-            style={{ backgroundColor: 'var(--azul-principal)', border: 'none' }}
+            className="btn w-100 text-white fw-bold rounded-pill py-2 shadow-sm d-flex align-items-center justify-content-center transition-all"
+            style={{ backgroundColor: 'var(--azul-principal)', border: 'none', fontSize: '0.95rem' }}
           >
             {isSubmitting ? (
               <>
                 <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                Processando triagem...
-              </>
-            ) : isUnimedSelected ? (
-              <>
-                <i className="bi bi-info-circle me-2"></i> Registrar Interesse (Apenas Particular)
+                Consultando disponibilidade...
               </>
             ) : (
               <>
-                <i className="bi bi-check2-circle fs-5 me-2"></i> Solicitar Orientação e Agendamento
+                <i className="bi bi-send-check me-2"></i> Enviar Triagem para a Secretária
               </>
             )}
           </button>
-
-          {/* Sub-CTAs (Phone / Doctoralia) */}
-          <div className="text-center mt-3 pt-2 border-top">
-            <p className="text-muted small mb-2" style={{ fontSize: '0.8rem' }}>Outros canais de agendamento disponíveis:</p>
-            <div className="d-flex justify-content-center gap-3">
-              <a
-                href="tel:19999439824"
-                onClick={handlePhoneClick}
-                className="text-decoration-none small fw-bold"
-                style={{ color: 'var(--azul-escuro)' }}
-              >
-                <i className="bi bi-telephone-fill me-1 text-primary"></i> (19) 99943-9824
-              </a>
-              <span className="text-muted small">•</span>
-              <a
-                href="https://www.doctoralia.com.br/otto-beckedorff/ortopedista-traumatologista/campinas"
-                target="_blank"
-                rel="noopener noreferrer"
-                onClick={handleDoctoraliaClick}
-                className="text-decoration-none small fw-bold"
-                style={{ color: 'var(--azul-escuro)' }}
-              >
-                <i className="bi bi-calendar2-check-fill me-1 text-info"></i> Agenda Doctoralia
-              </a>
-            </div>
-          </div>
         </form>
       )}
     </div>

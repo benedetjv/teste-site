@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "test:compliance": "tsx tests/run_all_tests.js",
     "lint": "eslint"
   },
   "dependencies": {
@@ -19,17 +20,21 @@
     "framer-motion": "^12.29.2",
     "lucide-react": "^0.577.0",
     "next": "16.1.1",
+    "pg": "^8.19.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
     "resend": "^6.9.1"
   },
   "devDependencies": {
     "@types/node": "^25.1.0",
+    "@types/pg": "^8.16.0",
     "@types/react": "^19.2.10",
     "@types/react-dom": "^19.2.3",
     "eslint": "^9",
     "eslint-config-next": "16.1.1",
+    "pg-mem": "^3.0.5",
     "puppeteer-core": "^25.16.0",
+    "tsx": "^4.23.15",
     "typescript": "^5.9.3"
   },
   "browserslist": [

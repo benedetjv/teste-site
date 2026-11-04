@@ -3,7 +3,7 @@ import Link from 'next/link';
 
 export const metadata = {
   title: 'Política de Privacidade e Proteção de Dados | Dr. Otto Beckedorff',
-  description: 'Conheça como tratamos e protegemos seus dados pessoais de acordo com a LGPD (Lei Geral de Proteção de Dados - Lei 13.709/2018).',
+  description: 'Informações transparentes sobre o tratamento de dados pessoais e de navegação de acordo com a LGPD (Lei 13.709/2018).',
   robots: 'noindex, follow'
 };
 
@@ -17,68 +17,124 @@ export default function PrivacyPolicyPage() {
           </Link>
 
           <span className="badge bg-primary bg-opacity-10 text-primary px-3 py-2 rounded-pill fw-bold mb-3 d-inline-block">
-            Conformidade LGPD
+            Conformidade LGPD (Lei nº 13.709/2018)
           </span>
 
-          <h1 className="h2 fw-bold mb-4" style={{ color: 'var(--azul-escuro)' }}>
+          <h1 className="h3 fw-bold mb-3" style={{ color: 'var(--azul-escuro)' }}>
             Política de Privacidade e Proteção de Dados Pessoais
           </h1>
 
-          <p className="text-muted small">Última atualização: Novembro de 2026</p>
+          <p className="text-muted small">Versão 1.2 — Vigência: Novembro de 2026</p>
+          <div className="alert alert-warning py-2 px-3 small rounded-3 mb-4">
+            <i className="bi bi-info-circle me-1"></i> <em>Nota de governança: O conteúdo deste documento foi estruturado para refletir com exatidão a operação técnica deste site e deve ser submetido à revisão periódica por assessoria jurídica especializada em direito médico e proteção de dados.</em>
+          </div>
 
           <hr className="my-4" />
 
+          {/* 1. CONTROLADOR */}
           <section className="mb-4">
-            <h2 className="h5 fw-bold" style={{ color: 'var(--azul-principal)' }}>1. Compromisso com a sua Privacidade</h2>
-            <p className="text-secondary" style={{ lineHeight: '1.8' }}>
-              O consultório do <strong>Dr. Otto Beckedorff (CRM-SP 226325 | RQE 139078)</strong> preza pela segurança, confidencialidade e transparência no tratamento dos dados pessoais de seus pacientes e visitantes, em integral conformidade com a <strong>Lei Geral de Proteção de Dados Pessoais (LGPD - Lei nº 13.709/2018)</strong> e com o <strong>Código de Ética Médica</strong> do Conselho Federal de Medicina (CFM).
+            <h2 className="h6 fw-bold text-uppercase" style={{ color: 'var(--azul-principal)' }}>1. Identidade e Contato do Controlador</h2>
+            <p className="text-secondary small" style={{ lineHeight: '1.8' }}>
+              O controlador dos dados pessoais coletados neste site é o médico <strong>Dr. Otto Beckedorff (CRM-SP 226325 | RQE 139078)</strong>, com consultório médico localizado no Instituto Orthesen: Av. Andrade Neves, 707 – 5º Andar, Centro, Campinas – SP, CEP 13013-161.
+              <br />
+              Canal oficial de atendimento para privacidade e LGPD: <code>drottobeckedorff@gmail.com</code> ou telefone oficial (19) 99943-9824.
             </p>
           </section>
 
+          {/* 2. DADOS COLETADOS E FINALIDADES */}
           <section className="mb-4">
-            <h2 className="h5 fw-bold" style={{ color: 'var(--azul-principal)' }}>2. Quais Dados Coletamos e para Qual Finalidade</h2>
-            <p className="text-secondary" style={{ lineHeight: '1.8' }}>
-              Coletamos exclusivamente as informações estritamente necessárias para viabilizar o contato inicial, a triagem administrativa de convênios/modalidades e o agendamento de consultas:
+            <h2 className="h6 fw-bold text-uppercase" style={{ color: 'var(--azul-principal)' }}>2. Dados Coletados e Finalidades do Tratamento</h2>
+            <div className="table-responsive small">
+              <table className="table table-bordered align-middle">
+                <thead className="table-light">
+                  <tr>
+                    <th>Categoria</th>
+                    <th>Dados Específicos</th>
+                    <th>Finalidade Específica</th>
+                    <th>Base Legal (LGPD)</th>
+                  </tr>
+                </thead>
+                <tbody className="text-secondary">
+                  <tr>
+                    <td><strong>Identificação e Contato</strong></td>
+                    <td>Nome completo e telefone celular / WhatsApp.</td>
+                    <td>Retorno pela equipe da secretária para esclarecimento sobre horários, modalidades de atendimento e agendamento de consulta.</td>
+                    <td>Consentimento (Art. 7º, I) e Procedimentos preliminares a contrato (Art. 7º, V).</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Administrativo de Saúde</strong></td>
+                    <td>Modalidade pretendida (Amil, particular ou reembolso).</td>
+                    <td>Verificação de elegibilidade e rede credenciada no Instituto Orthesen / Hospital Vera Cruz.</td>
+                    <td>Procedimentos preliminares a contrato (Art. 7º, V) e Tutela da Saúde (Art. 11, II, &quot;f&quot;).</td>
+                  </tr>
+                  <tr>
+                    <td><strong>Navegação e Publicidade</strong></td>
+                    <td>Endereço IP anonimizado, parâmetros de campanha (UTMs) e IDs de clique (GCLID/GBRAID/WBRAID).</td>
+                    <td>Prevenção de fraudes, rate limiting do servidor e mensuração técnica da eficácia dos anúncios da campanha de pesquisa.</td>
+                    <td>Legítimo interesse do controlador (Art. 7º, IX) e Segurança da informação (Art. 7º, VIII).</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <p className="small text-muted" style={{ lineHeight: '1.6' }}>
+              <strong>Atenção sobre dados de saúde sensíveis:</strong> Não coletamos diagnósticos detalhados, laudos ou relatórios de exames na triagem inicial de marketing. A avaliação clínica detalhada ocorre exclusivamente no ato da consulta médica presencial ou telemedicina regulamentada, regida pelo Sigilo Médico e pelo Código de Ética Médica.
             </p>
-            <ul className="text-secondary" style={{ lineHeight: '1.8' }}>
-              <li><strong>Dados de Identificação e Contato:</strong> Nome completo, número de WhatsApp/telefone celular e cidade/região de atendimento.</li>
-              <li><strong>Dados Administrativos de Atendimento:</strong> Modalidade pretendida (particular ou convênio), operadora de saúde e região anatômica geral do motivo do contato (ex: coluna, joelho, ombro, quadril).</li>
-              <li><strong>Dados Técnicos de Navegação:</strong> Endereço IP anonimizado, identificadores de campanha (UTMs e Google Ads Click IDs como gclid) para mensuração de eficácia de anúncios e prevenção de fraudes.</li>
+          </section>
+
+          {/* 3. OPERADORES E FORNECEDORES */}
+          <section className="mb-4">
+            <h2 className="h6 fw-bold text-uppercase" style={{ color: 'var(--azul-principal)' }}>3. Operadores e Fornecedores Envolvidos</h2>
+            <p className="text-secondary small" style={{ lineHeight: '1.8' }}>
+              Para viabilizar a infraestrutura técnica e o atendimento ao paciente, utilizamos operadores terceirizados de tecnologia, estritamente limitados às suas finalidades:
+            </p>
+            <ul className="text-secondary small" style={{ lineHeight: '1.8' }}>
+              <li><strong>Hospedagem e Infraestrutura de Servidores (Vercel Inc. / Provedores Cloud):</strong> Hospedagem da aplicação Next.js e armazenamento criptografado em repouso.</li>
+              <li><strong>Plataforma de Mensagens (WhatsApp / Meta Platforms Inc.):</strong> Quando o visitante clica deliberadamente no botão de contato, a conversa ocorre no aplicativo do WhatsApp, sob os termos de privacidade da própria Meta.</li>
+              <li><strong>Agendamento Médico Online (Doctoralia / Docplanner Brasil):</strong> Caso o usuário opte pelo agendamento direto na agenda da Doctoralia, os dados são processados pela plataforma sob seus respectivos termos de uso.</li>
+              <li><strong>Métricas e Mensuração Anônima (Google LLC):</strong> Google Tag Manager e Google Analytics 4 configurados para capturar exclusivamente identificadores técnicos de campanha, sem envio de nome, telefone ou histórico clínico à plataforma.</li>
             </ul>
-            <p className="text-secondary fw-medium" style={{ lineHeight: '1.8' }}>
-              <em>Importante: Não solicitamos nem armazenamos relatórios médicos detalhados, laudos ou históricos de saúde na triagem inicial de marketing. Quaisquer dados clínicos sensíveis são coletados apenas e diretamente no ato da consulta médica presencial ou telemedicina regulamentada.</em>
+          </section>
+
+          {/* 4. TRANSFERÊNCIA INTERNACIONAL */}
+          <section className="mb-4">
+            <h2 className="h6 fw-bold text-uppercase" style={{ color: 'var(--azul-principal)' }}>4. Transferência Internacional de Dados</h2>
+            <p className="text-secondary small" style={{ lineHeight: '1.8' }}>
+              Determinados prestadores de infraestrutura em nuvem (como Vercel e Google) possuem data centers e servidores localizados nos Estados Unidos ou Europa. Nesses casos, a transferência internacional ocorre em estrito cumprimento do Art. 33 da LGPD, mediante cláusulas contratuais padrão que asseguram níveis adequados de segurança e proteção de dados.
             </p>
           </section>
 
+          {/* 5. RETENÇÃO E EXCLUSÃO */}
           <section className="mb-4">
-            <h2 className="h5 fw-bold" style={{ color: 'var(--azul-principal)' }}>3. Sigilo Profissional e Não Compartilhamento</h2>
-            <p className="text-secondary" style={{ lineHeight: '1.8' }}>
-              Seus dados de contato são utilizados única e exclusivamente pela equipe médica autorizada para retorno e agendamento. <strong>Não comercializamos, não compartilhamos e não transferimos</strong> seus dados pessoais para empresas terceiras, operadoras de telemarketing ou terceiros não envolvidos diretamente na prestação do atendimento médico.
-            </p>
-          </section>
-
-          <section className="mb-4">
-            <h2 className="h5 fw-bold" style={{ color: 'var(--azul-principal)' }}>4. Armazenamento Seguro e Retenção</h2>
-            <p className="text-secondary" style={{ lineHeight: '1.8' }}>
-              Os dados coletados em nossos formulários de triagem são armazenados em ambiente seguro com controle de acesso estrito. Mantemos os registros apenas pelo tempo necessário para cumprir as finalidades de atendimento e obrigações regulatórias.
-            </p>
-          </section>
-
-          <section className="mb-4">
-            <h2 className="h5 fw-bold" style={{ color: 'var(--azul-principal)' }}>5. Direitos do Titular dos Dados</h2>
-            <p className="text-secondary" style={{ lineHeight: '1.8' }}>
-              Nos termos do art. 18 da LGPD, você pode a qualquer momento solicitar a confirmação da existência de tratamento, o acesso aos seus dados, a correção de dados incompletos ou a eliminação de dados tratados com seu consentimento, entrando em contato diretamente com nossa equipe pelo e-mail ou canais oficiais de atendimento.
-            </p>
-          </section>
-
-          <section className="mb-4">
-            <h2 className="h5 fw-bold" style={{ color: 'var(--azul-principal)' }}>6. Contato do Encarregado de Dados (DPO)</h2>
-            <p className="text-secondary" style={{ lineHeight: '1.8' }}>
-              Para dúvidas sobre esta política ou sobre o tratamento de seus dados pessoais, entre em contato através de:
+            <h2 className="h6 fw-bold text-uppercase" style={{ color: 'var(--azul-principal)' }}>5. Período de Retenção dos Dados</h2>
+            <p className="text-secondary small" style={{ lineHeight: '1.8' }}>
+              • <strong>Leads não convertidos em consulta:</strong> Retidos pelo período máximo de <strong>180 dias (6 meses)</strong>, sendo periodicamente descartados de nossos bancos de dados criptografados.
               <br />
-              <strong>Atendimento Dr. Otto Beckedorff:</strong> Av. Andrade Neves, 707 – 5º Andar – Centro, Campinas – SP
-              <br />
-              <strong>Telefone / WhatsApp Oficial:</strong> (19) 99943-9824
+              • <strong>Pacientes que realizam consulta:</strong> Os dados passam a integrar o Prontuário Médico, sendo arquivados pelo prazo legal de <strong>20 anos</strong>, em conformidade obrigatória com o Art. 6º da Lei Federal nº 13.787/2018 e resoluções do Conselho Federal de Medicina (CFM).
+            </p>
+          </section>
+
+          {/* 6. MEDIDAS DE SEGURANÇA */}
+          <section className="mb-4">
+            <h2 className="h6 fw-bold text-uppercase" style={{ color: 'var(--azul-principal)' }}>6. Medidas de Segurança</h2>
+            <p className="text-secondary small" style={{ lineHeight: '1.8' }}>
+              Adotamos medidas técnicas honestas e proporcionais ao risco: criptografia em trânsito (HTTPS / TLS 1.3), criptografia de dados pessoais em repouso com algoritmo AES-256-GCM, isolamento de rotas administrativas com chave de autenticação estrita, limitação de taxa de requisições (rate limiting) para coibir ataques de força bruta e blindagem contra injeção de fórmulas CSV.
+            </p>
+          </section>
+
+          {/* 7. DIREITOS DO TITULAR */}
+          <section className="mb-4">
+            <h2 className="h6 fw-bold text-uppercase" style={{ color: 'var(--azul-principal)' }}>7. Seus Direitos como Titular (Art. 18 da LGPD)</h2>
+            <p className="text-secondary small" style={{ lineHeight: '1.8' }}>
+              Você tem o direito de, a qualquer momento e mediante solicitação expressa:
+            </p>
+            <ul className="text-secondary small" style={{ lineHeight: '1.8' }}>
+              <li>Confirmar a existência de tratamento e acessar seus dados cadastrais;</li>
+              <li>Solicitar a correção de dados incompletos ou inexatos;</li>
+              <li>Revogar o consentimento fornecido para contato comercial/marketing;</li>
+              <li>Solicitar a exclusão ou anonimização de seus dados de triagem pré-consulta.</li>
+            </ul>
+            <p className="text-secondary small" style={{ lineHeight: '1.8' }}>
+              Para exercer qualquer desses direitos, envie uma mensagem para <code>drottobeckedorff@gmail.com</code> ou fale com a nossa equipe pelo WhatsApp oficial informando seu nome e telefone cadastrado.
             </p>
           </section>
         </div>
