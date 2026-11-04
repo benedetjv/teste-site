@@ -201,7 +201,7 @@ export default function LPVeraCruzCampinas() {
                     <i className="bi bi-geo-alt text-danger me-1"></i> Av. Andrade Neves, 707 – 5º Andar, Centro, Campinas – SP
                   </p>
                   <p className="small text-secondary mb-0" style={{ lineHeight: '1.6' }}>
-                    Consultas médicas, avaliação diagnóstica detalhada, exame físico e suporte de agendamento presencial ou por convênio Amil.
+                    Consultas médicas, anamnese aprofundada, exame físico detalhado e indicação de tratamentos. Atendimento Amil e Particular.
                   </p>
                 </div>
               </div>
