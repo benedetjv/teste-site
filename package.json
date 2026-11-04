@@ -6,6 +6,7 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
+    "reconcile": "tsx scripts/reconcile_and_export_google_ads.js",
     "test:compliance": "tsx tests/run_all_tests.js",
     "lint": "eslint"
   },

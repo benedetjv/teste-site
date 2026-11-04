@@ -48,4 +48,7 @@ legacy_backup/
 
 # Encrypted Database Vault
 .leads_vault.enc
+
+# Exported Conversion Files
+exports/
 *.enc
