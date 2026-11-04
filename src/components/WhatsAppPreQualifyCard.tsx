@@ -29,6 +29,19 @@ export const INSURANCE_OPTIONS = [
   { value: 'Outro convênio', label: 'Outro convênio (não listado acima)' },
 ];
 
+function isValidFullName(name: string): boolean {
+  if (!name) return false;
+  const trimmed = name.trim();
+  if (trimmed.length < 5 || trimmed.length > 100) return false;
+  if (/[0-9!@#$%^&*()_+=\[\]{};:"\\|<>/?~`]/.test(trimmed)) return false;
+  const words = trimmed.split(/\s+/).filter(Boolean);
+  if (words.length < 2) return false;
+  const validWordPattern = /^[A-Za-zÀ-ÖØ-öø-ÿ\u00C0-\u017F\.'-]+$/;
+  if (!words.every(w => validWordPattern.test(w))) return false;
+  const substantialWords = words.filter(w => w.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ]/g, '').length >= 2);
+  return substantialWords.length >= 2;
+}
+
 export default function WhatsAppPreQualifyCard({
   campaignType = 'campinas_geral',
   defaultModality = 'convenio',
@@ -39,7 +52,8 @@ export default function WhatsAppPreQualifyCard({
   const [name, setName] = useState('');
   const [modality, setModality] = useState<'particular' | 'convenio'>(defaultModality);
   const [insuranceName, setInsuranceName] = useState('');
-  const [coverageVeraCruz, setCoverageVeraCruz] = useState<'sim' | 'nao' | 'nao_sei'>('nao_sei');
+  const [coverageVeraCruz, setCoverageVeraCruz] = useState<'sim' | 'nao' | 'nao_sei' | null>(null);
+  const [unimedConfirmed, setUnimedConfirmed] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [submittedUrl, setSubmittedUrl] = useState<string | null>(null);
@@ -71,14 +85,32 @@ export default function WhatsAppPreQualifyCard({
     setErrorMessage(null);
 
     const trimmedName = name.trim();
-    if (trimmedName.length < 2) {
-      setErrorMessage('Por favor, informe seu nome completo.');
+    if (!isValidFullName(trimmedName)) {
+      setErrorMessage('Por favor, informe seu nome completo válido (nome e sobrenome).');
       return;
     }
 
     if (modality === 'convenio' && !insuranceName.trim()) {
       setErrorMessage('Por favor, selecione seu convênio ou plano na lista.');
       return;
+    }
+
+    if (isUnimed && !unimedConfirmed) {
+      setErrorMessage('Por favor, confirme que está ciente de que o Dr. Otto não atende Unimed para prosseguir como consulta particular.');
+      return;
+    }
+
+    if (modality === 'convenio' && !coverageVeraCruz) {
+      setErrorMessage('Por favor, informe se o nível do seu plano atende no Hospital Vera Cruz (Sim, Não ou Não sei).');
+      return;
+    }
+
+    // Open blank window synchronously on user click to prevent browser popup blockers
+    let popupWindow: Window | null = null;
+    if (typeof window !== 'undefined') {
+      try {
+        popupWindow = window.open('about:blank', '_blank');
+      } catch {}
     }
 
     setIsSubmitting(true);
@@ -152,11 +184,16 @@ export default function WhatsAppPreQualifyCard({
       setSubmittedUrl(whatsappUrl);
       setSubmittedRef(refCode);
 
-      // Open WhatsApp in new tab
-      if (typeof window !== 'undefined') {
-        window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+      // Redirect popup window to WhatsApp (or navigate in current tab as fallback)
+      if (popupWindow && !popupWindow.closed) {
+        popupWindow.location.href = whatsappUrl;
+      } else if (typeof window !== 'undefined') {
+        window.location.href = whatsappUrl;
       }
     } catch (err: any) {
+      if (popupWindow && !popupWindow.closed) {
+        popupWindow.close();
+      }
       setErrorMessage(err.message || 'Erro ao preparar conversa. Por favor, tente novamente.');
     } finally {
       setIsSubmitting(false);
@@ -230,7 +267,7 @@ export default function WhatsAppPreQualifyCard({
           </div>
         ) : (
           /* Short Pre-qualification Form */
-          <form onSubmit={handleSubmit} className="text-start">
+          <form onSubmit={handleSubmit} noValidate className="text-start">
             
             {/* 1. Nome Completo (Obrigatório) */}
             <div className="mb-3">
@@ -326,10 +363,10 @@ export default function WhatsAppPreQualifyCard({
                   </div>
                 )}
 
-                {/* Regra Unimed: discreta, acolhedora, zero vermelho */}
+                {/* Regra Unimed: discreta, acolhedora, com confirmação explícita obrigatória */}
                 {isUnimed && (
                   <div className="p-3 mt-2 rounded-3 text-start" style={{ backgroundColor: '#f8fafc', border: '1px solid #cbd5e1' }}>
-                    <div className="d-flex align-items-start gap-2">
+                    <div className="d-flex align-items-start gap-2 mb-2">
                       <i className="bi bi-info-circle text-secondary mt-1" style={{ fontSize: '1rem' }}></i>
                       <div>
                         <p className="fw-bold text-dark small mb-1" style={{ fontSize: '0.82rem' }}>Informação sobre Unimed</p>
@@ -337,6 +374,22 @@ export default function WhatsAppPreQualifyCard({
                           O Dr. Otto Beckedorff não atende pela rede credenciada da Unimed. Seu agendamento será direcionado como <strong>consulta particular</strong>, com emissão de nota fiscal para você solicitar eventual reembolso ao plano.
                         </p>
                       </div>
+                    </div>
+                    <div className="form-check mt-3 pt-2 border-top">
+                      <input
+                        type="checkbox"
+                        id="prequal-unimed-confirm"
+                        className="form-check-input"
+                        checked={unimedConfirmed}
+                        onChange={(e) => setUnimedConfirmed(e.target.checked)}
+                      />
+                      <label
+                        htmlFor="prequal-unimed-confirm"
+                        className="form-check-label small fw-semibold text-dark"
+                        style={{ fontSize: '0.8rem', lineHeight: '1.45', cursor: 'pointer' }}
+                      >
+                        Estou ciente de que o Dr. Otto não atende Unimed e desejo continuar como consulta particular.
+                      </label>
                     </div>
                   </div>
                 )}
@@ -412,9 +465,14 @@ export default function WhatsAppPreQualifyCard({
             <button
               id="prequal-submit"
               type="submit"
-              disabled={isSubmitting}
+              disabled={isSubmitting || (isUnimed && !unimedConfirmed)}
               className="btn btn-success w-100 rounded-pill py-3 fw-bold shadow-sm d-flex align-items-center justify-content-center transition-all"
-              style={{ backgroundColor: '#25D366', border: 'none', fontSize: '1.02rem' }}
+              style={{
+                backgroundColor: '#25D366',
+                border: 'none',
+                fontSize: '1.02rem',
+                opacity: (isUnimed && !unimedConfirmed) ? 0.6 : 1
+              }}
             >
               {isSubmitting ? (
                 <>

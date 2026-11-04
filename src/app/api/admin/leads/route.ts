@@ -175,7 +175,7 @@ export async function GET(request: Request) {
 
     const searchRef = searchParams.get('ref_code') || searchParams.get('search');
     let unconvertedSession = null;
-    if (searchRef && /^C-[A-Z0-9]{6}$/i.test(searchRef.trim())) {
+    if (searchRef && /^C-[A-Z0-9-]+$/i.test(searchRef.trim())) {
       const cleanRef = searchRef.trim().toUpperCase();
       const hasLead = leads.some(l => l.ref_code === cleanRef);
       if (!hasLead) {

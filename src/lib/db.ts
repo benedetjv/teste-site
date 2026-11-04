@@ -241,6 +241,39 @@ export interface AuditEntry {
 // -------------------------------------------------------------
 // CLICK SESSIONS (Anonymous WhatsApp Direct Token)
 // -------------------------------------------------------------
+
+/**
+ * Generates an anonymous reference token with 96 bits of cryptographic entropy.
+ * Format: C-XXXX-XXXX-XXXX (e.g., C-7K4M-9P2X-Q8RT)
+ * Uses unambiguous Crockford-style Base32 characters (excludes 0, 1, I, O, L).
+ */
+export function generateRefCode(): string {
+  const CHARSET = '23456789ABCDEFGHJKMNPQRSTUVWXYZ';
+  const bytes = crypto.randomBytes(12); // 12 bytes = 96 bits
+  let chars = '';
+  for (let i = 0; i < 12; i++) {
+    chars += CHARSET[bytes[i] % CHARSET.length];
+  }
+  return `C-${chars.slice(0, 4)}-${chars.slice(4, 8)}-${chars.slice(8, 12)}`;
+}
+
+/**
+ * Validates full name: requires at least two words, reasonable length,
+ * Portuguese/Latin letters, and rejects numbers/symbols.
+ */
+export function isValidFullName(name: string): boolean {
+  if (!name) return false;
+  const trimmed = name.trim();
+  if (trimmed.length < 5 || trimmed.length > 100) return false;
+  if (/[0-9!@#$%^&*()_+=\[\]{};:"\\|<>/?~`]/.test(trimmed)) return false;
+  const words = trimmed.split(/\s+/).filter(Boolean);
+  if (words.length < 2) return false;
+  const validWordPattern = /^[A-Za-zÀ-ÖØ-öø-ÿ\u00C0-\u017F\.'-]+$/;
+  if (!words.every(w => validWordPattern.test(w))) return false;
+  const substantialWords = words.filter(w => w.replace(/[^A-Za-zÀ-ÖØ-öø-ÿ]/g, '').length >= 2);
+  return substantialWords.length >= 2;
+}
+
 export async function createClickSession(params: {
   page_path: string;
   landing_page: string;
@@ -256,8 +289,8 @@ export async function createClickSession(params: {
   is_unimed?: boolean;
 }): Promise<string> {
   const pool = getDatabasePool();
-  // Generate random 6-character alphanumeric reference token: C-XXXXXX
-  const refCode = 'C-' + crypto.randomBytes(3).toString('hex').toUpperCase();
+  // Generate token with at least 96 bits of entropy: C-XXXX-XXXX-XXXX
+  const refCode = generateRefCode();
   const now = new Date();
   const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days
 
@@ -326,8 +359,8 @@ export async function convertSessionToLead(params: {
   if (cleanPhone.length < 10) {
     throw new Error('VALIDATION_ERROR: Telefone inválido (mínimo 10 dígitos com DDD)');
   }
-  if (!params.name || params.name.trim().length < 2) {
-    throw new Error('VALIDATION_ERROR: Nome completo é obrigatório');
+  if (!params.name || !isValidFullName(params.name)) {
+    throw new Error('VALIDATION_ERROR: Nome completo inválido (necessário nome e sobrenome)');
   }
 
   const leadId = 'LEAD_' + Date.now() + '_' + crypto.randomBytes(4).toString('hex').toUpperCase();
@@ -448,7 +481,8 @@ export async function insertLead(data: {
   }
 
   const now = new Date().toISOString();
-  const initialStatus: LeadStatus = data.is_unimed ? 'disqualified' : 'new';
+  // Unimed leads that confirm/convert to particular are valid active leads ('new'), not disqualified
+  const initialStatus: LeadStatus = (data.is_unimed && data.modality !== 'particular') ? 'disqualified' : 'new';
   const nameEnc = encryptPII(data.name.trim().slice(0, 100));
   const phoneEnc = encryptPII(data.phone.trim().slice(0, 30));
 

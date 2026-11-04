@@ -506,7 +506,7 @@ export default function AdminLeadsPage() {
                 </span>
                 <input
                   type="text"
-                  placeholder="Buscar por Nome, Telefone ou [Ref: C-XXXXXX]..."
+                  placeholder="Buscar por Nome, Telefone ou [Ref: C-7K4M-9P2X-Q8RT]..."
                   className="form-control border-start-0"
                   value={searchTerm}
                   onChange={(e) => {
