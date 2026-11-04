@@ -433,26 +433,25 @@ async function testHeadlessBrowserAndSingleEvent() {
     });
     assert('Mandatory full name input exists and starts empty', initialName === '');
 
-    // Test Unimed rule in Pre-qualification Card
-    await testPage.type('#prequal-insurance', 'Unimed Campinas');
+    // Test Unimed rule in Pre-qualification Card (controlled select without aggressive red)
+    await testPage.select('#prequal-insurance', 'Unimed');
     const hasUnimedWarning = await testPage.evaluate(() => {
       const card = document.querySelector('#pre-qualificacao');
-      return card ? card.textContent.includes('não atende Unimed') : false;
+      return card ? card.textContent.includes('não atende') : false;
     });
     assert('Unimed rule shows respectful reimbursement notice in pre-qualification flow', hasUnimedWarning);
 
-    // Clear and fill pre-qualification answers using native setter for React onChange
-    await testPage.evaluate(() => {
-      const insInput = document.querySelector('#prequal-insurance');
-      if (insInput) {
-        const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
-        nativeSetter.call(insInput, '');
-        insInput.dispatchEvent(new Event('input', { bubbles: true }));
-        insInput.dispatchEvent(new Event('change', { bubbles: true }));
-      }
+    // Test Other Insurances rule in Pre-qualification Card
+    await testPage.select('#prequal-insurance', 'Outro convênio');
+    const hasOtherWarning = await testPage.evaluate(() => {
+      const card = document.querySelector('#pre-qualificacao');
+      return card ? card.textContent.includes('não atende este convênio de forma direta') : false;
     });
+    assert('Other insurances rule displays transparent private consultation notice', hasOtherWarning);
+
+    // Fill patient name and select Amil
     await testPage.type('#prequal-name', 'Carlos Eduardo de Souza');
-    await testPage.type('#prequal-insurance', 'Amil');
+    await testPage.select('#prequal-insurance', 'Amil');
 
     // Click "Sim" for Vera Cruz Hospital coverage
     await testPage.evaluate(() => {
