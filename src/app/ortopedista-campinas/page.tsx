@@ -28,7 +28,7 @@ const campinasFaqSchema = {
       'name': 'Quais convênios são atendidos pelo Dr. Otto Beckedorff em Campinas?',
       'acceptedAnswer': {
         '@type': 'Answer',
-        'text': 'O Dr. Otto Beckedorff atende pela operadora Amil em consultas ambulatoriais no Instituto Orthesen (Campinas). Procedimentos no Hospital Vera Cruz dependem da categoria do plano e autorização prévia. Para convênios como Bradesco Saúde, SulAmérica, Omint, Porto Seguro e Caixa, o atendimento de consulta é particular com fornecimento de documentação completa para reembolso médico. Não atendemos Unimed.'
+        'text': 'O Dr. Otto Beckedorff atende pelos principais convênios (como Amil, Bradesco Saúde, SulAmérica, Omint, Petrobras, entre outros) e consultas particulares. Consultas no Instituto Orthesen e procedimentos no Hospital Vera Cruz. Não atendemos Unimed.'
       }
     },
     {
@@ -355,7 +355,7 @@ export default function PageOrtopedistaCampinas() {
                   </div>
                   <p className="small text-muted mb-2">Av. Andrade Neves, 707 – 5º Andar, Centro, Campinas – SP</p>
                   <p className="small text-secondary mb-0" style={{ lineHeight: '1.6' }}>
-                    Consultas médicas, anamnese aprofundada, análise de exames e indicação de tratamentos. Atendimento Amil e Particular.
+                    Consultas médicas, anamnese aprofundada, análise de exames e indicação de tratamentos. Atendimento por convênios e particular.
                   </p>
                 </div>
               </div>
@@ -445,10 +445,6 @@ export default function PageOrtopedistaCampinas() {
             As informações disponibilizadas neste site têm propósito exclusivamente informativo e de educação em saúde, em estrita observância à Resolução CFM 2.336/2023.
           </p>
           <div className="d-flex justify-content-center gap-3 mt-2">
-            <Link href="/privacidade" className="text-secondary text-decoration-none">
-              Política de Privacidade
-            </Link>
-            <span>•</span>
             <a href="#topo" className="text-secondary text-decoration-none">
               Voltar ao Início
             </a>

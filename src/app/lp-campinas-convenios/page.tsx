@@ -5,7 +5,7 @@ import WhatsAppPreQualifyCard from '@/components/WhatsAppPreQualifyCard';
 
 export const metadata = {
   title: 'Dr. Otto Beckedorff • Médico Ortopedista com Foco em Coluna e Dor em Campinas',
-  description: 'Médico Ortopedista (CRM-SP 226325 | RQE 139078) com foco no tratamento de dor na coluna e articulações. Atendimento Amil no Instituto Orthesen e procedimentos no Hospital Vera Cruz.',
+  description: 'Médico Ortopedista (CRM-SP 226325 | RQE 139078) com foco no tratamento de dor na coluna e articulações. Atendimento por convênios e particular no Instituto Orthesen e Hospital Vera Cruz.',
   robots: 'noindex, nofollow'
 };
 
@@ -201,7 +201,7 @@ export default function LPVeraCruzCampinas() {
                     <i className="bi bi-geo-alt text-danger me-1"></i> Av. Andrade Neves, 707 – 5º Andar, Centro, Campinas – SP
                   </p>
                   <p className="small text-secondary mb-0" style={{ lineHeight: '1.6' }}>
-                    Consultas médicas, anamnese aprofundada, exame físico detalhado e indicação de tratamentos. Atendimento Amil e Particular.
+                    Consultas médicas, anamnese aprofundada, exame físico detalhado e indicação de tratamentos. Atendimento por convênios e particular.
                   </p>
                 </div>
               </div>
@@ -234,10 +234,6 @@ export default function LPVeraCruzCampinas() {
             As informações deste site têm caráter exclusivamente informativo e educativo, não substituindo a consulta médica presencial.
           </p>
           <div className="d-flex justify-content-center gap-3 mt-2">
-            <Link href="/privacidade" className="text-secondary text-decoration-none">
-              Política de Privacidade
-            </Link>
-            <span>•</span>
             <a href="#topo" className="text-secondary text-decoration-none">
               Voltar ao Início
             </a>
