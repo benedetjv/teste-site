@@ -19,24 +19,25 @@ export const PAIN_AREAS = [
   { id: 'outra', label: 'Articulações / Geral', icon: 'bi-grid' }
 ];
 
-// Quick pills exactly matching the user's diagram
+// Quick pills with attended convênios in direct prominence
 export const QUICK_PILLS = [
   { value: 'Amil', label: 'Amil' },
   { value: 'Bradesco Saúde', label: 'Bradesco' },
   { value: 'SulAmérica Saúde', label: 'SulAmérica' },
-  { value: 'Outro convênio', label: 'Outro' },
-  { value: 'Unimed', label: 'Unimed' }
+  { value: 'Omint', label: 'Omint' },
+  { value: 'Petrobras PAE / AMS', label: 'Petrobras' },
+  { value: 'Outro convênio', label: 'Outro' }
 ];
 
 export const MORE_INSURANCES = [
-  { value: 'Petrobras PAE / AMS', label: 'Petrobras' },
   { value: 'Porto Seguro', label: 'Porto Seguro' },
   { value: 'Saúde Caixa', label: 'Saúde Caixa' },
   { value: 'Care Plus', label: 'Care Plus' },
   { value: 'GAMA Saúde', label: 'GAMA Saúde' },
   { value: 'VIVEST', label: 'VIVEST' },
   { value: 'ASH (Holambra)', label: 'ASH (Holambra)' },
-  { value: '2Care', label: '2Care' }
+  { value: '2Care', label: '2Care' },
+  { value: 'Unimed', label: 'Unimed' }
 ];
 
 export const INSURANCE_OPTIONS = [
@@ -530,7 +531,7 @@ export default function WhatsAppPreQualifyCard({
                       style={{ fontSize: '0.76rem' }}
                     >
                       <i className={`bi ${showMoreInsurances ? 'bi-chevron-up' : 'bi-chevron-down'} me-1`}></i>
-                      {showMoreInsurances ? 'Menos opções de planos' : 'Ver outros planos (Petrobras, Porto Seguro, Caixa...)'}
+                      {showMoreInsurances ? 'Menos opções de planos' : 'Ver outros convênios (Porto Seguro, Caixa, Care Plus, Unimed...)'}
                     </button>
                   </div>
 
