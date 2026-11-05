@@ -3,7 +3,10 @@ import Link from 'next/link';
 import Image from 'next/image';
 import WhatsAppPreQualifyCard from '@/components/WhatsAppPreQualifyCard';
 
-export const metadata = {
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  metadataBase: new URL('https://drotto.com.br'),
   title: 'Dr. Otto Beckedorff • Médico Ortopedista com Foco em Coluna e Dor em Campinas',
   description: 'Médico Ortopedista (CRM-SP 226325 | RQE 139078). Diagnóstico e tratamento de dores na coluna, hérnia de disco e articulações. Consultas no Instituto Orthesen e procedimentos no Vera Cruz.',
   keywords: [
@@ -16,7 +19,29 @@ export const metadata = {
   alternates: {
     canonical: 'https://drotto.com.br/ortopedista-campinas',
   },
-  robots: 'noindex, follow'
+  robots: 'noindex, follow',
+  openGraph: {
+    title: 'Dr. Otto Beckedorff • Médico Ortopedista em Campinas',
+    description: 'Diagnóstico e tratamento de dores na coluna, hérnia de disco e articulações. Consultas no Instituto Orthesen e procedimentos no Vera Cruz.',
+    url: 'https://drotto.com.br/ortopedista-campinas',
+    siteName: 'Dr. Otto Beckedorff - Ortopedia',
+    images: [
+      {
+        url: 'https://drotto.com.br/img/foto-otto.jpg',
+        width: 800,
+        height: 800,
+        alt: 'Dr. Otto Beckedorff - Médico Ortopedista',
+      },
+    ],
+    locale: 'pt_BR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Dr. Otto Beckedorff • Médico Ortopedista em Campinas',
+    description: 'Diagnóstico e tratamento de dores na coluna, hérnia de disco e articulações. Consultas no Instituto Orthesen e procedimentos no Vera Cruz.',
+    images: ['https://drotto.com.br/img/foto-otto.jpg'],
+  },
 };
 
 const campinasFaqSchema = {
@@ -199,7 +224,7 @@ export default function PageOrtopedistaCampinas() {
 
             <div className="row g-4 justify-content-center">
               <div className="col-md-4">
-                <div className="p-4 bg-light rounded-4 h-100 border text-center text-md-start">
+                <div className="p-4 bg-light rounded-4 h-100 border text-start">
                   <div className="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center fw-bold fs-5 mb-3" style={{ width: '48px', height: '48px' }}>
                     1
                   </div>
@@ -211,7 +236,7 @@ export default function PageOrtopedistaCampinas() {
               </div>
 
               <div className="col-md-4">
-                <div className="p-4 bg-light rounded-4 h-100 border text-center text-md-start">
+                <div className="p-4 bg-light rounded-4 h-100 border text-start">
                   <div className="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center fw-bold fs-5 mb-3" style={{ width: '48px', height: '48px' }}>
                     2
                   </div>
@@ -223,7 +248,7 @@ export default function PageOrtopedistaCampinas() {
               </div>
 
               <div className="col-md-4">
-                <div className="p-4 bg-light rounded-4 h-100 border text-center text-md-start">
+                <div className="p-4 bg-light rounded-4 h-100 border text-start">
                   <div className="rounded-circle bg-primary text-white d-inline-flex align-items-center justify-content-center fw-bold fs-5 mb-3" style={{ width: '48px', height: '48px' }}>
                     3
                   </div>

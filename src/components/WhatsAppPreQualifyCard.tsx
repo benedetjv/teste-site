@@ -400,7 +400,7 @@ export default function WhatsAppPreQualifyCard({
                           ? 'btn-primary text-white shadow-sm'
                           : 'btn-outline-secondary bg-white'
                       }`}
-                      style={{ fontSize: '0.82rem' }}
+                      style={{ fontSize: '0.82rem', minHeight: '44px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
                     >
                       {area.label}
                     </button>
@@ -516,7 +516,7 @@ export default function WhatsAppPreQualifyCard({
                             ? 'btn-primary text-white shadow-sm'
                             : 'btn-outline-secondary bg-white'
                         }`}
-                        style={{ fontSize: '0.82rem' }}
+                        style={{ fontSize: '0.82rem', minHeight: '44px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
                       >
                         {ins.label}
                       </button>
@@ -614,30 +614,30 @@ export default function WhatsAppPreQualifyCard({
                       <button
                         type="button"
                         onClick={() => setCoverageVeraCruz('sim')}
-                        className={`btn flex-fill py-1 rounded-3 fw-bold small transition-all ${
+                        className={`btn flex-fill py-2 rounded-3 fw-bold small transition-all ${
                           coverageVeraCruz === 'sim' ? 'btn-primary text-white shadow-sm' : 'btn-outline-secondary bg-white'
                         }`}
-                        style={{ fontSize: '0.8rem' }}
+                        style={{ fontSize: '0.85rem', minHeight: '44px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
                       >
                         Sim
                       </button>
                       <button
                         type="button"
                         onClick={() => setCoverageVeraCruz('nao')}
-                        className={`btn flex-fill py-1 rounded-3 fw-bold small transition-all ${
+                        className={`btn flex-fill py-2 rounded-3 fw-bold small transition-all ${
                           coverageVeraCruz === 'nao' ? 'btn-primary text-white shadow-sm' : 'btn-outline-secondary bg-white'
                         }`}
-                        style={{ fontSize: '0.8rem' }}
+                        style={{ fontSize: '0.85rem', minHeight: '44px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
                       >
                         Não
                       </button>
                       <button
                         type="button"
                         onClick={() => setCoverageVeraCruz('nao_sei')}
-                        className={`btn flex-fill py-1 rounded-3 fw-bold small transition-all ${
+                        className={`btn flex-fill py-2 rounded-3 fw-bold small transition-all ${
                           coverageVeraCruz === 'nao_sei' ? 'btn-primary text-white shadow-sm' : 'btn-outline-secondary bg-white'
                         }`}
-                        style={{ fontSize: '0.8rem' }}
+                        style={{ fontSize: '0.85rem', minHeight: '44px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
                       >
                         Não sei
                       </button>

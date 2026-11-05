@@ -3,10 +3,35 @@ import Link from 'next/link';
 import Image from 'next/image';
 import WhatsAppPreQualifyCard from '@/components/WhatsAppPreQualifyCard';
 
-export const metadata = {
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  metadataBase: new URL('https://drotto.com.br'),
   title: 'Dr. Otto Beckedorff • Médico Ortopedista com Foco em Coluna e Dor em Campinas',
   description: 'Médico Ortopedista (CRM-SP 226325 | RQE 139078) com foco no tratamento de dor na coluna e articulações. Atendimento por convênios e particular no Instituto Orthesen e Hospital Vera Cruz.',
-  robots: 'noindex, nofollow'
+  robots: 'noindex, nofollow',
+  openGraph: {
+    title: 'Dr. Otto Beckedorff • Médico Ortopedista em Campinas',
+    description: 'Atendimento por convênios e particular para dores na coluna e articulações. Instituto Orthesen e Hospital Vera Cruz.',
+    url: 'https://drotto.com.br/lp-campinas-convenios',
+    siteName: 'Dr. Otto Beckedorff - Ortopedia',
+    images: [
+      {
+        url: 'https://drotto.com.br/img/foto-otto.jpg',
+        width: 800,
+        height: 800,
+        alt: 'Dr. Otto Beckedorff - Médico Ortopedista',
+      },
+    ],
+    locale: 'pt_BR',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary',
+    title: 'Dr. Otto Beckedorff • Médico Ortopedista em Campinas',
+    description: 'Atendimento por convênios e particular para dores na coluna e articulações no Instituto Orthesen e Hospital Vera Cruz.',
+    images: ['https://drotto.com.br/img/foto-otto.jpg'],
+  },
 };
 
 export default function LPVeraCruzCampinas() {
