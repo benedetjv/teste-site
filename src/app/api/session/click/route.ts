@@ -111,10 +111,16 @@ export async function GET(request: Request) {
     }
     const session = await getClickSession(refCode.trim().toUpperCase());
     if (!session) {
-      return NextResponse.json({ found: false, message: 'Sessão não encontrada para o código informado.' }, { status: 404 });
+      return NextResponse.json({
+        found: false,
+        message: 'Sessão não encontrada para o código informado.',
+        database_configured: Boolean(process.env.DATABASE_URL && process.env.DATABASE_URL !== 'memory'),
+        node_env: process.env.NODE_ENV
+      }, { status: 404 });
     }
     return NextResponse.json({
       found: true,
+      database_configured: Boolean(process.env.DATABASE_URL && process.env.DATABASE_URL !== 'memory'),
       ref_code: session.ref_code,
       created_at: session.created_at,
       landing_page: session.landing_page,
