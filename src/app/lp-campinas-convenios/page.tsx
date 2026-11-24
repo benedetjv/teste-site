@@ -5,6 +5,9 @@ import WhatsAppPreQualifyCard from '@/components/WhatsAppPreQualifyCard';
 
 import type { Metadata } from 'next';
 
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   metadataBase: new URL('https://drotto.com.br'),
   title: 'Dr. Otto Beckedorff • Médico Ortopedista com Foco em Coluna e Dor em Campinas',

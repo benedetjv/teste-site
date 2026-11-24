@@ -120,7 +120,36 @@ export default function WhatsAppPreQualifyCard({
   const step4Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    initUtmCapture();
+    if (typeof window !== 'undefined') {
+      (window as any).__REACT_HYDRATED__ = true;
+      initUtmCapture();
+
+      // If user clicked any pain area before React hydrated, apply it now
+      if ((window as any).__INITIAL_PAIN_SELECTION__) {
+        handleSelectPainArea((window as any).__INITIAL_PAIN_SELECTION__);
+      }
+
+      // If user clicked modality before React hydrated, apply it now
+      if ((window as any).__INITIAL_MODALITY_SELECTION__) {
+        handleSelectModality((window as any).__INITIAL_MODALITY_SELECTION__);
+      }
+
+      // Expose dispatch functions for the capture bridge
+      (window as any).__DISPATCH_PAIN_SELECT__ = (area: string) => {
+        handleSelectPainArea(area);
+      };
+
+      (window as any).__DISPATCH_MODALITY_SELECT__ = (m: 'convenio' | 'particular') => {
+        handleSelectModality(m);
+      };
+    }
+
+    return () => {
+      if (typeof window !== 'undefined') {
+        delete (window as any).__DISPATCH_PAIN_SELECT__;
+        delete (window as any).__DISPATCH_MODALITY_SELECT__;
+      }
+    };
   }, []);
 
   const isUnimed =
@@ -334,6 +363,61 @@ export default function WhatsAppPreQualifyCard({
       className="card border-0 shadow-lg rounded-4 overflow-hidden bg-white"
       style={{ maxWidth: '480px', margin: '0 auto' }}
     >
+      {/* Inline Pre-Hydration & Pre-Click Bridge: Runs instantly at parse time */}
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function() {
+              if (window.__PREQUAL_BRIDGE_INSTALLED__) return;
+              window.__PREQUAL_BRIDGE_INSTALLED__ = true;
+
+              function handleBridgeClick(e) {
+                var el = e.target && (e.target.nodeType === 1 ? e.target : e.target.parentElement);
+                if (!el || !el.closest) return;
+
+                var painBtn = el.closest('[id^="prequal-pain-"]');
+                if (painBtn) {
+                  var area = painBtn.id.replace('prequal-pain-', '');
+                  window.__INITIAL_PAIN_SELECTION__ = area;
+
+                  var allBtns = document.querySelectorAll('[id^="prequal-pain-"]');
+                  for (var i = 0; i < allBtns.length; i++) {
+                    allBtns[i].classList.remove('btn-primary', 'text-white', 'shadow-sm');
+                    allBtns[i].classList.add('btn-outline-secondary', 'bg-white', 'text-dark');
+                  }
+                  painBtn.classList.add('btn-primary', 'text-white', 'shadow-sm');
+                  painBtn.classList.remove('btn-outline-secondary', 'bg-white', 'text-dark');
+
+                  if (typeof window.__DISPATCH_PAIN_SELECT__ === 'function') {
+                    window.__DISPATCH_PAIN_SELECT__(area);
+                  }
+                }
+
+                var modBtn = el.closest('[id^="prequal-modality-"]');
+                if (modBtn) {
+                  var mod = modBtn.id.replace('prequal-modality-', '');
+                  window.__INITIAL_MODALITY_SELECTION__ = mod;
+                  if (typeof window.__DISPATCH_MODALITY_SELECT__ === 'function') {
+                    window.__DISPATCH_MODALITY_SELECT__(mod);
+                  }
+                }
+              }
+
+              document.addEventListener('click', handleBridgeClick, { capture: true, passive: true });
+              document.addEventListener('touchend', handleBridgeClick, { capture: true, passive: true });
+
+              // Watchdog: If React has not signaled hydration after 2.5s, reveal fallback direct link
+              setTimeout(function() {
+                if (!window.__REACT_HYDRATED__) {
+                  var fb = document.getElementById('prequal-emergency-fallback');
+                  if (fb) fb.style.display = 'block';
+                }
+              }, 2500);
+            })();
+          `
+        }}
+      />
+
       {/* Top Progress Accent Bar */}
       <div className="w-100 bg-light" style={{ height: '4px' }}>
         <div
@@ -377,6 +461,52 @@ export default function WhatsAppPreQualifyCard({
               <i className="bi bi-arrow-counterclockwise me-1"></i> Reiniciar
             </button>
           )}
+        </div>
+
+        {/* No-JS Direct WhatsApp Fallback */}
+        <noscript>
+          <div className="alert alert-success text-center p-3 mb-3 rounded-3" style={{ border: '1px solid #86efac', backgroundColor: '#f0fdf4' }}>
+            <div className="fw-bold text-success mb-1" style={{ fontSize: '0.88rem' }}>
+              <i className="bi bi-whatsapp me-1"></i> Agendamento Direto no WhatsApp
+            </div>
+            <p className="text-secondary small mb-2" style={{ fontSize: '0.8rem' }}>
+              Para falar diretamente com a equipe médica do Dr. Otto Beckedorff:
+            </p>
+            <a
+              href="https://wa.me/5519999439824?text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20um%20agendamento%20de%20consulta%20em%20Campinas%20com%20o%20Dr.%20Otto%20Beckedorff."
+              data-cta-location="prequal_card_noscript_whatsapp"
+              className="btn btn-success rounded-pill fw-bold w-100 py-2 shadow-sm"
+              style={{ backgroundColor: '#25D366', border: 'none' }}
+            >
+              <i className="bi bi-whatsapp me-2"></i> Abrir WhatsApp Agora
+            </a>
+          </div>
+        </noscript>
+
+        {/* Emergency Fallback Banner (Revealed by watchdog if hydration stalls or fails) */}
+        <div
+          id="prequal-emergency-fallback"
+          className="p-3 mb-3 rounded-3 text-center"
+          style={{
+            display: 'none',
+            backgroundColor: '#f0fdf4',
+            border: '1px solid #86efac'
+          }}
+        >
+          <p className="text-secondary small mb-2" style={{ fontSize: '0.82rem' }}>
+            <i className="bi bi-info-circle me-1 text-success"></i>
+            Prefere agendar diretamente sem preencher a triagem?
+          </p>
+          <a
+            href="https://wa.me/5519999439824?text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20um%20agendamento%20de%20consulta%20em%20Campinas%20com%20o%20Dr.%20Otto%20Beckedorff."
+            target="_blank"
+            rel="noopener noreferrer"
+            data-cta-location="prequal_card_fallback_direct_whatsapp"
+            className="btn btn-success btn-sm rounded-pill px-4 py-2 fw-bold d-inline-flex align-items-center justify-content-center w-100 shadow-sm"
+            style={{ backgroundColor: '#25D366', border: 'none', fontSize: '0.85rem' }}
+          >
+            <i className="bi bi-whatsapp me-2"></i> Falar com a Equipe no WhatsApp
+          </a>
         </div>
 
         {submittedUrl ? (

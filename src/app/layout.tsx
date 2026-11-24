@@ -57,6 +57,41 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html lang="pt-BR">
       <head>
+        {/* Hydration Error Monitor & Diagnostic Listener */}
+        <Script id="hydration-monitor" strategy="beforeInteractive">
+          {`
+            (function() {
+              window.__HYDRATION_ERRORS__ = [];
+              window.addEventListener('error', function(event) {
+                var msg = (event && event.message) ? String(event.message) : '';
+                if (msg.indexOf('Hydration') !== -1 || msg.indexOf('hydrat') !== -1 || msg.indexOf('Minified React error') !== -1) {
+                  console.error('[Hydration Monitor] Captured error:', msg);
+                  window.__HYDRATION_ERRORS__.push({
+                    type: 'error',
+                    message: msg,
+                    time: new Date().toISOString()
+                  });
+                  var fb = document.getElementById('prequal-emergency-fallback');
+                  if (fb) fb.style.display = 'block';
+                }
+              });
+              window.addEventListener('unhandledrejection', function(event) {
+                var reason = event && event.reason ? String(event.reason.message || event.reason) : '';
+                if (reason.indexOf('Hydration') !== -1 || reason.indexOf('hydrat') !== -1 || reason.indexOf('chunk') !== -1) {
+                  console.error('[Hydration Monitor] Captured rejection:', reason);
+                  window.__HYDRATION_ERRORS__.push({
+                    type: 'unhandledrejection',
+                    message: reason,
+                    time: new Date().toISOString()
+                  });
+                  var fb = document.getElementById('prequal-emergency-fallback');
+                  if (fb) fb.style.display = 'block';
+                }
+              });
+            })();
+          `}
+        </Script>
+
         {/* Google Tag Manager (when GTM Container ID is configured in environment) */}
         {GTM_CONTAINER_ID ? (
           <Script id="gtm-script" strategy="afterInteractive">
