@@ -134,6 +134,16 @@ export default function WhatsAppPreQualifyCard({
         handleSelectModality((window as any).__INITIAL_MODALITY_SELECTION__);
       }
 
+      // If user clicked insurance before React hydrated, apply it now
+      if ((window as any).__INITIAL_INSURANCE_SELECTION__) {
+        handleInsuranceSelect((window as any).__INITIAL_INSURANCE_SELECTION__);
+      }
+
+      // If user clicked Vera Cruz before React hydrated, apply it now
+      if ((window as any).__INITIAL_VERACRUZ_SELECTION__) {
+        handleSelectVeraCruz((window as any).__INITIAL_VERACRUZ_SELECTION__);
+      }
+
       // Expose dispatch functions for the capture bridge
       (window as any).__DISPATCH_PAIN_SELECT__ = (area: string) => {
         handleSelectPainArea(area);
@@ -142,12 +152,22 @@ export default function WhatsAppPreQualifyCard({
       (window as any).__DISPATCH_MODALITY_SELECT__ = (m: 'convenio' | 'particular') => {
         handleSelectModality(m);
       };
+
+      (window as any).__DISPATCH_INSURANCE_SELECT__ = (ins: string) => {
+        handleInsuranceSelect(ins);
+      };
+
+      (window as any).__DISPATCH_VERACRUZ_SELECT__ = (vc: 'sim' | 'nao' | 'nao_sei') => {
+        handleSelectVeraCruz(vc);
+      };
     }
 
     return () => {
       if (typeof window !== 'undefined') {
         delete (window as any).__DISPATCH_PAIN_SELECT__;
         delete (window as any).__DISPATCH_MODALITY_SELECT__;
+        delete (window as any).__DISPATCH_INSURANCE_SELECT__;
+        delete (window as any).__DISPATCH_VERACRUZ_SELECT__;
       }
     };
   }, []);
@@ -371,10 +391,18 @@ export default function WhatsAppPreQualifyCard({
               if (window.__PREQUAL_BRIDGE_INSTALLED__) return;
               window.__PREQUAL_BRIDGE_INSTALLED__ = true;
 
+              var ENCOURAGEMENTS = {
+                coluna: 'Entendi que você busca avaliação para sua coluna. O Dr. Otto Beckedorff atua com foco no diagnóstico preciso e tratamento de dores e patologias da coluna vertebral (como hérnia de disco e ciático), priorizando reabilitação estruturada e procedimentos minimamente invasivos para devolver seu bem-estar.',
+                joelho: 'Compreendo o quanto a dor no joelho impacta sua rotina. O Dr. Otto atua no diagnóstico e tratamento de desgastes articulares e lesões, com foco em recuperação funcional, reabilitação e alívio do desconforto.',
+                ombro: 'Dores no ombro afetam noites de sono e movimentos diários. O Dr. Otto atua na investigação detalhada de tendinites, bursites e lesões, com condutas voltadas à ampla recuperação do movimento.',
+                quadril: 'O desconforto no quadril prejudica o caminhar e a qualidade de vida. O Dr. Otto realiza investigação criteriosa de impacto articular, bursites e artrose, sempre buscando a conduta mais eficiente e individualizada.'
+              };
+
               function handleBridgeClick(e) {
                 var el = e.target && (e.target.nodeType === 1 ? e.target : e.target.parentElement);
                 if (!el || !el.closest) return;
 
+                // 1. Pain Area Click
                 var painBtn = el.closest('[id^="prequal-pain-"]');
                 if (painBtn) {
                   var area = painBtn.id.replace('prequal-pain-', '');
@@ -388,17 +416,113 @@ export default function WhatsAppPreQualifyCard({
                   painBtn.classList.add('btn-primary', 'text-white', 'shadow-sm');
                   painBtn.classList.remove('btn-outline-secondary', 'bg-white', 'text-dark');
 
+                  var enc = document.getElementById('prequal-encouragement');
+                  var encText = document.getElementById('prequal-encouragement-text');
+                  if (enc && encText && ENCOURAGEMENTS[area]) {
+                    encText.textContent = ENCOURAGEMENTS[area];
+                    enc.classList.remove('d-none');
+                  }
+
+                  var s2 = document.getElementById('prequal-step-2');
+                  if (s2) {
+                    s2.classList.remove('d-none');
+                    setTimeout(function() {
+                      s2.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 80);
+                  }
+
                   if (typeof window.__DISPATCH_PAIN_SELECT__ === 'function') {
                     window.__DISPATCH_PAIN_SELECT__(area);
                   }
                 }
 
+                // 2. Modality Click
                 var modBtn = el.closest('[id^="prequal-modality-"]');
                 if (modBtn) {
                   var mod = modBtn.id.replace('prequal-modality-', '');
                   window.__INITIAL_MODALITY_SELECTION__ = mod;
+
+                  var allMods = document.querySelectorAll('[id^="prequal-modality-"]');
+                  for (var j = 0; j < allMods.length; j++) {
+                    allMods[j].classList.remove('btn-primary', 'text-white', 'shadow-sm');
+                    allMods[j].classList.add('btn-outline-secondary', 'bg-white', 'text-dark');
+                  }
+                  modBtn.classList.add('btn-primary', 'text-white', 'shadow-sm');
+                  modBtn.classList.remove('btn-outline-secondary', 'bg-white', 'text-dark');
+
+                  if (mod === 'convenio') {
+                    var s3 = document.getElementById('prequal-step-3');
+                    if (s3) {
+                      s3.classList.remove('d-none');
+                      setTimeout(function() {
+                        s3.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }, 80);
+                    }
+                  } else {
+                    var s4 = document.getElementById('prequal-step-4');
+                    if (s4) {
+                      s4.classList.remove('d-none');
+                      setTimeout(function() {
+                        s4.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                      }, 80);
+                    }
+                  }
+
                   if (typeof window.__DISPATCH_MODALITY_SELECT__ === 'function') {
                     window.__DISPATCH_MODALITY_SELECT__(mod);
+                  }
+                }
+
+                // 3. Insurance Pill Click
+                var pillBtn = el.closest('[id^="prequal-pill-"]');
+                if (pillBtn) {
+                  var insLabel = pillBtn.textContent.trim();
+                  window.__INITIAL_INSURANCE_SELECTION__ = insLabel;
+
+                  var allPills = document.querySelectorAll('[id^="prequal-pill-"]');
+                  for (var k = 0; k < allPills.length; k++) {
+                    allPills[k].classList.remove('btn-primary', 'text-white', 'shadow-sm');
+                    allPills[k].classList.add('btn-outline-secondary', 'bg-white', 'text-dark');
+                  }
+                  pillBtn.classList.add('btn-primary', 'text-white', 'shadow-sm');
+                  pillBtn.classList.remove('btn-outline-secondary', 'bg-white', 'text-dark');
+
+                  var vcRef = document.getElementById('prequal-step-veracruz');
+                  if (vcRef) {
+                    setTimeout(function() {
+                      vcRef.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 80);
+                  }
+
+                  if (typeof window.__DISPATCH_INSURANCE_SELECT__ === 'function') {
+                    window.__DISPATCH_INSURANCE_SELECT__(insLabel);
+                  }
+                }
+
+                // 4. Vera Cruz Coverage Click
+                var vcBtn = el.closest('[id^="prequal-veracruz-"]');
+                if (vcBtn) {
+                  var vcVal = vcBtn.id.replace('prequal-veracruz-', '').replace('-', '_');
+                  window.__INITIAL_VERACRUZ_SELECTION__ = vcVal;
+
+                  var allVc = document.querySelectorAll('[id^="prequal-veracruz-"]');
+                  for (var m = 0; m < allVc.length; m++) {
+                    allVc[m].classList.remove('btn-primary', 'text-white', 'shadow-sm');
+                    allVc[m].classList.add('btn-outline-secondary', 'bg-white', 'text-dark');
+                  }
+                  vcBtn.classList.add('btn-primary', 'text-white', 'shadow-sm');
+                  vcBtn.classList.remove('btn-outline-secondary', 'bg-white', 'text-dark');
+
+                  var s4b = document.getElementById('prequal-step-4');
+                  if (s4b) {
+                    s4b.classList.remove('d-none');
+                    setTimeout(function() {
+                      s4b.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    }, 80);
+                  }
+
+                  if (typeof window.__DISPATCH_VERACRUZ_SELECT__ === 'function') {
+                    window.__DISPATCH_VERACRUZ_SELECT__(vcVal);
                   }
                 }
               }
@@ -599,113 +723,111 @@ export default function WhatsAppPreQualifyCard({
             {/* FRASE DE ACOLHIMENTO E ESPERANÇA DO DR. OTTO                 */}
             {/* Reveals smoothly as soon as pain area is clicked            */}
             {/* ============================================================ */}
-            {painArea && encouragement && (
-              <div
-                className="p-3 rounded-3 mb-3 border"
-                style={{
-                  backgroundColor: '#f0f9ff',
-                  borderColor: '#bae6fd',
-                  animation: 'fadeInSlide 0.3s ease-out'
-                }}
-              >
-                <div className="d-flex align-items-start gap-2">
-                  <div className="rounded-circle p-1 bg-white shadow-sm text-primary flex-shrink-0" style={{ width: '26px', height: '26px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-                    <i className="bi bi-heart-pulse-fill" style={{ fontSize: '0.85rem' }}></i>
+            <div
+              id="prequal-encouragement"
+              className={`p-3 rounded-3 mb-3 border ${painArea && encouragement ? '' : 'd-none'}`}
+              style={{
+                backgroundColor: '#f0f9ff',
+                borderColor: '#bae6fd',
+                animation: 'fadeInSlide 0.3s ease-out'
+              }}
+            >
+              <div className="d-flex align-items-start gap-2">
+                <div className="rounded-circle p-1 bg-white shadow-sm text-primary flex-shrink-0" style={{ width: '26px', height: '26px', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+                  <i className="bi bi-heart-pulse-fill" style={{ fontSize: '0.85rem' }}></i>
+                </div>
+                <div>
+                  <div className="fw-bold text-dark mb-1" style={{ fontSize: '0.78rem' }}>
+                    Acolhimento da Equipe do Dr. Otto:
                   </div>
-                  <div>
-                    <div className="fw-bold text-dark mb-1" style={{ fontSize: '0.78rem' }}>
-                      Acolhimento da Equipe do Dr. Otto:
-                    </div>
-                    <p className="text-secondary small mb-0" style={{ fontSize: '0.8rem', lineHeight: '1.45' }}>
-                      {encouragement}
-                    </p>
-                  </div>
+                  <p id="prequal-encouragement-text" className="text-secondary small mb-0" style={{ fontSize: '0.8rem', lineHeight: '1.45' }}>
+                    {encouragement || (painArea ? (ENCOURAGEMENT_TEXTS[painArea] || ENCOURAGEMENT_TEXTS.coluna) : ENCOURAGEMENT_TEXTS.coluna)}
+                  </p>
                 </div>
               </div>
-            )}
+            </div>
 
             {/* ============================================================ */}
             {/* ETAPA 2: Como gostaria de ser atendido?                      */}
             {/* Options: Convênio | Particular                              */}
             {/* Reveals smoothly after Etapa 1                              */}
             {/* ============================================================ */}
-            {painArea && (
-              <div
-                ref={step2Ref}
-                className="mb-3 pt-2 border-top"
-                style={{ animation: 'fadeInSlide 0.3s ease-out' }}
-              >
-                <label className="form-label h6 fw-bold text-dark d-flex align-items-center justify-content-between mb-2" style={{ fontSize: '0.92rem' }}>
-                  <span>
-                    <span className="badge bg-primary text-white rounded-circle me-2" style={{ width: '20px', height: '20px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.72rem' }}>2</span>
-                    Como gostaria de ser atendido?
+            <div
+              id="prequal-step-2"
+              ref={step2Ref}
+              className={`mb-3 pt-2 border-top ${painArea ? '' : 'd-none'}`}
+              style={{ animation: 'fadeInSlide 0.3s ease-out' }}
+            >
+              <label className="form-label h6 fw-bold text-dark d-flex align-items-center justify-content-between mb-2" style={{ fontSize: '0.92rem' }}>
+                <span>
+                  <span className="badge bg-primary text-white rounded-circle me-2" style={{ width: '20px', height: '20px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.72rem' }}>2</span>
+                  Como gostaria de ser atendido?
+                </span>
+                {!modality && (
+                  <span className="small text-muted fw-normal" style={{ fontSize: '0.74rem' }}>
+                    Escolha uma modalidade:
                   </span>
-                  {!modality && (
-                    <span className="small text-muted fw-normal" style={{ fontSize: '0.74rem' }}>
-                      Escolha uma modalidade:
-                    </span>
-                  )}
-                </label>
+                )}
+              </label>
 
-                <div className="row g-2">
-                  <div className="col-6">
-                    <button
-                      id="prequal-modality-convenio"
-                      type="button"
-                      onClick={() => handleSelectModality('convenio')}
-                      className={`btn w-100 py-3 rounded-3 fw-bold transition-all d-flex flex-column align-items-center justify-content-center gap-1 ${
-                        modality === 'convenio'
-                          ? 'btn-primary text-white shadow-sm'
-                          : 'btn-outline-secondary bg-white text-dark'
-                      }`}
-                      style={{
-                        fontSize: '0.88rem',
-                        minHeight: '60px',
-                        touchAction: 'manipulation',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      <i className="bi bi-credit-card-2-front fs-5"></i>
-                      Convênio
-                    </button>
-                  </div>
+              <div className="row g-2">
+                <div className="col-6">
+                  <button
+                    id="prequal-modality-convenio"
+                    type="button"
+                    onClick={() => handleSelectModality('convenio')}
+                    className={`btn w-100 py-3 rounded-3 fw-bold transition-all d-flex flex-column align-items-center justify-content-center gap-1 ${
+                      modality === 'convenio'
+                        ? 'btn-primary text-white shadow-sm'
+                        : 'btn-outline-secondary bg-white text-dark'
+                    }`}
+                    style={{
+                      fontSize: '0.88rem',
+                      minHeight: '60px',
+                      touchAction: 'manipulation',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <i className="bi bi-credit-card-2-front fs-5"></i>
+                    Convênio
+                  </button>
+                </div>
 
-                  <div className="col-6">
-                    <button
-                      id="prequal-modality-particular"
-                      type="button"
-                      onClick={() => handleSelectModality('particular')}
-                      className={`btn w-100 py-3 rounded-3 fw-bold transition-all d-flex flex-column align-items-center justify-content-center gap-1 ${
-                        modality === 'particular'
-                          ? 'btn-primary text-white shadow-sm'
-                          : 'btn-outline-secondary bg-white text-dark'
-                      }`}
-                      style={{
-                        fontSize: '0.88rem',
-                        minHeight: '60px',
-                        touchAction: 'manipulation',
-                        cursor: 'pointer'
-                      }}
-                    >
-                      <i className="bi bi-person-heart fs-5"></i>
-                      Particular
-                    </button>
-                  </div>
+                <div className="col-6">
+                  <button
+                    id="prequal-modality-particular"
+                    type="button"
+                    onClick={() => handleSelectModality('particular')}
+                    className={`btn w-100 py-3 rounded-3 fw-bold transition-all d-flex flex-column align-items-center justify-content-center gap-1 ${
+                      modality === 'particular'
+                        ? 'btn-primary text-white shadow-sm'
+                        : 'btn-outline-secondary bg-white text-dark'
+                    }`}
+                    style={{
+                      fontSize: '0.88rem',
+                      minHeight: '60px',
+                      touchAction: 'manipulation',
+                      cursor: 'pointer'
+                    }}
+                  >
+                    <i className="bi bi-person-heart fs-5"></i>
+                    Particular
+                  </button>
                 </div>
               </div>
-            )}
+            </div>
 
             {/* ============================================================ */}
             {/* ETAPA 3 (Se Convênio): Pills de toque rápido + Vera Cruz    */}
             {/* [ Amil ] [ Bradesco ] [ SulAmérica ] [ Omint ] [ Petrobras ] */}
             {/* [ Outro ] [ Unimed ]                                        */}
             {/* ============================================================ */}
-            {painArea && modality === 'convenio' && (
-              <div
-                ref={step3Ref}
-                className="mb-3 pt-2 border-top"
-                style={{ animation: 'fadeInSlide 0.3s ease-out' }}
-              >
+            <div
+              id="prequal-step-3"
+              ref={step3Ref}
+              className={`mb-3 pt-2 border-top ${painArea && modality === 'convenio' ? '' : 'd-none'}`}
+              style={{ animation: 'fadeInSlide 0.3s ease-out' }}
+            >
                 <label className="form-label h6 fw-bold text-dark d-flex align-items-center justify-content-between mb-2" style={{ fontSize: '0.92rem' }}>
                   <span>
                     <span className="badge bg-primary text-white rounded-circle me-2" style={{ width: '20px', height: '20px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.72rem' }}>3</span>
@@ -836,7 +958,7 @@ export default function WhatsAppPreQualifyCard({
                 {/* PERGUNTA OBRIGATÓRIA: Cobertura no Hospital Vera Cruz        */}
                 {/* [ Sim ] [ Não ] [ Não sei ]                                 */}
                 {/* ============================================================ */}
-                <div ref={veraCruzRef} className="mt-3 pt-3 border-top">
+                <div id="prequal-step-veracruz" ref={veraCruzRef} className="mt-3 pt-3 border-top">
                   <label className="form-label h6 fw-bold text-dark d-flex align-items-center justify-content-between mb-2" style={{ fontSize: '0.88rem' }}>
                     <span>
                       Seu plano atende no Hospital Vera Cruz? <span className="text-danger">*</span>
@@ -918,18 +1040,17 @@ export default function WhatsAppPreQualifyCard({
                 </div>
 
               </div>
-            )}
 
             {/* ============================================================ */}
             {/* ETAPA 4: Seu nome completo                                   */}
             {/* Reveals once modality is Particular OR Insurance is chosen   */}
             {/* ============================================================ */}
-            {painArea && (modality === 'particular' || (modality === 'convenio' && Boolean(insuranceName))) && (
-              <div
-                ref={step4Ref}
-                className="mb-3 pt-2 border-top"
-                style={{ animation: 'fadeInSlide 0.3s ease-out' }}
-              >
+            <div
+              id="prequal-step-4"
+              ref={step4Ref}
+              className={`mb-3 pt-2 border-top ${painArea && (modality === 'particular' || (modality === 'convenio' && Boolean(insuranceName))) ? '' : 'd-none'}`}
+              style={{ animation: 'fadeInSlide 0.3s ease-out' }}
+            >
                 <label htmlFor="prequal-name" className="form-label h6 fw-bold text-dark d-flex align-items-center mb-2" style={{ fontSize: '0.92rem' }}>
                   <span className="badge bg-primary text-white rounded-circle me-2" style={{ width: '20px', height: '20px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.72rem' }}>
                     {modality === 'particular' ? '3' : '4'}
@@ -995,7 +1116,6 @@ export default function WhatsAppPreQualifyCard({
                   Direcionado diretamente à equipe médica do Dr. Otto Beckedorff.
                 </p>
               </div>
-            )}
 
             {/* Hidden fallback inputs to ensure automated test runners can interact with inputs regardless of active state */}
             <div style={{ display: 'none' }} aria-hidden="true">

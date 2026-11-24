@@ -496,6 +496,7 @@ async function testHeadlessBrowserAndSingleEvent() {
 
     // Clicking "Sim" for Vera Cruz Hospital coverage
     await testPage.click('#prequal-veracruz-sim');
+    await new Promise(r => setTimeout(r, 100));
     const isSimActive = await testPage.evaluate(() => {
       const simBtn = document.querySelector('#prequal-veracruz-sim');
       return Boolean(simBtn && simBtn.className.includes('btn-primary'));
