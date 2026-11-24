@@ -98,9 +98,10 @@ export default function WhatsAppPreQualifyCard({
   // Etapa 2: Como gostaria de ser atendido? (Convênio / Particular)
   const [modality, setModality] = useState<'convenio' | 'particular' | null>(null);
 
-  // Etapa 3 (Se Convênio): Pills de toque rápido
+  // Etapa 3 (Se Convênio): Pills de toque rápido + Pergunta Vera Cruz
   const [insuranceName, setInsuranceName] = useState<string>('');
   const [showMoreInsurances, setShowMoreInsurances] = useState(false);
+  const [coverageVeraCruz, setCoverageVeraCruz] = useState<'sim' | 'nao' | 'nao_sei' | null>(null);
   const [unimedConfirmed, setUnimedConfirmed] = useState(false);
 
   // Etapa 4: Seu nome completo
@@ -115,6 +116,7 @@ export default function WhatsAppPreQualifyCard({
   // Refs for smooth auto-scroll as sections reveal
   const step2Ref = useRef<HTMLDivElement>(null);
   const step3Ref = useRef<HTMLDivElement>(null);
+  const veraCruzRef = useRef<HTMLDivElement>(null);
   const step4Ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -140,8 +142,8 @@ export default function WhatsAppPreQualifyCard({
     setPainArea(id);
     setErrorMessage(null);
     setTimeout(() => {
-      step2Ref.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 120);
+      step2Ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 150);
   };
 
   // Etapa 2 Handler: Select Modality -> If Convênio reveals Etapa 3; If Particular reveals Etapa 4
@@ -150,14 +152,14 @@ export default function WhatsAppPreQualifyCard({
     setErrorMessage(null);
     setTimeout(() => {
       if (m === 'convenio') {
-        step3Ref.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        step3Ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       } else {
-        step4Ref.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+        step4Ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
       }
-    }, 120);
+    }, 150);
   };
 
-  // Etapa 3 Handler: Select Insurance Pill -> Reveals Etapa 4 (Nome)
+  // Etapa 3 Handler A: Select Insurance Pill
   const handleInsuranceSelect = (val: string) => {
     setInsuranceName(val);
     setErrorMessage(null);
@@ -165,8 +167,17 @@ export default function WhatsAppPreQualifyCard({
       setUnimedConfirmed(false);
     }
     setTimeout(() => {
-      step4Ref.current?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-    }, 120);
+      veraCruzRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 150);
+  };
+
+  // Etapa 3 Handler B: Select Vera Cruz Coverage (Mandatory)
+  const handleSelectVeraCruz = (val: 'sim' | 'nao' | 'nao_sei') => {
+    setCoverageVeraCruz(val);
+    setErrorMessage(null);
+    setTimeout(() => {
+      step4Ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }, 150);
   };
 
   // Final Action: Enviar e Falar no WhatsApp 🟢
@@ -192,6 +203,11 @@ export default function WhatsAppPreQualifyCard({
 
     if (modality === 'convenio' && !insuranceName.trim()) {
       setErrorMessage('Por favor, selecione seu convênio na Etapa 3.');
+      return;
+    }
+
+    if (modality === 'convenio' && !coverageVeraCruz) {
+      setErrorMessage('Por favor, informe se o seu plano dá cobertura no Hospital Vera Cruz.');
       return;
     }
 
@@ -226,6 +242,7 @@ export default function WhatsAppPreQualifyCard({
           landing_page: typeof window !== 'undefined' ? window.location.pathname : '',
           modality: isUnimed ? 'particular' : (isAmil ? 'amil' : (modality === 'convenio' ? 'outro_convenio' : 'particular')),
           insurance_name: modality === 'convenio' ? insuranceName.trim() : null,
+          coverage_vera_cruz: modality === 'convenio' ? coverageVeraCruz : 'particular',
           is_unimed: isUnimed,
           ...storedUtms
         })
@@ -270,13 +287,20 @@ export default function WhatsAppPreQualifyCard({
       }
     }
 
+    const veraCruzDesc =
+      coverageVeraCruz === 'sim' ? 'Sim' :
+      coverageVeraCruz === 'nao' ? 'Não' :
+      coverageVeraCruz === 'nao_sei' ? 'Não sei / A verificar' :
+      'Particular / Procedimento no Vera Cruz';
+
     const painLabel = PAIN_AREAS.find(p => p.id === painArea)?.label || 'Coluna';
 
     const messageText =
       `Olá! Gostaria de solicitar um agendamento de consulta em Campinas com o Dr. Otto Beckedorff.\n\n` +
       `• Nome: ${trimmedName}\n` +
       `• Região de interesse: ${painLabel}\n` +
-      `• Atendimento: ${atdDesc}\n\n` +
+      `• Atendimento: ${atdDesc}\n` +
+      `• Cobertura Hospital Vera Cruz: ${veraCruzDesc}\n\n` +
       `[Ref: ${refCode}]`;
 
     const whatsappUrl = `https://wa.me/5519999439824?text=${encodeURIComponent(messageText)}`;
@@ -298,13 +322,8 @@ export default function WhatsAppPreQualifyCard({
   // Compute visual step progress
   const hasStep1 = Boolean(painArea);
   const hasStep2 = Boolean(modality);
-  const hasStep3 = modality === 'particular' || Boolean(insuranceName);
+  const hasStep3 = modality === 'particular' || (Boolean(insuranceName) && Boolean(coverageVeraCruz));
   const hasStep4 = Boolean(name && isValidFullName(name));
-
-  const completedStepsCount =
-    (hasStep1 ? 1 : 0) +
-    (hasStep2 ? 1 : 0) +
-    (modality === 'particular' ? (hasStep4 ? 1 : 0) : ((hasStep3 ? 1 : 0) + (hasStep4 ? 1 : 0)));
 
   const totalStepsTarget = modality === 'particular' ? 3 : 4;
   const progressPercent = Math.min(100, Math.round(((hasStep1 ? 1 : 0) + (hasStep2 ? 1 : 0) + (hasStep3 ? 1 : 0)) / totalStepsTarget * 100));
@@ -320,7 +339,7 @@ export default function WhatsAppPreQualifyCard({
         <div
           className="bg-success h-100"
           style={{
-            width: `${Math.max(15, progressPercent)}%`,
+            width: `${Math.max(20, progressPercent)}%`,
             transition: 'width 0.4s ease'
           }}
         ></div>
@@ -348,11 +367,12 @@ export default function WhatsAppPreQualifyCard({
                 setPainArea(null);
                 setModality(null);
                 setInsuranceName('');
+                setCoverageVeraCruz(null);
                 setName('');
                 setErrorMessage(null);
               }}
               className="btn btn-link btn-sm text-secondary text-decoration-none p-0"
-              style={{ fontSize: '0.76rem' }}
+              style={{ fontSize: '0.76rem', cursor: 'pointer' }}
             >
               <i className="bi bi-arrow-counterclockwise me-1"></i> Reiniciar
             </button>
@@ -388,10 +408,11 @@ export default function WhatsAppPreQualifyCard({
                 setPainArea(null);
                 setModality(null);
                 setInsuranceName('');
+                setCoverageVeraCruz(null);
                 setName('');
               }}
               className="btn btn-link btn-sm text-muted text-decoration-none mt-2"
-              style={{ fontSize: '0.78rem' }}
+              style={{ fontSize: '0.78rem', cursor: 'pointer' }}
             >
               <i className="bi bi-arrow-counterclockwise me-1"></i> Iniciar novo contato
             </button>
@@ -412,7 +433,7 @@ export default function WhatsAppPreQualifyCard({
                 </span>
                 {!painArea && (
                   <span className="small text-muted fw-normal" style={{ fontSize: '0.74rem' }}>
-                    Selecione 1 opção
+                    Toque em 1 opção:
                   </span>
                 )}
               </label>
@@ -429,7 +450,12 @@ export default function WhatsAppPreQualifyCard({
                           ? 'btn-primary text-white shadow-sm'
                           : 'btn-outline-secondary bg-white text-dark'
                       }`}
-                      style={{ fontSize: '0.86rem', minHeight: '44px' }}
+                      style={{
+                        fontSize: '0.86rem',
+                        minHeight: '44px',
+                        touchAction: 'manipulation',
+                        cursor: 'pointer'
+                      }}
                     >
                       <i className={`bi ${area.icon} ${painArea === area.id ? 'text-white' : 'text-primary'}`}></i>
                       {area.label}
@@ -486,7 +512,7 @@ export default function WhatsAppPreQualifyCard({
                   </span>
                   {!modality && (
                     <span className="small text-muted fw-normal" style={{ fontSize: '0.74rem' }}>
-                      Escolha uma modalidade
+                      Escolha uma modalidade:
                     </span>
                   )}
                 </label>
@@ -502,7 +528,12 @@ export default function WhatsAppPreQualifyCard({
                           ? 'btn-primary text-white shadow-sm'
                           : 'btn-outline-secondary bg-white text-dark'
                       }`}
-                      style={{ fontSize: '0.88rem', minHeight: '60px' }}
+                      style={{
+                        fontSize: '0.88rem',
+                        minHeight: '60px',
+                        touchAction: 'manipulation',
+                        cursor: 'pointer'
+                      }}
                     >
                       <i className="bi bi-credit-card-2-front fs-5"></i>
                       Convênio
@@ -519,7 +550,12 @@ export default function WhatsAppPreQualifyCard({
                           ? 'btn-primary text-white shadow-sm'
                           : 'btn-outline-secondary bg-white text-dark'
                       }`}
-                      style={{ fontSize: '0.88rem', minHeight: '60px' }}
+                      style={{
+                        fontSize: '0.88rem',
+                        minHeight: '60px',
+                        touchAction: 'manipulation',
+                        cursor: 'pointer'
+                      }}
                     >
                       <i className="bi bi-person-heart fs-5"></i>
                       Particular
@@ -530,7 +566,7 @@ export default function WhatsAppPreQualifyCard({
             )}
 
             {/* ============================================================ */}
-            {/* ETAPA 3 (Se Convênio): Pills de toque rápido                  */}
+            {/* ETAPA 3 (Se Convênio): Pills de toque rápido + Vera Cruz    */}
             {/* [ Amil ] [ Bradesco ] [ SulAmérica ] [ Omint ] [ Petrobras ] */}
             {/* [ Outro ] [ Unimed ]                                        */}
             {/* ============================================================ */}
@@ -565,7 +601,15 @@ export default function WhatsAppPreQualifyCard({
                           ? 'btn-primary text-white shadow-sm'
                           : 'btn-outline-secondary bg-white text-dark'
                       }`}
-                      style={{ fontSize: '0.82rem', minHeight: '44px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center' }}
+                      style={{
+                        fontSize: '0.82rem',
+                        minHeight: '44px',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        touchAction: 'manipulation',
+                        cursor: 'pointer'
+                      }}
                     >
                       {ins.label}
                     </button>
@@ -578,7 +622,7 @@ export default function WhatsAppPreQualifyCard({
                     type="button"
                     onClick={() => setShowMoreInsurances(!showMoreInsurances)}
                     className="btn btn-link btn-sm text-decoration-none p-0 text-muted"
-                    style={{ fontSize: '0.76rem' }}
+                    style={{ fontSize: '0.76rem', cursor: 'pointer' }}
                   >
                     <i className={`bi ${showMoreInsurances ? 'bi-chevron-up' : 'bi-chevron-down'} me-1`}></i>
                     {showMoreInsurances ? 'Menos opções de convênios' : 'Ver outros convênios (Porto Seguro, Saúde Caixa, Care Plus...)'}
@@ -597,7 +641,7 @@ export default function WhatsAppPreQualifyCard({
                             ? 'btn-primary text-white shadow-sm'
                             : 'btn-outline-secondary bg-white'
                         }`}
-                        style={{ fontSize: '0.78rem' }}
+                        style={{ fontSize: '0.78rem', touchAction: 'manipulation', cursor: 'pointer' }}
                       >
                         {ins.label}
                       </button>
@@ -657,6 +701,92 @@ export default function WhatsAppPreQualifyCard({
                     </p>
                   </div>
                 )}
+
+                {/* ============================================================ */}
+                {/* PERGUNTA OBRIGATÓRIA: Cobertura no Hospital Vera Cruz        */}
+                {/* [ Sim ] [ Não ] [ Não sei ]                                 */}
+                {/* ============================================================ */}
+                <div ref={veraCruzRef} className="mt-3 pt-3 border-top">
+                  <label className="form-label h6 fw-bold text-dark d-flex align-items-center justify-content-between mb-2" style={{ fontSize: '0.88rem' }}>
+                    <span>
+                      Seu plano atende no Hospital Vera Cruz? <span className="text-danger">*</span>
+                    </span>
+                    {!coverageVeraCruz && (
+                      <span className="small text-danger fw-normal" style={{ fontSize: '0.74rem' }}>
+                        Obrigatório
+                      </span>
+                    )}
+                  </label>
+
+                  <div className="d-flex gap-2">
+                    <button
+                      id="prequal-veracruz-sim"
+                      type="button"
+                      onClick={() => handleSelectVeraCruz('sim')}
+                      className={`btn flex-fill py-2 rounded-3 fw-bold small transition-all ${
+                        coverageVeraCruz === 'sim'
+                          ? 'btn-primary text-white shadow-sm'
+                          : 'btn-outline-secondary bg-white text-dark'
+                      }`}
+                      style={{
+                        fontSize: '0.86rem',
+                        minHeight: '44px',
+                        touchAction: 'manipulation',
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      Sim
+                    </button>
+
+                    <button
+                      id="prequal-veracruz-nao"
+                      type="button"
+                      onClick={() => handleSelectVeraCruz('nao')}
+                      className={`btn flex-fill py-2 rounded-3 fw-bold small transition-all ${
+                        coverageVeraCruz === 'nao'
+                          ? 'btn-primary text-white shadow-sm'
+                          : 'btn-outline-secondary bg-white text-dark'
+                      }`}
+                      style={{
+                        fontSize: '0.86rem',
+                        minHeight: '44px',
+                        touchAction: 'manipulation',
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      Não
+                    </button>
+
+                    <button
+                      id="prequal-veracruz-nao-sei"
+                      type="button"
+                      onClick={() => handleSelectVeraCruz('nao_sei')}
+                      className={`btn flex-fill py-2 rounded-3 fw-bold small transition-all ${
+                        coverageVeraCruz === 'nao_sei'
+                          ? 'btn-primary text-white shadow-sm'
+                          : 'btn-outline-secondary bg-white text-dark'
+                      }`}
+                      style={{
+                        fontSize: '0.86rem',
+                        minHeight: '44px',
+                        touchAction: 'manipulation',
+                        cursor: 'pointer',
+                        display: 'inline-flex',
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                      }}
+                    >
+                      Não sei
+                    </button>
+                  </div>
+                </div>
+
               </div>
             )}
 
@@ -708,7 +838,8 @@ export default function WhatsAppPreQualifyCard({
                     backgroundColor: isUnimed && !unimedConfirmed ? '#9ca3af' : '#25D366',
                     border: 'none',
                     fontSize: '1.02rem',
-                    cursor: isUnimed && !unimedConfirmed ? 'not-allowed' : 'pointer'
+                    cursor: isUnimed && !unimedConfirmed ? 'not-allowed' : 'pointer',
+                    touchAction: 'manipulation'
                   }}
                 >
                   {isSubmitting ? (
@@ -749,7 +880,7 @@ export default function WhatsAppPreQualifyCard({
                   ))}
                 </select>
               )}
-              {(!painArea || (modality === 'convenio' && !insuranceName)) && (
+              {(!painArea || (modality === 'convenio' && (!insuranceName || !coverageVeraCruz))) && (
                 <input
                   id="prequal-name-hidden"
                   type="text"

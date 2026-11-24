@@ -483,24 +483,24 @@ async function testHeadlessBrowserAndSingleEvent() {
     // Select Amil for complete conversion flow
     await testPage.select('#prequal-insurance', 'Amil');
 
-    // Test Point 5: Progressive reveal of Doctor Encouragement & Insurance selection
-    const doctorEncouragementVisible = await testPage.evaluate(() => {
-      const card = document.querySelector('#pre-qualificacao');
-      return card ? card.textContent.includes('Acolhimento da Equipe do Dr. Otto') : false;
+    // Test Point 5: Vera Cruz question starts unselected (empty)
+    const veraCruzEmptyInitially = await testPage.evaluate(() => {
+      const simBtn = document.querySelector('#prequal-veracruz-sim');
+      const naoBtn = document.querySelector('#prequal-veracruz-nao');
+      const naoSeiBtn = document.querySelector('#prequal-veracruz-nao-sei');
+      return Boolean(simBtn && !simBtn.className.includes('btn-primary') &&
+                     naoBtn && !naoBtn.className.includes('btn-primary') &&
+                     naoSeiBtn && !naoSeiBtn.className.includes('btn-primary'));
     });
-    assert('Doctor encouragement phrase is displayed upon selecting pain area', doctorEncouragementVisible);
+    assert('Vera Cruz question starts empty without default answer pre-selected', veraCruzEmptyInitially);
 
-    const insurancePillsRendered = await testPage.evaluate(() => {
-      const card = document.querySelector('#pre-qualificacao');
-      return card ? (card.textContent.includes('Amil') && card.textContent.includes('Bradesco') && card.textContent.includes('SulAmérica')) : false;
+    // Clicking "Sim" for Vera Cruz Hospital coverage
+    await testPage.click('#prequal-veracruz-sim');
+    const isSimActive = await testPage.evaluate(() => {
+      const simBtn = document.querySelector('#prequal-veracruz-sim');
+      return Boolean(simBtn && simBtn.className.includes('btn-primary'));
     });
-    assert('Quick insurance pills rendered with Amil, Bradesco, and SulAmérica in prominence', insurancePillsRendered);
-
-    const step4Revealed = await testPage.evaluate(() => {
-      const input = document.querySelector('#prequal-name');
-      return Boolean(input);
-    });
-    assert('Selecting insurance reveals Etapa 4 (Nome Completo) and submit button', step4Revealed);
+    assert('Clicking Sim activates Vera Cruz coverage and reveals Etapa 4 (Nome Completo)', isSimActive);
 
     // Verify Name input exists and starts empty
     const initialName = await testPage.evaluate(() => {
@@ -566,6 +566,7 @@ async function testHeadlessBrowserAndSingleEvent() {
     assert('WhatsApp natural message includes patient name', decodedWaHref.includes('Carlos Eduardo de Souza'));
     assert('WhatsApp natural message includes modality and insurance', decodedWaHref.includes('Convênio (Amil)'));
     assert('WhatsApp natural message includes pain area of interest', decodedWaHref.includes('Região de interesse: Coluna'));
+    assert('WhatsApp natural message includes Vera Cruz coverage answer', decodedWaHref.includes('Cobertura Hospital Vera Cruz: Sim'));
     assert('WhatsApp message has NO raw GCLID parameter and NO clinical symptoms/diagnoses',
       !decodedWaHref.includes('TEST_AUDIT_GCLID') &&
       !decodedWaHref.includes('hernia') &&

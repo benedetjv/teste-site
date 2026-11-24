@@ -148,7 +148,8 @@ export default function LPVeraCruzCampinas() {
             width: '450px', height: '450px', 
             top: '-150px', right: '-150px', 
             background: 'radial-gradient(circle, rgba(14,115,219,0.06) 0%, rgba(255,255,255,0) 70%)',
-            zIndex: 0 
+            zIndex: 0,
+            pointerEvents: 'none'
           }}></div>
         </section>
 
