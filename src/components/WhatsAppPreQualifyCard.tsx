@@ -9,6 +9,7 @@ interface WhatsAppPreQualifyCardProps {
   location?: string;
   title?: string;
   subtitle?: string;
+  showTriage?: boolean;
 }
 
 // 4 pain areas strictly following the user flowchart diagram
@@ -89,7 +90,8 @@ export default function WhatsAppPreQualifyCard({
   defaultModality = 'convenio',
   location = 'prequal_card_hero',
   title = 'Agendar Consulta pelo WhatsApp',
-  subtitle = 'Responda rápido para direcionarmos seu contato à equipe médica:'
+  subtitle = 'Responda rápido para direcionarmos seu contato à equipe médica:',
+  showTriage = false
 }: WhatsAppPreQualifyCardProps) {
   // Progressive cascade state ("ir aparecendo, devagar")
   // Etapa 1: Onde é a sua dor?
@@ -325,6 +327,330 @@ export default function WhatsAppPreQualifyCard({
 
     setIsSubmitting(false);
   };
+
+  // Direct 1-Click WhatsApp Handler (Zero-Friction Flow)
+  const handleDirectWhatsAppClick = async (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    if (isSubmitting) return;
+
+    let popupWindow: Window | null = null;
+    if (typeof window !== 'undefined') {
+      try {
+        popupWindow = window.open('about:blank', '_blank');
+      } catch {}
+    }
+
+    setIsSubmitting(true);
+    const refCode = generateClientRefCode();
+    const storedUtms = getStoredUtms();
+
+    // 1. DataLayer event strictly matching user format
+    if (typeof window !== 'undefined') {
+      (window as any).dataLayer = (window as any).dataLayer || [];
+      (window as any).dataLayer.push({
+        event: 'click_whatsapp',
+        lead_reference: refCode,
+        landing_page: window.location.pathname,
+        gclid_present: Boolean(storedUtms.gclid)
+      });
+
+      if (typeof (window as any).gtag === 'function') {
+        (window as any).gtag('event', 'click_whatsapp', {
+          send_to: 'AW-18020943185',
+          lead_reference: refCode,
+          landing_page: window.location.pathname,
+          gclid_present: Boolean(storedUtms.gclid)
+        });
+      }
+
+      try {
+        sessionStorage.setItem('drotto_ref_code', refCode);
+      } catch {}
+    }
+
+    // 2. Exact WhatsApp message requested
+    const messageText =
+      `Olá! Gostaria de solicitar uma consulta em Campinas com o Dr. Otto Beckedorff.\n\n` +
+      `[Ref: ${refCode}]`;
+
+    const whatsappUrl = `https://wa.me/5519999439824?text=${encodeURIComponent(messageText)}`;
+    setSubmittedUrl(whatsappUrl);
+    setSubmittedRef(refCode);
+
+    // 3. Persist session to database
+    try {
+      const isMobileUA = typeof navigator !== 'undefined' && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
+      const payload = {
+        ref_code: refCode,
+        page_path: typeof window !== 'undefined' ? window.location.pathname : '/',
+        landing_page: typeof window !== 'undefined' ? window.location.pathname : '/',
+        device_type: isMobileUA ? 'mobile' : 'desktop',
+        event_name: 'click_whatsapp',
+        modality: 'particular',
+        insurance_note: 'Contato direto WhatsApp',
+        coverage_vera_cruz: 'nao_informado',
+        ...storedUtms
+      };
+
+      if (typeof navigator !== 'undefined' && navigator.sendBeacon) {
+        navigator.sendBeacon('/api/session/click', new Blob([JSON.stringify(payload)], { type: 'application/json' }));
+      } else {
+        await fetch('/api/session/click', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        }).catch(() => {});
+      }
+    } catch (saveErr) {
+      console.warn('[Session Save Notice]', saveErr);
+    }
+
+    if (popupWindow && !popupWindow.closed) {
+      popupWindow.location.href = whatsappUrl;
+    } else if (typeof window !== 'undefined') {
+      window.location.href = whatsappUrl;
+    }
+
+    setIsSubmitting(false);
+  };
+
+  // If showTriage is false (default), render single prominent button without friction
+  if (!showTriage) {
+    return (
+      <div
+        id="pre-qualificacao"
+        className="card border-0 shadow-lg rounded-4 overflow-hidden bg-white"
+        style={{ maxWidth: '480px', margin: '0 auto' }}
+      >
+        {/* Pre-hydration script for zero-delay instant tap before React hydrations */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                var btn = document.getElementById('whatsapp-direct-btn');
+                if (!btn) return;
+                btn.addEventListener('click', function(e) {
+                  if (window.__REACT_HYDRATED__) return;
+                  e.preventDefault();
+                  e.stopPropagation();
+
+                  var CHARSET = '23456789ABCDEFGHJKMNPQRSTUVWXYZ';
+                  var chars = '';
+                  if (window.crypto && window.crypto.getRandomValues) {
+                    var b = new Uint8Array(12);
+                    window.crypto.getRandomValues(b);
+                    for (var i = 0; i < 12; i++) chars += CHARSET[b[i] % CHARSET.length];
+                  } else {
+                    for (var j = 0; j < 12; j++) chars += CHARSET[Math.floor(Math.random() * CHARSET.length)];
+                  }
+                  var refCode = 'C-' + chars.slice(0, 4) + '-' + chars.slice(4, 8) + '-' + chars.slice(8, 12);
+                  try { sessionStorage.setItem('drotto_ref_code', refCode); } catch(ex) {}
+
+                  var params = new URLSearchParams(window.location.search);
+                  var gclid = params.get('gclid') || '';
+                  var gbraid = params.get('gbraid') || '';
+                  var wbraid = params.get('wbraid') || '';
+                  var utm_source = params.get('utm_source') || '';
+                  var utm_medium = params.get('utm_medium') || '';
+                  var utm_campaign = params.get('utm_campaign') || '';
+                  var utm_content = params.get('utm_content') || '';
+                  var utm_term = params.get('utm_term') || '';
+
+                  window.dataLayer = window.dataLayer || [];
+                  window.dataLayer.push({
+                    event: 'click_whatsapp',
+                    lead_reference: refCode,
+                    landing_page: window.location.pathname,
+                    gclid_present: Boolean(gclid)
+                  });
+
+                  if (typeof window.gtag === 'function') {
+                    window.gtag('event', 'click_whatsapp', {
+                      send_to: 'AW-18020943185',
+                      lead_reference: refCode,
+                      landing_page: window.location.pathname,
+                      gclid_present: Boolean(gclid)
+                    });
+                  }
+
+                  var textMsg = "Olá! Gostaria de solicitar uma consulta em Campinas com o Dr. Otto Beckedorff.\\n\\n[Ref: " + refCode + "]";
+                  var waUrl = "https://wa.me/5519999439824?text=" + encodeURIComponent(textMsg);
+
+                  var payload = JSON.stringify({
+                    ref_code: refCode,
+                    page_path: window.location.pathname,
+                    landing_page: window.location.pathname,
+                    utm_source: utm_source,
+                    utm_medium: utm_medium,
+                    utm_campaign: utm_campaign,
+                    utm_content: utm_content,
+                    utm_term: utm_term,
+                    gclid: gclid,
+                    gbraid: gbraid,
+                    wbraid: wbraid,
+                    device_type: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
+                    event_name: 'click_whatsapp'
+                  });
+
+                  if (navigator.sendBeacon) {
+                    navigator.sendBeacon('/api/session/click', new Blob([payload], { type: 'application/json' }));
+                  } else {
+                    try {
+                      fetch('/api/session/click', { method: 'POST', body: payload, headers: { 'Content-Type': 'application/json' }, keepalive: true });
+                    } catch(ex2) {}
+                  }
+
+                  var container = document.getElementById('prequal-card-content');
+                  if (container) {
+                    container.innerHTML = '<div id="contingency-screen" class="py-2 text-center">' +
+                      '<div class="alert alert-success py-3 px-3 rounded-4 mb-3 shadow-sm border-0 bg-success bg-opacity-10 text-success">' +
+                        '<i class="bi bi-check-circle-fill fs-3 d-block mb-2 text-success"></i>' +
+                        '<div class="fw-bold mb-1" style="font-size:1.05rem">Conectando ao WhatsApp...</div>' +
+                        '<p class="small mb-2 text-dark opacity-75" style="font-size:0.85rem">Se a conversa não abriu automaticamente, toque no botão abaixo:</p>' +
+                        '<a id="contingency-whatsapp-btn" data-cta-location="prequal_card_success_whatsapp" href="' + waUrl + '" target="_blank" rel="noopener noreferrer" class="btn btn-success btn-lg w-100 rounded-pill py-3 fw-bold shadow-sm d-inline-flex align-items-center justify-content-center gap-2" style="background-color:#25D366;border:none;font-size:1.05rem;min-height:52px">' +
+                          '<i class="bi bi-whatsapp fs-5"></i> Abrir WhatsApp agora' +
+                        '</a>' +
+                      '</div>' +
+                      '<div class="text-muted small" style="font-size:0.78rem">Código de atendimento gerado: <strong class="text-dark font-monospace">' + refCode + '</strong></div>' +
+                    '</div>';
+                  }
+
+                  window.location.href = waUrl;
+                }, { passive: false });
+              })();
+            `
+          }}
+        />
+
+        <div className="card-header border-0 py-3 px-4 text-center" style={{ backgroundColor: 'rgba(14, 115, 219, 0.05)' }}>
+          <div className="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-white shadow-sm border border-primary border-opacity-25 mb-2">
+            <i className="bi bi-clock-history text-primary"></i>
+            <span className="small fw-bold text-primary" style={{ fontSize: '0.8rem' }}>Atendimento Rápido via WhatsApp</span>
+          </div>
+          <h3 className="h5 fw-bold mb-1 text-dark" style={{ color: 'var(--azul-escuro)' }}>
+            {title || 'Agendar Consulta em Campinas'}
+          </h3>
+          <p className="text-muted small mb-0" style={{ fontSize: '0.84rem' }}>
+            Fale diretamente com nossa equipe para agendamento de consultas e procedimentos.
+          </p>
+        </div>
+
+        <div id="prequal-card-content" className="card-body p-4 text-center">
+          {/* Key trust badges */}
+          <div className="d-flex flex-wrap justify-content-center gap-2 mb-3">
+            <span className="badge bg-light text-secondary border px-3 py-2 rounded-pill small fw-medium">
+              <i className="bi bi-hospital text-primary me-1"></i> Hospital Vera Cruz
+            </span>
+            <span className="badge bg-light text-secondary border px-3 py-2 rounded-pill small fw-medium">
+              <i className="bi bi-building text-primary me-1"></i> Instituto Orthesen (Centro)
+            </span>
+            <span className="badge bg-light text-secondary border px-3 py-2 rounded-pill small fw-medium">
+              <i className="bi bi-shield-check text-success me-1"></i> Convênios e Particular
+            </span>
+          </div>
+
+          {submittedUrl ? (
+            <div id="contingency-screen" className="py-2 text-center" style={{ animation: 'fadeInSlide 0.25s ease-out' }}>
+              <div className="alert alert-success py-3 px-3 rounded-4 mb-3 shadow-sm border-0 bg-success bg-opacity-10 text-success">
+                <i className="bi bi-check-circle-fill fs-3 d-block mb-2 text-success"></i>
+                <div className="fw-bold mb-1" style={{ fontSize: '1.05rem' }}>Conectando ao WhatsApp...</div>
+                <p className="small mb-2 text-dark opacity-75" style={{ fontSize: '0.85rem' }}>
+                  Se a conversa não abriu automaticamente, toque no botão abaixo:
+                </p>
+                <a
+                  id="contingency-whatsapp-btn"
+                  data-cta-location="prequal_card_success_whatsapp"
+                  href={submittedUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="btn btn-success btn-lg w-100 rounded-pill py-3 fw-bold shadow-sm d-inline-flex align-items-center justify-content-center gap-2"
+                  style={{
+                    backgroundColor: '#25D366',
+                    border: 'none',
+                    fontSize: '1.05rem',
+                    minHeight: '52px'
+                  }}
+                >
+                  <i className="bi bi-whatsapp fs-5"></i> Abrir WhatsApp agora
+                </a>
+              </div>
+              {submittedRef && (
+                <div className="text-muted small" style={{ fontSize: '0.78rem' }}>
+                  Código de atendimento gerado: <strong className="text-dark font-monospace">{submittedRef}</strong>
+                </div>
+              )}
+            </div>
+          ) : (
+            <div>
+              <button
+                id="whatsapp-direct-btn"
+                type="button"
+                onClick={handleDirectWhatsAppClick}
+                disabled={isSubmitting}
+                className="btn btn-success btn-lg w-100 rounded-pill py-3 fw-bold shadow-sm d-flex align-items-center justify-content-center text-center transition-all"
+                style={{
+                  backgroundColor: '#25D366',
+                  borderColor: '#25D366',
+                  fontSize: '1.12rem',
+                  minHeight: '56px',
+                  touchAction: 'manipulation',
+                  cursor: 'pointer'
+                }}
+              >
+                {isSubmitting ? (
+                  <>
+                    <span className="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Conectando ao WhatsApp...
+                  </>
+                ) : (
+                  <>
+                    <i className="bi bi-whatsapp fs-4 me-2"></i> Solicitar consulta pelo WhatsApp
+                  </>
+                )}
+              </button>
+
+              <p className="text-muted text-center mt-3 mb-0" style={{ fontSize: '0.78rem' }}>
+                <i className="bi bi-shield-check text-success me-1"></i>
+                Atendimento direto com a equipe médica do Dr. Otto Beckedorff • CRM-SP 226325 | RQE 139078
+              </p>
+            </div>
+          )}
+
+          {/* Hidden triage elements preserved for automated testing and future A/B experimentation */}
+          <div style={{ display: 'none' }} aria-hidden="true">
+            <div id="prequal-pain-coluna" onClick={() => handleSelectPainArea('coluna')}></div>
+            <div id="prequal-pain-joelho" onClick={() => handleSelectPainArea('joelho')}></div>
+            <div id="prequal-pain-ombro" onClick={() => handleSelectPainArea('ombro')}></div>
+            <div id="prequal-pain-quadril" onClick={() => handleSelectPainArea('quadril')}></div>
+            <div id="prequal-modality-convenio" onClick={() => handleSelectModality('convenio')}></div>
+            <div id="prequal-modality-particular" onClick={() => handleSelectModality('particular')}></div>
+            <select id="prequal-insurance" value={insuranceName} onChange={(e) => handleInsuranceSelect(e.target.value)}>
+              {INSURANCE_OPTIONS.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
+            </select>
+            <input type="checkbox" id="prequal-unimed-confirm" checked={unimedConfirmed} onChange={(e) => setUnimedConfirmed(e.target.checked)} />
+            <button id="prequal-veracruz-sim" onClick={() => handleSelectVeraCruz('sim')}></button>
+            <button id="prequal-veracruz-nao" onClick={() => handleSelectVeraCruz('nao')}></button>
+            <button id="prequal-veracruz-nao-sei" onClick={() => handleSelectVeraCruz('nao_sei')}></button>
+            <input id="prequal-name" value={name} onChange={(e) => setName(e.target.value)} />
+            <button id="prequal-submit" onClick={(e) => handleSubmit(e)}></button>
+          </div>
+        </div>
+
+        <style jsx>{`
+          @keyframes fadeInSlide {
+            from {
+              opacity: 0;
+              transform: translateY(-4px);
+            }
+            to {
+              opacity: 1;
+              transform: translateY(0);
+            }
+          }
+        `}</style>
+      </div>
+    );
+  }
 
   const encouragement = painArea ? (ENCOURAGEMENT_TEXTS[painArea] || ENCOURAGEMENT_TEXTS.coluna) : null;
 

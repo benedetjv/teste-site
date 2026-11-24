@@ -433,141 +433,52 @@ async function testHeadlessBrowserAndSingleEvent() {
       await pageM.close();
     }
 
-    // 2. Behavioral Verification on LP with GCLID (Short Pre-Qualification Flow)
+    // 2. Behavioral Verification on LP with GCLID (Direct 1-Click WhatsApp Flow)
     const testPage = await browser.newPage();
-    const lpUrl = `${BASE_URL}/lp-campinas-convenios?utm_source=google&utm_medium=cpc&utm_campaign=amil_campinas&gclid=TEST_AUDIT_GCLID_7788`;
+    const lpUrl = `${BASE_URL}/lp-campinas-convenios?utm_source=google&utm_medium=cpc&utm_campaign=amil_campinas&utm_content=anuncio1&utm_term=ortopedista+campinas&gclid=TEST_AUDIT_GCLID_7788`;
     await testPage.goto(lpUrl, { waitUntil: 'networkidle0', timeout: 25000 });
 
-        // Verify Pre-qualification Card exists
+    // Verify Pre-qualification Card exists
     const prequalCardExists = await testPage.evaluate(() => Boolean(document.querySelector('#pre-qualificacao')));
     assert('Pre-qualification Card rendered in Hero section', prequalCardExists);
 
-    // Step 1: Advance by clicking Pain Area (Coluna)
-    await testPage.click('#prequal-pain-coluna');
-
-    // Step 2: Advance by clicking Atendimento (Convênio)
-    await testPage.click('#prequal-modality-convenio');
-
-    // Test Point 4: Unimed explicit confirmation checkbox on Step 3
-    await testPage.select('#prequal-insurance', 'Unimed');
-    const hasUnimedCheckbox = await testPage.evaluate(() => {
-      const cb = document.querySelector('#prequal-unimed-confirm');
-      return Boolean(cb);
+    // Verify Direct WhatsApp Button is immediately visible with required text
+    const directBtn = await testPage.evaluate(() => {
+      const btn = document.querySelector('#whatsapp-direct-btn');
+      return btn ? { exists: true, text: btn.textContent.trim(), disabled: btn.disabled } : null;
     });
-    assert('Unimed explicit confirmation checkbox exists on card', hasUnimedCheckbox);
+    assert('Direct WhatsApp button rendered without form friction', directBtn && directBtn.exists);
+    assert('Direct button has exact text "Solicitar consulta pelo WhatsApp"', directBtn && directBtn.text.includes('Solicitar consulta pelo WhatsApp'));
+    assert('Direct button is immediately enabled (no prior input/checkbox required)', directBtn && !directBtn.disabled);
 
-    // Verify submit button is disabled until Unimed confirmation is checked
-    const isUnimedBlocked = await testPage.evaluate(() => {
-      const submitBtn = document.querySelector('#prequal-submit');
-      const card = document.querySelector('#pre-qualificacao');
-      return Boolean(submitBtn && submitBtn.disabled && card && card.textContent.includes('não atende Unimed'));
-    });
-    assert('Unimed selection disables submit button until explicit confirmation is checked', isUnimedBlocked);
-
-    // Check confirmation box
-    await testPage.click('#prequal-unimed-confirm');
-    const isSubmitEnabled = await testPage.evaluate(() => {
-      const submitBtn = document.querySelector('#prequal-submit');
-      return Boolean(submitBtn && !submitBtn.disabled);
-    });
-    assert('Submit button becomes enabled after checking Unimed explicit confirmation', isSubmitEnabled);
-
-    // Test Other Insurances rule in Pre-qualification Card
-    await testPage.select('#prequal-insurance', 'Outro convênio');
-    const hasOtherWarning = await testPage.evaluate(() => {
-      const card = document.querySelector('#pre-qualificacao');
-      return card ? card.textContent.includes('formato particular com emissão de nota') : false;
-    });
-    assert('Other insurances rule displays transparent private consultation notice', hasOtherWarning);
-
-    // Select Amil for complete conversion flow
-    await testPage.select('#prequal-insurance', 'Amil');
-
-    // Test Point 5: Vera Cruz question starts unselected (empty)
-    const veraCruzEmptyInitially = await testPage.evaluate(() => {
-      const simBtn = document.querySelector('#prequal-veracruz-sim');
-      const naoBtn = document.querySelector('#prequal-veracruz-nao');
-      const naoSeiBtn = document.querySelector('#prequal-veracruz-nao-sei');
-      return Boolean(simBtn && !simBtn.className.includes('btn-primary') &&
-                     naoBtn && !naoBtn.className.includes('btn-primary') &&
-                     naoSeiBtn && !naoSeiBtn.className.includes('btn-primary'));
-    });
-    assert('Vera Cruz question starts empty without default answer pre-selected', veraCruzEmptyInitially);
-
-    // Clicking "Sim" for Vera Cruz Hospital coverage
-    await testPage.click('#prequal-veracruz-sim');
-    await new Promise(r => setTimeout(r, 100));
-    const isSimActive = await testPage.evaluate(() => {
-      const simBtn = document.querySelector('#prequal-veracruz-sim');
-      return Boolean(simBtn && simBtn.className.includes('btn-primary'));
-    });
-    assert('Clicking Sim activates Vera Cruz coverage and reveals Etapa 4 (Nome Completo)', isSimActive);
-
-    // Verify Name input exists and starts empty
-    const initialName = await testPage.evaluate(() => {
-      const input = document.querySelector('#prequal-name');
-      return input ? input.value : null;
-    });
-    assert('Mandatory full name input exists and starts empty', initialName === '');
-
-    // Test Point 6: Full Name validation rejects single-word or short input
-    await testPage.type('#prequal-name', 'Carlos');
-    await testPage.evaluate(() => {
-      const submitBtn = document.querySelector('#prequal-submit');
-      if (submitBtn) submitBtn.click();
-    });
-    const hasNameError = await testPage.evaluate(() => {
-      const card = document.querySelector('#pre-qualificacao');
-      return card ? card.textContent.includes('nome completo válido') : false;
-    });
-    assert('Full name validation rejects single-word input (requires minimum first and last name)', hasNameError);
-
-    // Clear and fill valid full name
-    await testPage.evaluate(() => {
-      const input = document.querySelector('#prequal-name');
-      if (input) {
-        const nativeSetter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value').set;
-        nativeSetter.call(input, '');
-        input.dispatchEvent(new Event('input', { bubbles: true }));
-        input.dispatchEvent(new Event('change', { bubbles: true }));
-      }
-    });
-    await testPage.type('#prequal-name', 'Carlos Eduardo de Souza');
-
-    // Clear dataLayer right before submit
+    // Clear dataLayer right before click to test exact event dispatch
     await testPage.evaluate(() => { window.dataLayer = []; });
 
-    // Submit "Enviar e falar no WhatsApp"
-    await testPage.evaluate(() => {
-      const submitBtn = document.querySelector('#prequal-submit');
-      if (submitBtn) submitBtn.click();
-    });
+    // Click direct button
+    await testPage.click('#whatsapp-direct-btn');
 
-    // Wait for success resolution link with generated WhatsApp URL
+    // Wait for contingency screen to be displayed
     await testPage.waitForFunction(() => {
-      const link = document.querySelector('a[data-cta-location="prequal_card_success_whatsapp"]');
+      const link = document.querySelector('#contingency-whatsapp-btn');
       return link && link.getAttribute('href');
     }, { timeout: 6000 }).catch(() => {});
 
     const generatedWaHref = await testPage.evaluate(() => {
-      const link = document.querySelector('a[data-cta-location="prequal_card_success_whatsapp"]');
+      const link = document.querySelector('#contingency-whatsapp-btn');
       return link ? link.getAttribute('href') : null;
     });
 
-    assert('Pre-qualification submit generates WhatsApp URL pointing to wa.me/5519999439824',
+    assert('Direct click generates WhatsApp URL pointing to wa.me/5519999439824',
       generatedWaHref && generatedWaHref.includes('wa.me/5519999439824')
     );
 
     const decodedWaHref = decodeURIComponent(generatedWaHref || '');
-    // Test Point 8: Token pattern C-XXXX-XXXX-XXXX (96-bit entropy)
+    // Token pattern C-XXXX-XXXX-XXXX (96-bit entropy)
     const refMatch = decodedWaHref.match(/\[Ref:\s*(C-[A-Z0-9]{4}-[A-Z0-9]{4}-[A-Z0-9]{4})\]/);
     const generatedRefCode = refMatch ? refMatch[1] : null;
 
     assert('WhatsApp link contains safe anonymous 96-bit reference token [Ref: C-XXXX-XXXX-XXXX]', Boolean(generatedRefCode));
-    assert('WhatsApp natural message includes patient name', decodedWaHref.includes('Carlos Eduardo de Souza'));
-    assert('WhatsApp natural message includes modality and insurance', decodedWaHref.includes('Convênio (Amil)'));
-    assert('WhatsApp natural message includes pain area of interest', decodedWaHref.includes('Região de interesse: Coluna'));
-    assert('WhatsApp natural message includes Vera Cruz coverage answer', decodedWaHref.includes('Cobertura Hospital Vera Cruz: Sim'));
+    assert('WhatsApp message has required clean text format', decodedWaHref.includes('Olá! Gostaria de solicitar uma consulta em Campinas com o Dr. Otto Beckedorff.'));
     assert('WhatsApp message has NO raw GCLID parameter and NO clinical symptoms/diagnoses',
       !decodedWaHref.includes('TEST_AUDIT_GCLID') &&
       !decodedWaHref.includes('hernia') &&
@@ -576,10 +487,23 @@ async function testHeadlessBrowserAndSingleEvent() {
       !/\bdor\b/i.test(decodedWaHref)
     );
 
-    // 3. Secondary Event Verification (Zero PII in dataLayer & Exactly ONE event)
+    // Verify Contingency Screen has "Abrir WhatsApp agora"
+    const contingencyBtnText = await testPage.evaluate(() => {
+      const btn = document.querySelector('#contingency-whatsapp-btn');
+      return btn ? btn.textContent.trim() : null;
+    });
+    assert('Contingency screen displays "Abrir WhatsApp agora" button', contingencyBtnText && contingencyBtnText.includes('Abrir WhatsApp agora'));
+
+    // 3. DataLayer Event Verification (Strict user specification)
+    // { event: "click_whatsapp", lead_reference: "C-XXXX-XXXX-XXXX", landing_page: "...", gclid_present: true }
     const dlAfterSubmit = await testPage.evaluate(() => window.dataLayer || []);
     const waEvents = dlAfterSubmit.filter(e => e.event === 'click_whatsapp');
-    assert('Clicking "Enviar e falar no WhatsApp" dispatches EXACTLY ONE secondary click_whatsapp event', waEvents.length === 1);
+    assert('Clicking direct button dispatches EXACTLY ONE click_whatsapp event', waEvents.length === 1);
+
+    const waEvent = waEvents[0];
+    assert('dataLayer event contains lead_reference', waEvent && waEvent.lead_reference === generatedRefCode);
+    assert('dataLayer event contains landing_page', waEvent && waEvent.landing_page === '/lp-campinas-convenios');
+    assert('dataLayer event contains gclid_present: true', waEvent && waEvent.gclid_present === true);
 
     // Verify zero patient PII in dataLayer
     let leakedPatientPII = false;

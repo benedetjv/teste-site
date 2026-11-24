@@ -174,9 +174,13 @@ export interface ClickSession {
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
+  utm_content?: string;
+  utm_term?: string;
   gclid?: string;
   gbraid?: string;
   wbraid?: string;
+  device_type?: string;
+  event_name?: string;
   modality?: string;
   insurance_note?: string;
   coverage_vera_cruz?: string;
@@ -269,48 +273,82 @@ export function isValidFullName(name: string): boolean {
 }
 
 export async function createClickSession(params: {
+  ref_code?: string;
   page_path: string;
   landing_page: string;
   utm_source?: string;
   utm_medium?: string;
   utm_campaign?: string;
+  utm_content?: string;
+  utm_term?: string;
   gclid?: string;
   gbraid?: string;
   wbraid?: string;
+  device_type?: string;
+  user_agent?: string;
+  event_name?: string;
   modality?: string;
   insurance_note?: string;
   coverage_vera_cruz?: string;
   is_unimed?: boolean;
 }): Promise<string> {
-  // Generate token with at least 96 bits of entropy: C-XXXX-XXXX-XXXX
-  const refCode = generateRefCode();
+  // Generate token with at least 96 bits of entropy: C-XXXX-XXXX-XXXX (or use client provided token)
+  const refCode = params.ref_code || generateRefCode();
   const now = new Date();
   const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days
 
+  // Construct structured metadata backup in insurance_note if no specific insurance
+  let finalInsuranceNote = params.insurance_note;
+  if (!finalInsuranceNote && (params.device_type || params.utm_content || params.utm_term || params.event_name)) {
+    try {
+      finalInsuranceNote = JSON.stringify({
+        device: params.device_type || 'mobile',
+        utm_content: params.utm_content || null,
+        utm_term: params.utm_term || null,
+        event: params.event_name || 'click_whatsapp'
+      });
+    } catch {}
+  }
+
   try {
     const pool = getDatabasePool();
+    // Ensure columns exist safely without error if migration hasn't run yet
+    try {
+      await pool.query(`
+        ALTER TABLE click_sessions ADD COLUMN IF NOT EXISTS utm_content VARCHAR(100);
+        ALTER TABLE click_sessions ADD COLUMN IF NOT EXISTS utm_term VARCHAR(100);
+        ALTER TABLE click_sessions ADD COLUMN IF NOT EXISTS device_type VARCHAR(32);
+        ALTER TABLE click_sessions ADD COLUMN IF NOT EXISTS event_name VARCHAR(64) DEFAULT 'click_whatsapp';
+      `);
+    } catch {}
+
     await pool.query(
       `INSERT INTO click_sessions (
         ref_code, created_at, expires_at, page_path, landing_page,
         utm_source, utm_medium, utm_campaign, gclid, gbraid, wbraid,
-        modality, insurance_note, coverage_vera_cruz, is_unimed
-      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`,
+        modality, insurance_note, coverage_vera_cruz, is_unimed,
+        utm_content, utm_term, device_type, event_name
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, $18, $19)`,
       [
         refCode,
         now.toISOString(),
         expiresAt.toISOString(),
         params.page_path.slice(0, 255),
         params.landing_page.slice(0, 255),
-        params.utm_source?.slice(0, 100),
-        params.utm_medium?.slice(0, 100),
-        params.utm_campaign?.slice(0, 100),
-        params.gclid?.slice(0, 150),
-        params.gbraid?.slice(0, 150),
-        params.wbraid?.slice(0, 150),
-        params.modality?.slice(0, 32) || null,
-        params.insurance_note?.slice(0, 150) || null,
-        params.coverage_vera_cruz?.slice(0, 32) || null,
-        Boolean(params.is_unimed)
+        params.utm_source?.slice(0, 100) || null,
+        params.utm_medium?.slice(0, 100) || null,
+        params.utm_campaign?.slice(0, 100) || null,
+        params.gclid?.slice(0, 150) || null,
+        params.gbraid?.slice(0, 150) || null,
+        params.wbraid?.slice(0, 150) || null,
+        params.modality?.slice(0, 32) || 'particular',
+        finalInsuranceNote ? finalInsuranceNote.slice(0, 150) : null,
+        params.coverage_vera_cruz?.slice(0, 32) || 'nao_informado',
+        Boolean(params.is_unimed),
+        params.utm_content?.slice(0, 100) || null,
+        params.utm_term?.slice(0, 100) || null,
+        params.device_type?.slice(0, 32) || null,
+        params.event_name?.slice(0, 64) || 'click_whatsapp'
       ]
     );
   } catch (dbErr) {
