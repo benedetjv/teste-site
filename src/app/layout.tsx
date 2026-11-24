@@ -162,14 +162,23 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               var wa = el.closest('a[href*="wa.me"], a[href*="api.whatsapp.com"], a[href*="whatsapp.com"], a[href^="whatsapp://"]');
               if (wa) {
                 e.__handledMicroEvent = true;
-                window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push({
+                var waPayload = {
                   event: 'click_whatsapp',
                   page_path: window.location.pathname,
                   landing_page: window.location.pathname,
                   cta_location: wa.getAttribute('data-cta-location') || 'general_link',
                   timestamp: new Date().toISOString()
-                });
+                };
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push(waPayload);
+                if (typeof window.gtag === 'function') {
+                  try {
+                    window.gtag('event', 'click_whatsapp', {
+                      ...waPayload,
+                      send_to: 'AW-18020943185'
+                    });
+                  } catch (e) {}
+                }
                 return;
               }
 

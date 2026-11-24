@@ -179,9 +179,21 @@ export function pushDataLayer(eventName: string, params: TrackingParams = {}) {
 
     const sanitized = sanitizeForDataLayer(payload);
 
-    // Push to Google Tag Manager dataLayer only
+    // Push to Google Tag Manager dataLayer
     (window as any).dataLayer = (window as any).dataLayer || [];
     (window as any).dataLayer.push(sanitized);
+
+    // Also dispatch directly to Google Ads gtag if available
+    if (typeof (window as any).gtag === 'function') {
+      try {
+        (window as any).gtag('event', eventName, {
+          ...sanitized,
+          send_to: 'AW-18020943185'
+        });
+      } catch (gtagErr) {
+        console.warn('[gtag event dispatch notice]', gtagErr);
+      }
+    }
 
     if (process.env.NODE_ENV === 'development') {
       console.log(`[DataLayer Push] ${eventName}:`, sanitized);

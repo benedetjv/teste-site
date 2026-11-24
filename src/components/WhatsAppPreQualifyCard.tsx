@@ -93,7 +93,14 @@ export default function WhatsAppPreQualifyCard({
 }: WhatsAppPreQualifyCardProps) {
   // Progressive cascade state ("ir aparecendo, devagar")
   // Etapa 1: Onde é a sua dor?
-  const [painArea, setPainArea] = useState<string | null>(null);
+  const [painArea, setPainArea] = useState<string | null>(() => {
+    if (typeof window !== 'undefined' && (window as any).__EARLY_PAIN__) {
+      const p = (window as any).__EARLY_PAIN__;
+      delete (window as any).__EARLY_PAIN__;
+      return p;
+    }
+    return null;
+  });
 
   // Etapa 2: Como gostaria de ser atendido? (Convênio / Particular)
   const [modality, setModality] = useState<'convenio' | 'particular' | null>(null);
@@ -123,53 +130,7 @@ export default function WhatsAppPreQualifyCard({
     if (typeof window !== 'undefined') {
       (window as any).__REACT_HYDRATED__ = true;
       initUtmCapture();
-
-      // If user clicked any pain area before React hydrated, apply it now
-      if ((window as any).__INITIAL_PAIN_SELECTION__) {
-        handleSelectPainArea((window as any).__INITIAL_PAIN_SELECTION__);
-      }
-
-      // If user clicked modality before React hydrated, apply it now
-      if ((window as any).__INITIAL_MODALITY_SELECTION__) {
-        handleSelectModality((window as any).__INITIAL_MODALITY_SELECTION__);
-      }
-
-      // If user clicked insurance before React hydrated, apply it now
-      if ((window as any).__INITIAL_INSURANCE_SELECTION__) {
-        handleInsuranceSelect((window as any).__INITIAL_INSURANCE_SELECTION__);
-      }
-
-      // If user clicked Vera Cruz before React hydrated, apply it now
-      if ((window as any).__INITIAL_VERACRUZ_SELECTION__) {
-        handleSelectVeraCruz((window as any).__INITIAL_VERACRUZ_SELECTION__);
-      }
-
-      // Expose dispatch functions for the capture bridge
-      (window as any).__DISPATCH_PAIN_SELECT__ = (area: string) => {
-        handleSelectPainArea(area);
-      };
-
-      (window as any).__DISPATCH_MODALITY_SELECT__ = (m: 'convenio' | 'particular') => {
-        handleSelectModality(m);
-      };
-
-      (window as any).__DISPATCH_INSURANCE_SELECT__ = (ins: string) => {
-        handleInsuranceSelect(ins);
-      };
-
-      (window as any).__DISPATCH_VERACRUZ_SELECT__ = (vc: 'sim' | 'nao' | 'nao_sei') => {
-        handleSelectVeraCruz(vc);
-      };
     }
-
-    return () => {
-      if (typeof window !== 'undefined') {
-        delete (window as any).__DISPATCH_PAIN_SELECT__;
-        delete (window as any).__DISPATCH_MODALITY_SELECT__;
-        delete (window as any).__DISPATCH_INSURANCE_SELECT__;
-        delete (window as any).__DISPATCH_VERACRUZ_SELECT__;
-      }
-    };
   }, []);
 
   const isUnimed =
@@ -186,26 +147,29 @@ export default function WhatsAppPreQualifyCard({
       insuranceName.trim().toLowerCase().includes('não listado')
     );
 
+  // Safe scroll helper: only scrolls if the target element's bottom is off screen
+  const scrollToTargetIfOffscreen = (el: HTMLElement | null) => {
+    if (!el || typeof window === 'undefined') return;
+    setTimeout(() => {
+      const rect = el.getBoundingClientRect();
+      if (rect.bottom > window.innerHeight || rect.top < 70) {
+        el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+    }, 80);
+  };
+
   // Etapa 1 Handler: Select Pain Area -> Reveals Frase de Acolhimento & Etapa 2
   const handleSelectPainArea = (id: string) => {
     setPainArea(id);
     setErrorMessage(null);
-    setTimeout(() => {
-      step2Ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 150);
+    scrollToTargetIfOffscreen(step2Ref.current);
   };
 
   // Etapa 2 Handler: Select Modality -> If Convênio reveals Etapa 3; If Particular reveals Etapa 4
   const handleSelectModality = (m: 'convenio' | 'particular') => {
     setModality(m);
     setErrorMessage(null);
-    setTimeout(() => {
-      if (m === 'convenio') {
-        step3Ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      } else {
-        step4Ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-      }
-    }, 150);
+    scrollToTargetIfOffscreen(m === 'convenio' ? step3Ref.current : step4Ref.current);
   };
 
   // Etapa 3 Handler A: Select Insurance Pill
@@ -215,18 +179,14 @@ export default function WhatsAppPreQualifyCard({
     if (val === 'Unimed') {
       setUnimedConfirmed(false);
     }
-    setTimeout(() => {
-      veraCruzRef.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 150);
+    scrollToTargetIfOffscreen(veraCruzRef.current);
   };
 
   // Etapa 3 Handler B: Select Vera Cruz Coverage (Mandatory)
   const handleSelectVeraCruz = (val: 'sim' | 'nao' | 'nao_sei') => {
     setCoverageVeraCruz(val);
     setErrorMessage(null);
-    setTimeout(() => {
-      step4Ref.current?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    }, 150);
+    scrollToTargetIfOffscreen(step4Ref.current);
   };
 
   // Final Action: Enviar e Falar no WhatsApp 🟢
@@ -316,7 +276,7 @@ export default function WhatsAppPreQualifyCard({
       sessionStorage.setItem('drotto_ref_code', refCode);
     } catch {}
 
-    // Dispatch exactly ONE secondary conversion event to DataLayer (Zero PII, Zero medical terms)
+    // Dispatch conversion event to DataLayer & Google Ads (Zero PII, Zero medical terms)
     pushDataLayer('click_whatsapp', {
       cta_name: 'enviar_falar_whatsapp',
       cta_location: location,
@@ -383,160 +343,22 @@ export default function WhatsAppPreQualifyCard({
       className="card border-0 shadow-lg rounded-4 overflow-hidden bg-white"
       style={{ maxWidth: '480px', margin: '0 auto' }}
     >
-      {/* Inline Pre-Hydration & Pre-Click Bridge: Runs instantly at parse time */}
+      {/* Ultra lightweight pre-hydration click buffer (only active prior to React hydration) */}
       <script
         dangerouslySetInnerHTML={{
           __html: `
             (function() {
-              if (window.__PREQUAL_BRIDGE_INSTALLED__) return;
-              window.__PREQUAL_BRIDGE_INSTALLED__ = true;
-
-              var ENCOURAGEMENTS = {
-                coluna: 'Entendi que você busca avaliação para sua coluna. O Dr. Otto Beckedorff atua com foco no diagnóstico preciso e tratamento de dores e patologias da coluna vertebral (como hérnia de disco e ciático), priorizando reabilitação estruturada e procedimentos minimamente invasivos para devolver seu bem-estar.',
-                joelho: 'Compreendo o quanto a dor no joelho impacta sua rotina. O Dr. Otto atua no diagnóstico e tratamento de desgastes articulares e lesões, com foco em recuperação funcional, reabilitação e alívio do desconforto.',
-                ombro: 'Dores no ombro afetam noites de sono e movimentos diários. O Dr. Otto atua na investigação detalhada de tendinites, bursites e lesões, com condutas voltadas à ampla recuperação do movimento.',
-                quadril: 'O desconforto no quadril prejudica o caminhar e a qualidade de vida. O Dr. Otto realiza investigação criteriosa de impacto articular, bursites e artrose, sempre buscando a conduta mais eficiente e individualizada.'
-              };
-
-              function handleBridgeClick(e) {
+              if (window.__EARLY_CLICK_CAPTURED__) return;
+              window.__EARLY_CLICK_CAPTURED__ = true;
+              document.addEventListener('click', function(e) {
+                if (window.__REACT_HYDRATED__) return;
                 var el = e.target && (e.target.nodeType === 1 ? e.target : e.target.parentElement);
                 if (!el || !el.closest) return;
-
-                // 1. Pain Area Click
-                var painBtn = el.closest('[id^="prequal-pain-"]');
-                if (painBtn) {
-                  var area = painBtn.id.replace('prequal-pain-', '');
-                  window.__INITIAL_PAIN_SELECTION__ = area;
-
-                  var allBtns = document.querySelectorAll('[id^="prequal-pain-"]');
-                  for (var i = 0; i < allBtns.length; i++) {
-                    allBtns[i].classList.remove('btn-primary', 'text-white', 'shadow-sm');
-                    allBtns[i].classList.add('btn-outline-secondary', 'bg-white', 'text-dark');
-                  }
-                  painBtn.classList.add('btn-primary', 'text-white', 'shadow-sm');
-                  painBtn.classList.remove('btn-outline-secondary', 'bg-white', 'text-dark');
-
-                  var enc = document.getElementById('prequal-encouragement');
-                  var encText = document.getElementById('prequal-encouragement-text');
-                  if (enc && encText && ENCOURAGEMENTS[area]) {
-                    encText.textContent = ENCOURAGEMENTS[area];
-                    enc.classList.remove('d-none');
-                  }
-
-                  var s2 = document.getElementById('prequal-step-2');
-                  if (s2) {
-                    s2.classList.remove('d-none');
-                    setTimeout(function() {
-                      s2.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 80);
-                  }
-
-                  if (typeof window.__DISPATCH_PAIN_SELECT__ === 'function') {
-                    window.__DISPATCH_PAIN_SELECT__(area);
-                  }
+                var btn = el.closest('[id^="prequal-pain-"]');
+                if (btn) {
+                  window.__EARLY_PAIN__ = btn.id.replace('prequal-pain-', '');
                 }
-
-                // 2. Modality Click
-                var modBtn = el.closest('[id^="prequal-modality-"]');
-                if (modBtn) {
-                  var mod = modBtn.id.replace('prequal-modality-', '');
-                  window.__INITIAL_MODALITY_SELECTION__ = mod;
-
-                  var allMods = document.querySelectorAll('[id^="prequal-modality-"]');
-                  for (var j = 0; j < allMods.length; j++) {
-                    allMods[j].classList.remove('btn-primary', 'text-white', 'shadow-sm');
-                    allMods[j].classList.add('btn-outline-secondary', 'bg-white', 'text-dark');
-                  }
-                  modBtn.classList.add('btn-primary', 'text-white', 'shadow-sm');
-                  modBtn.classList.remove('btn-outline-secondary', 'bg-white', 'text-dark');
-
-                  if (mod === 'convenio') {
-                    var s3 = document.getElementById('prequal-step-3');
-                    if (s3) {
-                      s3.classList.remove('d-none');
-                      setTimeout(function() {
-                        s3.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                      }, 80);
-                    }
-                  } else {
-                    var s4 = document.getElementById('prequal-step-4');
-                    if (s4) {
-                      s4.classList.remove('d-none');
-                      setTimeout(function() {
-                        s4.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                      }, 80);
-                    }
-                  }
-
-                  if (typeof window.__DISPATCH_MODALITY_SELECT__ === 'function') {
-                    window.__DISPATCH_MODALITY_SELECT__(mod);
-                  }
-                }
-
-                // 3. Insurance Pill Click
-                var pillBtn = el.closest('[id^="prequal-pill-"]');
-                if (pillBtn) {
-                  var insLabel = pillBtn.textContent.trim();
-                  window.__INITIAL_INSURANCE_SELECTION__ = insLabel;
-
-                  var allPills = document.querySelectorAll('[id^="prequal-pill-"]');
-                  for (var k = 0; k < allPills.length; k++) {
-                    allPills[k].classList.remove('btn-primary', 'text-white', 'shadow-sm');
-                    allPills[k].classList.add('btn-outline-secondary', 'bg-white', 'text-dark');
-                  }
-                  pillBtn.classList.add('btn-primary', 'text-white', 'shadow-sm');
-                  pillBtn.classList.remove('btn-outline-secondary', 'bg-white', 'text-dark');
-
-                  var vcRef = document.getElementById('prequal-step-veracruz');
-                  if (vcRef) {
-                    setTimeout(function() {
-                      vcRef.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 80);
-                  }
-
-                  if (typeof window.__DISPATCH_INSURANCE_SELECT__ === 'function') {
-                    window.__DISPATCH_INSURANCE_SELECT__(insLabel);
-                  }
-                }
-
-                // 4. Vera Cruz Coverage Click
-                var vcBtn = el.closest('[id^="prequal-veracruz-"]');
-                if (vcBtn) {
-                  var vcVal = vcBtn.id.replace('prequal-veracruz-', '').replace('-', '_');
-                  window.__INITIAL_VERACRUZ_SELECTION__ = vcVal;
-
-                  var allVc = document.querySelectorAll('[id^="prequal-veracruz-"]');
-                  for (var m = 0; m < allVc.length; m++) {
-                    allVc[m].classList.remove('btn-primary', 'text-white', 'shadow-sm');
-                    allVc[m].classList.add('btn-outline-secondary', 'bg-white', 'text-dark');
-                  }
-                  vcBtn.classList.add('btn-primary', 'text-white', 'shadow-sm');
-                  vcBtn.classList.remove('btn-outline-secondary', 'bg-white', 'text-dark');
-
-                  var s4b = document.getElementById('prequal-step-4');
-                  if (s4b) {
-                    s4b.classList.remove('d-none');
-                    setTimeout(function() {
-                      s4b.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                    }, 80);
-                  }
-
-                  if (typeof window.__DISPATCH_VERACRUZ_SELECT__ === 'function') {
-                    window.__DISPATCH_VERACRUZ_SELECT__(vcVal);
-                  }
-                }
-              }
-
-              document.addEventListener('click', handleBridgeClick, { capture: true, passive: true });
-              document.addEventListener('touchend', handleBridgeClick, { capture: true, passive: true });
-
-              // Watchdog: If React has not signaled hydration after 2.5s, reveal fallback direct link
-              setTimeout(function() {
-                if (!window.__REACT_HYDRATED__) {
-                  var fb = document.getElementById('prequal-emergency-fallback');
-                  if (fb) fb.style.display = 'block';
-                }
-              }, 2500);
+              }, { capture: true });
             })();
           `
         }}
@@ -606,32 +428,6 @@ export default function WhatsAppPreQualifyCard({
             </a>
           </div>
         </noscript>
-
-        {/* Emergency Fallback Banner (Revealed by watchdog if hydration stalls or fails) */}
-        <div
-          id="prequal-emergency-fallback"
-          className="p-3 mb-3 rounded-3 text-center"
-          style={{
-            display: 'none',
-            backgroundColor: '#f0fdf4',
-            border: '1px solid #86efac'
-          }}
-        >
-          <p className="text-secondary small mb-2" style={{ fontSize: '0.82rem' }}>
-            <i className="bi bi-info-circle me-1 text-success"></i>
-            Prefere agendar diretamente sem preencher a triagem?
-          </p>
-          <a
-            href="https://wa.me/5519999439824?text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20um%20agendamento%20de%20consulta%20em%20Campinas%20com%20o%20Dr.%20Otto%20Beckedorff."
-            target="_blank"
-            rel="noopener noreferrer"
-            data-cta-location="prequal_card_fallback_direct_whatsapp"
-            className="btn btn-success btn-sm rounded-pill px-4 py-2 fw-bold d-inline-flex align-items-center justify-content-center w-100 shadow-sm"
-            style={{ backgroundColor: '#25D366', border: 'none', fontSize: '0.85rem' }}
-          >
-            <i className="bi bi-whatsapp me-2"></i> Falar com a Equipe no WhatsApp
-          </a>
-        </div>
 
         {submittedUrl ? (
           /* Success Screen with fail-safe direct button */
@@ -729,7 +525,7 @@ export default function WhatsAppPreQualifyCard({
               style={{
                 backgroundColor: '#f0f9ff',
                 borderColor: '#bae6fd',
-                animation: 'fadeInSlide 0.3s ease-out'
+                animation: 'fadeInSlide 0.25s ease-out'
               }}
             >
               <div className="d-flex align-items-start gap-2">
@@ -741,7 +537,7 @@ export default function WhatsAppPreQualifyCard({
                     Acolhimento da Equipe do Dr. Otto:
                   </div>
                   <p id="prequal-encouragement-text" className="text-secondary small mb-0" style={{ fontSize: '0.8rem', lineHeight: '1.45' }}>
-                    {encouragement || (painArea ? (ENCOURAGEMENT_TEXTS[painArea] || ENCOURAGEMENT_TEXTS.coluna) : ENCOURAGEMENT_TEXTS.coluna)}
+                    {encouragement || ENCOURAGEMENT_TEXTS.coluna}
                   </p>
                 </div>
               </div>
@@ -756,7 +552,7 @@ export default function WhatsAppPreQualifyCard({
               id="prequal-step-2"
               ref={step2Ref}
               className={`mb-3 pt-2 border-top ${painArea ? '' : 'd-none'}`}
-              style={{ animation: 'fadeInSlide 0.3s ease-out' }}
+              style={{ animation: 'fadeInSlide 0.25s ease-out' }}
             >
               <label className="form-label h6 fw-bold text-dark d-flex align-items-center justify-content-between mb-2" style={{ fontSize: '0.92rem' }}>
                 <span>
@@ -826,7 +622,7 @@ export default function WhatsAppPreQualifyCard({
               id="prequal-step-3"
               ref={step3Ref}
               className={`mb-3 pt-2 border-top ${painArea && modality === 'convenio' ? '' : 'd-none'}`}
-              style={{ animation: 'fadeInSlide 0.3s ease-out' }}
+              style={{ animation: 'fadeInSlide 0.25s ease-out' }}
             >
                 <label className="form-label h6 fw-bold text-dark d-flex align-items-center justify-content-between mb-2" style={{ fontSize: '0.92rem' }}>
                   <span>
@@ -1049,7 +845,7 @@ export default function WhatsAppPreQualifyCard({
               id="prequal-step-4"
               ref={step4Ref}
               className={`mb-3 pt-2 border-top ${painArea && (modality === 'particular' || (modality === 'convenio' && Boolean(insuranceName))) ? '' : 'd-none'}`}
-              style={{ animation: 'fadeInSlide 0.3s ease-out' }}
+              style={{ animation: 'fadeInSlide 0.25s ease-out' }}
             >
                 <label htmlFor="prequal-name" className="form-label h6 fw-bold text-dark d-flex align-items-center mb-2" style={{ fontSize: '0.92rem' }}>
                   <span className="badge bg-primary text-white rounded-circle me-2" style={{ width: '20px', height: '20px', display: 'inline-flex', alignItems: 'center', justifyContent: 'center', fontSize: '0.72rem' }}>
@@ -1148,7 +944,7 @@ export default function WhatsAppPreQualifyCard({
         @keyframes fadeInSlide {
           from {
             opacity: 0;
-            transform: translateY(-6px);
+            transform: translateY(-4px);
           }
           to {
             opacity: 1;
