@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { createClickSession, checkRateLimit, generateRefCode } from '@/lib/db';
+import { createClickSession, checkRateLimit, generateRefCode, getClickSession } from '@/lib/db';
 
 export async function POST(request: Request) {
   try {
@@ -99,6 +99,39 @@ export async function POST(request: Request) {
       ref_code: fallbackRef,
       fallback: true
     });
+  }
+}
+
+export async function GET(request: Request) {
+  try {
+    const { searchParams } = new URL(request.url);
+    const refCode = searchParams.get('ref_code') || searchParams.get('ref');
+    if (!refCode || !/^C-[A-Z0-9-]+$/i.test(refCode.trim())) {
+      return NextResponse.json({ error: 'Parâmetro ref_code inválido ou ausente.' }, { status: 400 });
+    }
+    const session = await getClickSession(refCode.trim().toUpperCase());
+    if (!session) {
+      return NextResponse.json({ found: false, message: 'Sessão não encontrada para o código informado.' }, { status: 404 });
+    }
+    return NextResponse.json({
+      found: true,
+      ref_code: session.ref_code,
+      created_at: session.created_at,
+      landing_page: session.landing_page,
+      utm_source: session.utm_source,
+      utm_medium: session.utm_medium,
+      utm_campaign: session.utm_campaign,
+      utm_content: session.utm_content,
+      utm_term: session.utm_term,
+      gclid_present: Boolean(session.gclid),
+      device_type: session.device_type,
+      modality: session.modality,
+      insurance_note: session.insurance_note,
+      status: session.status
+    });
+  } catch (err: any) {
+    console.error('[Click Session GET Error]', err);
+    return NextResponse.json({ error: 'Erro ao consultar sessão.', details: err.message }, { status: 500 });
   }
 }
 
