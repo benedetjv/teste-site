@@ -442,11 +442,11 @@ async function testHeadlessBrowserAndSingleEvent() {
     const prequalCardExists = await testPage.evaluate(() => Boolean(document.querySelector('#pre-qualificacao')));
     assert('Pre-qualification Card rendered in Hero section', prequalCardExists);
 
-    // Step 1: Advance from Pain Area (Step 1) to Atendimento (Step 2)
-    await testPage.click('#btn-step1-next');
+    // Step 1: Advance by clicking Pain Area (Coluna)
+    await testPage.click('#prequal-pain-coluna');
 
-    // Step 2: Advance from Atendimento (Step 2) to Convênio Pills (Step 3)
-    await testPage.click('#btn-step2-next');
+    // Step 2: Advance by clicking Atendimento (Convênio)
+    await testPage.click('#prequal-modality-convenio');
 
     // Test Point 4: Unimed explicit confirmation checkbox on Step 3
     await testPage.select('#prequal-insurance', 'Unimed');
@@ -456,23 +456,21 @@ async function testHeadlessBrowserAndSingleEvent() {
     });
     assert('Unimed explicit confirmation checkbox exists on card', hasUnimedCheckbox);
 
-    // Verify advancing to next step is blocked until Unimed confirmation is checked
-    await testPage.evaluate(() => {
-      const nextBtn = document.querySelector('#btn-step3-next');
-      if (nextBtn) nextBtn.click();
-    });
+    // Verify submit button is disabled until Unimed confirmation is checked
     const isUnimedBlocked = await testPage.evaluate(() => {
+      const submitBtn = document.querySelector('#prequal-submit');
       const card = document.querySelector('#pre-qualificacao');
-      return card ? card.textContent.includes('não atende Unimed') : false;
+      return Boolean(submitBtn && submitBtn.disabled && card && card.textContent.includes('não atende Unimed'));
     });
     assert('Unimed selection disables submit button until explicit confirmation is checked', isUnimedBlocked);
 
     // Check confirmation box
-    await testPage.evaluate(() => {
-      const cb = document.querySelector('#prequal-unimed-confirm');
-      if (cb) cb.click();
+    await testPage.click('#prequal-unimed-confirm');
+    const isSubmitEnabled = await testPage.evaluate(() => {
+      const submitBtn = document.querySelector('#prequal-submit');
+      return Boolean(submitBtn && !submitBtn.disabled);
     });
-    assert('Submit button becomes enabled after checking Unimed explicit confirmation', true);
+    assert('Submit button becomes enabled after checking Unimed explicit confirmation', isSubmitEnabled);
 
     // Test Other Insurances rule in Pre-qualification Card
     await testPage.select('#prequal-insurance', 'Outro convênio');
@@ -485,34 +483,24 @@ async function testHeadlessBrowserAndSingleEvent() {
     // Select Amil for complete conversion flow
     await testPage.select('#prequal-insurance', 'Amil');
 
-    // Test Point 5: Vera Cruz question starts unselected (empty)
-    const veraCruzEmptyInitially = await testPage.evaluate(() => {
-      const btns = Array.from(document.querySelectorAll('#pre-qualificacao button'));
-      const veraCruzBtns = btns.filter(b => b.textContent && (b.textContent.includes('Sim') || b.textContent.includes('Não') || b.textContent.includes('Não sei')));
-      return veraCruzBtns.length >= 3 && veraCruzBtns.every(b => !b.className.includes('btn-primary'));
-    });
-    assert('Vera Cruz question starts empty without default answer pre-selected', veraCruzEmptyInitially);
-
-    // Submitting/Advancing without answering Vera Cruz displays required validation error
-    await testPage.evaluate(() => {
-      const nextBtn = document.querySelector('#btn-step3-next');
-      if (nextBtn) nextBtn.click();
-    });
-    const hasVeraCruzError = await testPage.evaluate(() => {
+    // Test Point 5: Progressive reveal of Doctor Encouragement & Insurance selection
+    const doctorEncouragementVisible = await testPage.evaluate(() => {
       const card = document.querySelector('#pre-qualificacao');
-      return card ? card.textContent.includes('Hospital Vera Cruz') : false;
+      return card ? card.textContent.includes('Acolhimento da Equipe do Dr. Otto') : false;
     });
-    assert('Submitting without selecting Vera Cruz hospital coverage triggers mandatory choice error', hasVeraCruzError);
+    assert('Doctor encouragement phrase is displayed upon selecting pain area', doctorEncouragementVisible);
 
-    // Click "Sim" for Vera Cruz Hospital coverage
-    await testPage.evaluate(() => {
-      const btns = Array.from(document.querySelectorAll('#pre-qualificacao button'));
-      const simBtn = btns.find(b => b.textContent && b.textContent.includes('Sim'));
-      if (simBtn) simBtn.click();
+    const insurancePillsRendered = await testPage.evaluate(() => {
+      const card = document.querySelector('#pre-qualificacao');
+      return card ? (card.textContent.includes('Amil') && card.textContent.includes('Bradesco') && card.textContent.includes('SulAmérica')) : false;
     });
+    assert('Quick insurance pills rendered with Amil, Bradesco, and SulAmérica in prominence', insurancePillsRendered);
 
-    // Advance to Step 4 (Nome Completo)
-    await testPage.click('#btn-step3-next');
+    const step4Revealed = await testPage.evaluate(() => {
+      const input = document.querySelector('#prequal-name');
+      return Boolean(input);
+    });
+    assert('Selecting insurance reveals Etapa 4 (Nome Completo) and submit button', step4Revealed);
 
     // Verify Name input exists and starts empty
     const initialName = await testPage.evaluate(() => {
@@ -577,7 +565,7 @@ async function testHeadlessBrowserAndSingleEvent() {
     assert('WhatsApp link contains safe anonymous 96-bit reference token [Ref: C-XXXX-XXXX-XXXX]', Boolean(generatedRefCode));
     assert('WhatsApp natural message includes patient name', decodedWaHref.includes('Carlos Eduardo de Souza'));
     assert('WhatsApp natural message includes modality and insurance', decodedWaHref.includes('Convênio (Amil)'));
-    assert('WhatsApp natural message includes Vera Cruz coverage answer', decodedWaHref.includes('Cobertura Hospital Vera Cruz: Sim'));
+    assert('WhatsApp natural message includes pain area of interest', decodedWaHref.includes('Região de interesse: Coluna'));
     assert('WhatsApp message has NO raw GCLID parameter and NO clinical symptoms/diagnoses',
       !decodedWaHref.includes('TEST_AUDIT_GCLID') &&
       !decodedWaHref.includes('hernia') &&

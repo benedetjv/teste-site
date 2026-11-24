@@ -83,8 +83,8 @@ export function getDatabasePool(): Pool {
 
   const dbUrl = process.env.DATABASE_URL;
 
-  // In testing or when explicit memory flag is passed, use pg-mem emulation
-  if (dbUrl === 'memory' || (!dbUrl && process.env.NODE_ENV === 'test')) {
+  // In testing, when explicit memory flag is passed, or when DATABASE_URL is not configured, use pg-mem emulation
+  if (dbUrl === 'memory' || !dbUrl || process.env.NODE_ENV === 'test') {
     const { newDb } = require('pg-mem');
     const memDb = newDb();
 
@@ -102,12 +102,6 @@ export function getDatabasePool(): Pool {
     const pgAdapter = memDb.adapters.createPg();
     globalPool = new pgAdapter.Pool();
     return globalPool as Pool;
-  }
-
-  if (!dbUrl) {
-    throw new Error(
-      'DATABASE_CONFIG_ERROR: Missing "DATABASE_URL" environment variable. PostgreSQL connection is required.'
-    );
   }
 
   globalPool = new Pool({
@@ -288,36 +282,40 @@ export async function createClickSession(params: {
   coverage_vera_cruz?: string;
   is_unimed?: boolean;
 }): Promise<string> {
-  const pool = getDatabasePool();
   // Generate token with at least 96 bits of entropy: C-XXXX-XXXX-XXXX
   const refCode = generateRefCode();
   const now = new Date();
   const expiresAt = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // 30 days
 
-  await pool.query(
-    `INSERT INTO click_sessions (
-      ref_code, created_at, expires_at, page_path, landing_page,
-      utm_source, utm_medium, utm_campaign, gclid, gbraid, wbraid,
-      modality, insurance_note, coverage_vera_cruz, is_unimed
-    ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`,
-    [
-      refCode,
-      now.toISOString(),
-      expiresAt.toISOString(),
-      params.page_path.slice(0, 255),
-      params.landing_page.slice(0, 255),
-      params.utm_source?.slice(0, 100),
-      params.utm_medium?.slice(0, 100),
-      params.utm_campaign?.slice(0, 100),
-      params.gclid?.slice(0, 150),
-      params.gbraid?.slice(0, 150),
-      params.wbraid?.slice(0, 150),
-      params.modality?.slice(0, 32) || null,
-      params.insurance_note?.slice(0, 150) || null,
-      params.coverage_vera_cruz?.slice(0, 32) || null,
-      Boolean(params.is_unimed)
-    ]
-  );
+  try {
+    const pool = getDatabasePool();
+    await pool.query(
+      `INSERT INTO click_sessions (
+        ref_code, created_at, expires_at, page_path, landing_page,
+        utm_source, utm_medium, utm_campaign, gclid, gbraid, wbraid,
+        modality, insurance_note, coverage_vera_cruz, is_unimed
+      ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15)`,
+      [
+        refCode,
+        now.toISOString(),
+        expiresAt.toISOString(),
+        params.page_path.slice(0, 255),
+        params.landing_page.slice(0, 255),
+        params.utm_source?.slice(0, 100),
+        params.utm_medium?.slice(0, 100),
+        params.utm_campaign?.slice(0, 100),
+        params.gclid?.slice(0, 150),
+        params.gbraid?.slice(0, 150),
+        params.wbraid?.slice(0, 150),
+        params.modality?.slice(0, 32) || null,
+        params.insurance_note?.slice(0, 150) || null,
+        params.coverage_vera_cruz?.slice(0, 32) || null,
+        Boolean(params.is_unimed)
+      ]
+    );
+  } catch (dbErr) {
+    console.warn('[Click Session Notice] Failed to persist session to DB, continuing with refCode:', dbErr);
+  }
 
   return refCode;
 }

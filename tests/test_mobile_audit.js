@@ -143,3 +143,4 @@ runMobileAudit().catch(err => {
   console.error('Fatal error during mobile audit:', err);
   process.exit(1);
 });
+
