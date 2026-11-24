@@ -505,6 +505,9 @@ async function testHeadlessBrowserAndSingleEvent() {
     assert('dataLayer event contains landing_page', waEvent && waEvent.landing_page === '/lp-campinas-convenios');
     assert('dataLayer event contains gclid_present: true', waEvent && waEvent.gclid_present === true);
 
+    const adsSendTo = await testPage.evaluate(() => window.GOOGLE_ADS_SEND_TO);
+    assert('Google Ads conversion label configured correctly as AW-18020943185/NOStCM78h4ocENGKh5FD', adsSendTo === 'AW-18020943185/NOStCM78h4ocENGKh5FD');
+
     // Verify zero patient PII in dataLayer
     let leakedPatientPII = false;
     dlAfterSubmit.forEach(evt => {

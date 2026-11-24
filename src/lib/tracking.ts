@@ -188,7 +188,7 @@ export function pushDataLayer(eventName: string, params: TrackingParams = {}) {
       try {
         (window as any).gtag('event', eventName, {
           ...sanitized,
-          send_to: 'AW-18020943185'
+          send_to: 'AW-18020943185/NOStCM78h4ocENGKh5FD'
         });
       } catch (gtagErr) {
         console.warn('[gtag event dispatch notice]', gtagErr);

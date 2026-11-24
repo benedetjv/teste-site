@@ -356,10 +356,14 @@ export default function WhatsAppPreQualifyCard({
 
       if (typeof (window as any).gtag === 'function') {
         (window as any).gtag('event', 'click_whatsapp', {
-          send_to: 'AW-18020943185',
+          send_to: 'AW-18020943185/NOStCM78h4ocENGKh5FD',
           lead_reference: refCode,
           landing_page: window.location.pathname,
           gclid_present: Boolean(storedUtms.gclid)
+        });
+        (window as any).gtag('event', 'conversion', {
+          send_to: 'AW-18020943185/NOStCM78h4ocENGKh5FD',
+          lead_reference: refCode
         });
       }
 
@@ -422,106 +426,6 @@ export default function WhatsAppPreQualifyCard({
         className="card border-0 shadow-lg rounded-4 overflow-hidden bg-white"
         style={{ maxWidth: '480px', margin: '0 auto' }}
       >
-        {/* Pre-hydration script for zero-delay instant tap before React hydrations */}
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `
-              (function() {
-                var btn = document.getElementById('whatsapp-direct-btn');
-                if (!btn) return;
-                btn.addEventListener('click', function(e) {
-                  if (window.__REACT_HYDRATED__) return;
-                  e.preventDefault();
-                  e.stopPropagation();
-
-                  var CHARSET = '23456789ABCDEFGHJKMNPQRSTUVWXYZ';
-                  var chars = '';
-                  if (window.crypto && window.crypto.getRandomValues) {
-                    var b = new Uint8Array(12);
-                    window.crypto.getRandomValues(b);
-                    for (var i = 0; i < 12; i++) chars += CHARSET[b[i] % CHARSET.length];
-                  } else {
-                    for (var j = 0; j < 12; j++) chars += CHARSET[Math.floor(Math.random() * CHARSET.length)];
-                  }
-                  var refCode = 'C-' + chars.slice(0, 4) + '-' + chars.slice(4, 8) + '-' + chars.slice(8, 12);
-                  try { sessionStorage.setItem('drotto_ref_code', refCode); } catch(ex) {}
-
-                  var params = new URLSearchParams(window.location.search);
-                  var gclid = params.get('gclid') || '';
-                  var gbraid = params.get('gbraid') || '';
-                  var wbraid = params.get('wbraid') || '';
-                  var utm_source = params.get('utm_source') || '';
-                  var utm_medium = params.get('utm_medium') || '';
-                  var utm_campaign = params.get('utm_campaign') || '';
-                  var utm_content = params.get('utm_content') || '';
-                  var utm_term = params.get('utm_term') || '';
-
-                  window.dataLayer = window.dataLayer || [];
-                  window.dataLayer.push({
-                    event: 'click_whatsapp',
-                    lead_reference: refCode,
-                    landing_page: window.location.pathname,
-                    gclid_present: Boolean(gclid)
-                  });
-
-                  if (typeof window.gtag === 'function') {
-                    window.gtag('event', 'click_whatsapp', {
-                      send_to: 'AW-18020943185',
-                      lead_reference: refCode,
-                      landing_page: window.location.pathname,
-                      gclid_present: Boolean(gclid)
-                    });
-                  }
-
-                  var textMsg = "Olá! Gostaria de solicitar uma consulta em Campinas com o Dr. Otto Beckedorff.\\n\\n[Ref: " + refCode + "]";
-                  var waUrl = "https://wa.me/5519999439824?text=" + encodeURIComponent(textMsg);
-
-                  var payload = JSON.stringify({
-                    ref_code: refCode,
-                    page_path: window.location.pathname,
-                    landing_page: window.location.pathname,
-                    utm_source: utm_source,
-                    utm_medium: utm_medium,
-                    utm_campaign: utm_campaign,
-                    utm_content: utm_content,
-                    utm_term: utm_term,
-                    gclid: gclid,
-                    gbraid: gbraid,
-                    wbraid: wbraid,
-                    device_type: /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) ? 'mobile' : 'desktop',
-                    event_name: 'click_whatsapp'
-                  });
-
-                  if (navigator.sendBeacon) {
-                    navigator.sendBeacon('/api/session/click', new Blob([payload], { type: 'application/json' }));
-                  } else {
-                    try {
-                      fetch('/api/session/click', { method: 'POST', body: payload, headers: { 'Content-Type': 'application/json' }, keepalive: true });
-                    } catch(ex2) {}
-                  }
-
-                  var container = document.getElementById('prequal-card-content');
-                  if (container) {
-                    container.innerHTML = '<div id="contingency-screen" class="py-2 text-center">' +
-                      '<div class="alert alert-success py-3 px-3 rounded-4 mb-3 shadow-sm border-0 bg-success bg-opacity-10 text-success">' +
-                        '<i class="bi bi-check-circle-fill fs-3 d-block mb-2 text-success"></i>' +
-                        '<div class="fw-bold mb-1" style="font-size:1.05rem">Conectando ao WhatsApp...</div>' +
-                        '<p class="small mb-2 text-dark opacity-75" style="font-size:0.85rem">Se a conversa não abriu automaticamente, toque no botão abaixo:</p>' +
-                        '<a id="contingency-whatsapp-btn" data-cta-location="prequal_card_success_whatsapp" href="' + waUrl + '" target="_blank" rel="noopener noreferrer" class="btn btn-success btn-lg w-100 rounded-pill py-3 fw-bold shadow-sm d-inline-flex align-items-center justify-content-center gap-2" style="background-color:#25D366;border:none;font-size:1.05rem;min-height:52px">' +
-                          '<i class="bi bi-whatsapp fs-5"></i> Abrir WhatsApp agora' +
-                        '</a>' +
-                      '</div>' +
-                      '<div class="text-muted small" style="font-size:0.78rem">Código de atendimento gerado: <strong class="text-dark font-monospace">' + refCode + '</strong></div>' +
-                    '</div>';
-                  }
-
-                  window.location.href = waUrl;
-                }, { passive: false });
-              })();
-            `
-          }}
-        />
-
         <div className="card-header border-0 py-3 px-4 text-center" style={{ backgroundColor: 'rgba(14, 115, 219, 0.05)' }}>
           <div className="d-inline-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-white shadow-sm border border-primary border-opacity-25 mb-2">
             <i className="bi bi-clock-history text-primary"></i>
@@ -568,7 +472,9 @@ export default function WhatsAppPreQualifyCard({
                     backgroundColor: '#25D366',
                     border: 'none',
                     fontSize: '1.05rem',
-                    minHeight: '52px'
+                    minHeight: '52px',
+                    color: '#ffffff',
+                    textDecoration: 'none'
                   }}
                 >
                   <i className="bi bi-whatsapp fs-5"></i> Abrir WhatsApp agora
@@ -582,11 +488,18 @@ export default function WhatsAppPreQualifyCard({
             </div>
           ) : (
             <div>
-              <button
+              <a
                 id="whatsapp-direct-btn"
-                type="button"
-                onClick={handleDirectWhatsAppClick}
-                disabled={isSubmitting}
+                href="https://wa.me/5519999439824?text=Ol%C3%A1!%20Gostaria%20de%20solicitar%20uma%20consulta%20em%20Campinas%20com%20o%20Dr.%20Otto%20Beckedorff."
+                target="_blank"
+                rel="noopener noreferrer"
+                data-direct-whatsapp="true"
+                onClick={(e) => {
+                  if (typeof window !== 'undefined' && (window as any).__handleDirectWhatsAppClick) {
+                    return (window as any).__handleDirectWhatsAppClick(e, e.currentTarget);
+                  }
+                  handleDirectWhatsAppClick(e);
+                }}
                 className="btn btn-success btn-lg w-100 rounded-pill py-3 fw-bold shadow-sm d-flex align-items-center justify-content-center text-center transition-all"
                 style={{
                   backgroundColor: '#25D366',
@@ -594,7 +507,9 @@ export default function WhatsAppPreQualifyCard({
                   fontSize: '1.12rem',
                   minHeight: '56px',
                   touchAction: 'manipulation',
-                  cursor: 'pointer'
+                  cursor: 'pointer',
+                  color: '#ffffff',
+                  textDecoration: 'none'
                 }}
               >
                 {isSubmitting ? (
@@ -607,7 +522,25 @@ export default function WhatsAppPreQualifyCard({
                     <i className="bi bi-whatsapp fs-4 me-2"></i> Solicitar consulta pelo WhatsApp
                   </>
                 )}
-              </button>
+              </a>
+
+              {/* Direct Touch Attachment Script: Placed immediately after button so DOM element exists */}
+              <script
+                dangerouslySetInnerHTML={{
+                  __html: `
+                    (function() {
+                      var b = document.getElementById('whatsapp-direct-btn');
+                      if (b) {
+                        b.onclick = function(e) {
+                          if (window.__handleDirectWhatsAppClick) {
+                            return window.__handleDirectWhatsAppClick(e, this);
+                          }
+                        };
+                      }
+                    })();
+                  `
+                }}
+              />
 
               <p className="text-muted text-center mt-3 mb-0" style={{ fontSize: '0.78rem' }}>
                 <i className="bi bi-shield-check text-success me-1"></i>
