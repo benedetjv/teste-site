@@ -50,9 +50,13 @@ export async function POST(request: Request) {
     const gbraid = (body.gbraid ? String(body.gbraid) : undefined)?.slice(0, 150);
     const wbraid = (body.wbraid ? String(body.wbraid) : undefined)?.slice(0, 150);
 
-    const modality = (body.modality ? String(body.modality) : 'particular').slice(0, 32);
-    const insurance_note = (body.insurance_name || body.insurance_note ? String(body.insurance_name || body.insurance_note) : undefined)?.slice(0, 150);
-    const coverage_vera_cruz = (body.coverage_vera_cruz ? String(body.coverage_vera_cruz) : 'nao_informado').slice(0, 32);
+    const defaultModality = (landing_page === '/lp-campinas-convenios' || page_path === '/lp-campinas-convenios')
+      ? 'convenio'
+      : 'direct';
+    const modality = String(body.modality || defaultModality).slice(0, 32);
+    const defaultInsuranceNote = modality === 'convenio' ? 'LP Convênios Campinas' : 'Contato direto WhatsApp';
+    const insurance_note = (body.insurance_name || body.insurance_note ? String(body.insurance_name || body.insurance_note) : defaultInsuranceNote)?.slice(0, 150);
+    const coverage_vera_cruz = (body.coverage_vera_cruz ? String(body.coverage_vera_cruz) : (modality === 'convenio' ? 'a_verificar' : 'nao_informado')).slice(0, 32);
     const is_unimed = Boolean(body.is_unimed);
     const event_name = String(body.event_name || 'click_whatsapp').slice(0, 64);
 

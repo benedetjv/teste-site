@@ -343,6 +343,10 @@ export default function WhatsAppPreQualifyCard({
     setIsSubmitting(true);
     const refCode = generateClientRefCode();
     const storedUtms = getStoredUtms();
+    const determinedModality =
+      typeof window !== 'undefined' && window.location.pathname === '/lp-campinas-convenios'
+        ? 'convenio'
+        : 'direct';
 
     // 1. DataLayer event strictly matching user format
     if (typeof window !== 'undefined') {
@@ -351,21 +355,27 @@ export default function WhatsAppPreQualifyCard({
         event: 'click_whatsapp',
         lead_reference: refCode,
         landing_page: window.location.pathname,
+        modality: determinedModality,
         gclid_present: Boolean(storedUtms.gclid)
       });
 
-      if (typeof (window as any).gtag === 'function') {
+      (window as any).gtag = (window as any).gtag || function() {
+        ((window as any).dataLayer = (window as any).dataLayer || []).push(arguments);
+      };
+
+      try {
         (window as any).gtag('event', 'click_whatsapp', {
           send_to: 'AW-18020943185/NOStCM78h4ocENGKh5FD',
           lead_reference: refCode,
           landing_page: window.location.pathname,
+          modality: determinedModality,
           gclid_present: Boolean(storedUtms.gclid)
         });
         (window as any).gtag('event', 'conversion', {
           send_to: 'AW-18020943185/NOStCM78h4ocENGKh5FD',
           lead_reference: refCode
         });
-      }
+      } catch (gtagErr) {}
 
       try {
         sessionStorage.setItem('drotto_ref_code', refCode);
@@ -381,7 +391,7 @@ export default function WhatsAppPreQualifyCard({
     setSubmittedUrl(whatsappUrl);
     setSubmittedRef(refCode);
 
-    // 3. Persist session to database
+    // 3. Persist session to database with explicit modality
     try {
       const isMobileUA = typeof navigator !== 'undefined' && /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
       const payload = {
@@ -390,9 +400,9 @@ export default function WhatsAppPreQualifyCard({
         landing_page: typeof window !== 'undefined' ? window.location.pathname : '/',
         device_type: isMobileUA ? 'mobile' : 'desktop',
         event_name: 'click_whatsapp',
-        modality: 'particular',
-        insurance_note: 'Contato direto WhatsApp',
-        coverage_vera_cruz: 'nao_informado',
+        modality: determinedModality,
+        insurance_note: determinedModality === 'convenio' ? 'LP Convênios Campinas' : 'Contato direto WhatsApp',
+        coverage_vera_cruz: determinedModality === 'convenio' ? 'a_verificar' : 'nao_informado',
         ...storedUtms
       };
 

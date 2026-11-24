@@ -63,6 +63,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Script id="direct-whatsapp-core" strategy="beforeInteractive">
           {`
             (function() {
+              window.dataLayer = window.dataLayer || [];
+              window.gtag = window.gtag || function () {
+                window.dataLayer.push(arguments);
+              };
+
               window.GOOGLE_ADS_ID = 'AW-18020943185';
               window.GOOGLE_ADS_CONVERSION_LABEL = 'NOStCM78h4ocENGKh5FD';
               window.GOOGLE_ADS_SEND_TO = 'AW-18020943185/NOStCM78h4ocENGKh5FD';
@@ -105,36 +110,42 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 if (!utm_medium) try { utm_medium = sessionStorage.getItem('drotto_utm_medium') || ''; } catch(ex) {}
                 if (!utm_campaign) try { utm_campaign = sessionStorage.getItem('drotto_utm_campaign') || ''; } catch(ex) {}
 
+                // Determine explicit modality based on route
+                var modality = (window.location.pathname === '/lp-campinas-convenios') ? 'convenio' : 'direct';
+
                 // 3. Dispatch DataLayer event exactly as specified
                 window.dataLayer = window.dataLayer || [];
                 window.dataLayer.push({
                   event: 'click_whatsapp',
                   lead_reference: refCode,
                   landing_page: window.location.pathname,
+                  modality: modality,
                   gclid_present: Boolean(gclid)
                 });
 
                 // 4. Dispatch Google Ads conversion event with exact conversion label: AW-18020943185/NOStCM78h4ocENGKh5FD
-                if (typeof window.gtag === 'function') {
-                  try {
-                    window.gtag('event', 'click_whatsapp', {
-                      send_to: 'AW-18020943185/NOStCM78h4ocENGKh5FD',
-                      lead_reference: refCode,
-                      landing_page: window.location.pathname,
-                      gclid_present: Boolean(gclid)
-                    });
-                    window.gtag('event', 'conversion', {
-                      send_to: 'AW-18020943185/NOStCM78h4ocENGKh5FD',
-                      lead_reference: refCode
-                    });
-                  } catch(gtagErr) {}
-                }
+                window.gtag = window.gtag || function () {
+                  window.dataLayer.push(arguments);
+                };
+                try {
+                  window.gtag('event', 'click_whatsapp', {
+                    send_to: 'AW-18020943185/NOStCM78h4ocENGKh5FD',
+                    lead_reference: refCode,
+                    landing_page: window.location.pathname,
+                    modality: modality,
+                    gclid_present: Boolean(gclid)
+                  });
+                  window.gtag('event', 'conversion', {
+                    send_to: 'AW-18020943185/NOStCM78h4ocENGKh5FD',
+                    lead_reference: refCode
+                  });
+                } catch(gtagErr) {}
 
                 // 5. WhatsApp message
                 var textMsg = "Olá! Gostaria de solicitar uma consulta em Campinas com o Dr. Otto Beckedorff.\\n\\n[Ref: " + refCode + "]";
                 var waUrl = "https://wa.me/5519999439824?text=" + encodeURIComponent(textMsg);
 
-                // 6. Persist to DB in background
+                // 6. Persist to DB in background with explicit modality
                 var isMobileUA = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
                 var payload = JSON.stringify({
                   ref_code: refCode,
@@ -149,6 +160,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                   gbraid: gbraid,
                   wbraid: wbraid,
                   device_type: isMobileUA ? 'mobile' : 'desktop',
+                  modality: modality,
+                  insurance_note: modality === 'convenio' ? 'LP Convênios Campinas' : 'Contato direto WhatsApp',
+                  coverage_vera_cruz: modality === 'convenio' ? 'a_verificar' : 'nao_informado',
                   event_name: 'click_whatsapp'
                 });
 
@@ -309,26 +323,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               var wa = el.closest('a[href*="wa.me"], a[href*="api.whatsapp.com"], a[href*="whatsapp.com"], a[href^="whatsapp://"]');
               if (wa) {
                 e.__handledMicroEvent = true;
+                var modality = (window.location.pathname === '/lp-campinas-convenios') ? 'convenio' : 'direct';
                 var waPayload = {
                   event: 'click_whatsapp',
                   page_path: window.location.pathname,
                   landing_page: window.location.pathname,
                   cta_location: wa.getAttribute('data-cta-location') || 'general_link',
+                  modality: modality,
                   timestamp: new Date().toISOString()
                 };
                 window.dataLayer = window.dataLayer || [];
                 window.dataLayer.push(waPayload);
-                if (typeof window.gtag === 'function') {
-                  try {
-                    window.gtag('event', 'click_whatsapp', {
-                      ...waPayload,
-                      send_to: 'AW-18020943185/NOStCM78h4ocENGKh5FD'
-                    });
-                    window.gtag('event', 'conversion', {
-                      send_to: 'AW-18020943185/NOStCM78h4ocENGKh5FD'
-                    });
-                  } catch (e) {}
-                }
+                window.gtag = window.gtag || function() { (window.dataLayer = window.dataLayer || []).push(arguments); };
+                try {
+                  window.gtag('event', 'click_whatsapp', {
+                    ...waPayload,
+                    send_to: 'AW-18020943185/NOStCM78h4ocENGKh5FD'
+                  });
+                  window.gtag('event', 'conversion', {
+                    send_to: 'AW-18020943185/NOStCM78h4ocENGKh5FD'
+                  });
+                } catch (e) {}
                 return;
               }
 
